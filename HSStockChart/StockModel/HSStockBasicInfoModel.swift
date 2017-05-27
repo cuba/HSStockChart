@@ -7,18 +7,8 @@
 //
 
 import UIKit
-import SwiftyJSON
 
 class HSStockBasicInfoModel: NSObject {
-
     var stockName: String = ""
     var preClosePrice: CGFloat = 0
-    
-    class func getStockBasicInfoModel(_ json: JSON) -> HSStockBasicInfoModel {
-        let model = HSStockBasicInfoModel()
-        model.stockName = json["SZ300033"]["name"].stringValue
-        model.preClosePrice = CGFloat(json["SZ300033"]["last_close"].doubleValue)
-        
-        return model
-    }
 }

@@ -8,7 +8,15 @@
 
 import UIKit
 
-class HSKLine: UIView, HSDrawLayerProtocol {
+public enum HSChartType: Int {
+    case timeLineForDay
+    case timeLineForFiveday
+    case kLineForDay
+    case kLineForWeek
+    case kLineForMonth
+}
+
+public class HSKLine: UIView, HSDrawLayerProtocol {
 
     var kLineType: HSChartType = HSChartType.kLineForDay
     var theme = HSStockChartTheme()
@@ -88,12 +96,12 @@ class HSKLine: UIView, HSDrawLayerProtocol {
     
     // MARK: - Initialize
     
-    override init(frame: CGRect) {
+    override public init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = UIColor.clear
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     

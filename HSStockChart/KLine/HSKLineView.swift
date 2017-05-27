@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SwiftyJSON
 
 class HSKLineView: UIView {
 
@@ -39,7 +38,7 @@ class HSKLineView: UIView {
         }
     }
     
-    init(frame: CGRect, kLineType: HSChartType) {
+    init(frame: CGRect, data: [HSKLineModel]) {
         super.init(frame: frame)
         backgroundColor = UIColor.white
         
@@ -66,17 +65,7 @@ class HSKLineView: UIView {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapGestureAction(_:)))
         kLine.addGestureRecognizer(tapGesture)
         
-        var jsonFile = ""
-        if kLineType == .kLineForDay {
-            jsonFile = "kLineForDay"
-        } else if kLineType == .kLineForWeek {
-            jsonFile = "kLineForWeek"
-        } else {
-            jsonFile = "kLineForMonth"
-        }
-        allDataK = HSKLineModel.getKLineModelArray(getJsonDataFromFile(jsonFile))
-        let tmpDataK = Array(allDataK[allDataK.count-70..<allDataK.count])
-        self.configureView(data: tmpDataK)
+        self.configureView(data: data)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -283,13 +272,6 @@ class HSKLineView: UIView {
                 NotificationCenter.default.post(name: Notification.Name(rawValue: KLineUperChartDidTap), object: self.tag)
             }
         }
-    }
-    
-    func getJsonDataFromFile(_ fileName: String) -> JSON {
-        let pathForResource = Bundle.main.path(forResource: fileName, ofType: "json")
-        let content = try! String(contentsOfFile: pathForResource!, encoding: String.Encoding.utf8)
-        let jsonContent = content.data(using: String.Encoding.utf8)!
-        return JSON(data: jsonContent)
     }
 }
 

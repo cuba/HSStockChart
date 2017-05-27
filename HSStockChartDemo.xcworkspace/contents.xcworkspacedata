@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:HSStockChart.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:HSStockChartDemo.xcodeproj">
    </FileRef>
    <FileRef

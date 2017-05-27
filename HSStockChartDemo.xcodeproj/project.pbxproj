@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8C077CB51EDA1545007BCCFC /* HSStockChart.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C077CB21EDA1537007BCCFC /* HSStockChart.framework */; };
+		8C077CB61EDA1545007BCCFC /* HSStockChart.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8C077CB21EDA1537007BCCFC /* HSStockChart.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C00FC4111DDAE57700C03D2C /* SegmentMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00FC4101DDAE57700C03D2C /* SegmentMenu.swift */; };
 		C01FB2A31D7E7680000C2D6D /* ChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01FB2A21D7E7680000C2D6D /* ChartViewController.swift */; };
 		C01FB2A71D7E94E6000C2D6D /* timeLineForFiveday.json in Resources */ = {isa = PBXBuildFile; fileRef = C01FB2A61D7E94E6000C2D6D /* timeLineForFiveday.json */; };
@@ -17,22 +19,6 @@
 		C03E9AEA1D6ECDB900D93016 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03E9ACA1D6ECDB900D93016 /* Common.swift */; };
 		C03E9AEB1D6ECDB900D93016 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03E9ACB1D6ECDB900D93016 /* Extension.swift */; };
 		C03E9AF01D6ECDB900D93016 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03E9AD01D6ECDB900D93016 /* ViewController.swift */; };
-		C060A30D1E67CF9200BC59CC /* HSCAShapeLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C060A2F81E67CF9200BC59CC /* HSCAShapeLayer.swift */; };
-		C060A30E1E67CF9200BC59CC /* HSDrawLayerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C060A2F91E67CF9200BC59CC /* HSDrawLayerProtocol.swift */; };
-		C060A30F1E67CF9200BC59CC /* HSKLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C060A2FB1E67CF9200BC59CC /* HSKLine.swift */; };
-		C060A3101E67CF9200BC59CC /* HSKLineUpFrontView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C060A2FC1E67CF9200BC59CC /* HSKLineUpFrontView.swift */; };
-		C060A3111E67CF9200BC59CC /* HSKLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C060A2FD1E67CF9200BC59CC /* HSKLineView.swift */; };
-		C060A3121E67CF9200BC59CC /* HSKLineBriefView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C060A2FF1E67CF9200BC59CC /* HSKLineBriefView.swift */; };
-		C060A3131E67CF9200BC59CC /* HSKLineBriefView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C060A3001E67CF9200BC59CC /* HSKLineBriefView.xib */; };
-		C060A3141E67CF9200BC59CC /* HSStockBriefView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C060A3011E67CF9200BC59CC /* HSStockBriefView.swift */; };
-		C060A3151E67CF9200BC59CC /* HSStockBriefView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C060A3021E67CF9200BC59CC /* HSStockBriefView.xib */; };
-		C060A3161E67CF9200BC59CC /* HSKLineCoordModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C060A3041E67CF9200BC59CC /* HSKLineCoordModel.swift */; };
-		C060A3171E67CF9200BC59CC /* HSKLineModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C060A3051E67CF9200BC59CC /* HSKLineModel.swift */; };
-		C060A3181E67CF9200BC59CC /* HSStockBasicInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C060A3061E67CF9200BC59CC /* HSStockBasicInfoModel.swift */; };
-		C060A3191E67CF9200BC59CC /* HSTimeLineCoordModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C060A3071E67CF9200BC59CC /* HSTimeLineCoordModel.swift */; };
-		C060A31A1E67CF9200BC59CC /* HSTimeLineModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C060A3081E67CF9200BC59CC /* HSTimeLineModel.swift */; };
-		C060A31B1E67CF9200BC59CC /* HSStockChartTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = C060A30A1E67CF9200BC59CC /* HSStockChartTheme.swift */; };
-		C060A31C1E67CF9200BC59CC /* HSTimeLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C060A30C1E67CF9200BC59CC /* HSTimeLine.swift */; };
 		C06400061D780C9800B2760A /* LandscapeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06400051D780C9800B2760A /* LandscapeViewController.swift */; };
 		C0A53C771D77C30800F4192B /* StockMarketDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A53C751D77C30800F4192B /* StockMarketDataViewController.swift */; };
 		C0A53C781D77C30800F4192B /* StockMarketDataViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0A53C761D77C30800F4192B /* StockMarketDataViewController.xib */; };
@@ -45,11 +31,50 @@
 		C38E89D3CEC76FC32FFDE2D7 /* Pods_HSStockChartDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4D5F8E2FF58BC1092E5C722 /* Pods_HSStockChartDemo.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		8C077CB11EDA1537007BCCFC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8C077CAC1EDA1537007BCCFC /* HSStockChart.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8C077C2C1EDA13E4007BCCFC;
+			remoteInfo = HSStockChart;
+		};
+		8C077CB31EDA1537007BCCFC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8C077CAC1EDA1537007BCCFC /* HSStockChart.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8C077C351EDA13E5007BCCFC;
+			remoteInfo = HSStockChartTests;
+		};
+		8C077CB71EDA1545007BCCFC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8C077CAC1EDA1537007BCCFC /* HSStockChart.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8C077C2B1EDA13E4007BCCFC;
+			remoteInfo = HSStockChart;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		8C077CB91EDA1545007BCCFC /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				8C077CB61EDA1545007BCCFC /* HSStockChart.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		8C077CAC1EDA1537007BCCFC /* HSStockChart.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = HSStockChart.xcodeproj; sourceTree = "<group>"; };
 		91CC8D58DAF1D622DA5BF254 /* Pods-HSStockChartDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HSStockChartDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-HSStockChartDemo/Pods-HSStockChartDemo.release.xcconfig"; sourceTree = "<group>"; };
 		B4D5F8E2FF58BC1092E5C722 /* Pods_HSStockChartDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HSStockChartDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C00FC4101DDAE57700C03D2C /* SegmentMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentMenu.swift; sourceTree = "<group>"; };
-		C01FB2A21D7E7680000C2D6D /* ChartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartViewController.swift; sourceTree = "<group>"; };
+		C00FC4101DDAE57700C03D2C /* SegmentMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SegmentMenu.swift; path = StockChartDemo/SegmentMenu.swift; sourceTree = "<group>"; };
+		C01FB2A21D7E7680000C2D6D /* ChartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChartViewController.swift; path = StockChartDemo/ChartViewController.swift; sourceTree = "<group>"; };
 		C01FB2A61D7E94E6000C2D6D /* timeLineForFiveday.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = timeLineForFiveday.json; sourceTree = "<group>"; };
 		C03E9AAA1D6ECDB900D93016 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C03E9AAB1D6ECDB900D93016 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -58,26 +83,10 @@
 		C03E9AB01D6ECDB900D93016 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C03E9ACA1D6ECDB900D93016 /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
 		C03E9ACB1D6ECDB900D93016 /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
-		C03E9AD01D6ECDB900D93016 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		C060A2F81E67CF9200BC59CC /* HSCAShapeLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSCAShapeLayer.swift; sourceTree = "<group>"; };
-		C060A2F91E67CF9200BC59CC /* HSDrawLayerProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSDrawLayerProtocol.swift; sourceTree = "<group>"; };
-		C060A2FB1E67CF9200BC59CC /* HSKLine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSKLine.swift; sourceTree = "<group>"; };
-		C060A2FC1E67CF9200BC59CC /* HSKLineUpFrontView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSKLineUpFrontView.swift; sourceTree = "<group>"; };
-		C060A2FD1E67CF9200BC59CC /* HSKLineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSKLineView.swift; sourceTree = "<group>"; };
-		C060A2FF1E67CF9200BC59CC /* HSKLineBriefView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSKLineBriefView.swift; sourceTree = "<group>"; };
-		C060A3001E67CF9200BC59CC /* HSKLineBriefView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HSKLineBriefView.xib; sourceTree = "<group>"; };
-		C060A3011E67CF9200BC59CC /* HSStockBriefView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSStockBriefView.swift; sourceTree = "<group>"; };
-		C060A3021E67CF9200BC59CC /* HSStockBriefView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HSStockBriefView.xib; sourceTree = "<group>"; };
-		C060A3041E67CF9200BC59CC /* HSKLineCoordModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSKLineCoordModel.swift; sourceTree = "<group>"; };
-		C060A3051E67CF9200BC59CC /* HSKLineModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSKLineModel.swift; sourceTree = "<group>"; };
-		C060A3061E67CF9200BC59CC /* HSStockBasicInfoModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSStockBasicInfoModel.swift; sourceTree = "<group>"; };
-		C060A3071E67CF9200BC59CC /* HSTimeLineCoordModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSTimeLineCoordModel.swift; sourceTree = "<group>"; };
-		C060A3081E67CF9200BC59CC /* HSTimeLineModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSTimeLineModel.swift; sourceTree = "<group>"; };
-		C060A30A1E67CF9200BC59CC /* HSStockChartTheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSStockChartTheme.swift; sourceTree = "<group>"; };
-		C060A30C1E67CF9200BC59CC /* HSTimeLine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSTimeLine.swift; sourceTree = "<group>"; };
-		C06400051D780C9800B2760A /* LandscapeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandscapeViewController.swift; sourceTree = "<group>"; };
-		C0A53C751D77C30800F4192B /* StockMarketDataViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StockMarketDataViewController.swift; sourceTree = "<group>"; };
-		C0A53C761D77C30800F4192B /* StockMarketDataViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StockMarketDataViewController.xib; sourceTree = "<group>"; };
+		C03E9AD01D6ECDB900D93016 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewController.swift; path = StockChartDemo/ViewController.swift; sourceTree = "<group>"; };
+		C06400051D780C9800B2760A /* LandscapeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LandscapeViewController.swift; path = StockChartDemo/LandscapeViewController.swift; sourceTree = "<group>"; };
+		C0A53C751D77C30800F4192B /* StockMarketDataViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StockMarketDataViewController.swift; path = StockChartDemo/StockMarketDataViewController.swift; sourceTree = "<group>"; };
+		C0A53C761D77C30800F4192B /* StockMarketDataViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = StockMarketDataViewController.xib; path = StockChartDemo/StockMarketDataViewController.xib; sourceTree = "<group>"; };
 		C0A982FE1D7FB5EF003C3B4C /* kLineForDay.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = kLineForDay.json; sourceTree = "<group>"; };
 		C0A982FF1D7FB5EF003C3B4C /* kLineForMonth.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = kLineForMonth.json; sourceTree = "<group>"; };
 		C0A983001D7FB5EF003C3B4C /* kLineForWeek.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = kLineForWeek.json; sourceTree = "<group>"; };
@@ -94,6 +103,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C38E89D3CEC76FC32FFDE2D7 /* Pods_HSStockChartDemo.framework in Frameworks */,
+				8C077CB51EDA1545007BCCFC /* HSStockChart.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -117,6 +127,15 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		8C077CAD1EDA1537007BCCFC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8C077CB21EDA1537007BCCFC /* HSStockChart.framework */,
+				8C077CB41EDA1537007BCCFC /* HSStockChartTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		C03E9AA91D6ECDB900D93016 /* HSStockChartDemo */ = {
 			isa = PBXGroup;
 			children = (
@@ -125,9 +144,14 @@
 				C03E9AAC1D6ECDB900D93016 /* LaunchScreen.storyboard */,
 				C03E9AAE1D6ECDB900D93016 /* Main.storyboard */,
 				C03E9AB01D6ECDB900D93016 /* Info.plist */,
-				C060A2F71E67CF9200BC59CC /* HSStockChart */,
+				C03E9AC91D6ECDB900D93016 /* Common */,
+				C03E9AD01D6ECDB900D93016 /* ViewController.swift */,
+				C00FC4101DDAE57700C03D2C /* SegmentMenu.swift */,
+				C01FB2A21D7E7680000C2D6D /* ChartViewController.swift */,
+				C06400051D780C9800B2760A /* LandscapeViewController.swift */,
+				C0A53C751D77C30800F4192B /* StockMarketDataViewController.swift */,
+				C0A53C761D77C30800F4192B /* StockMarketDataViewController.xib */,
 				C03E9AB31D6ECDB900D93016 /* SampleData */,
-				C03E9AC81D6ECDB900D93016 /* StockChartDemo */,
 			);
 			path = HSStockChartDemo;
 			sourceTree = "<group>";
@@ -146,95 +170,20 @@
 			path = SampleData;
 			sourceTree = "<group>";
 		};
-		C03E9AC81D6ECDB900D93016 /* StockChartDemo */ = {
-			isa = PBXGroup;
-			children = (
-				C03E9AC91D6ECDB900D93016 /* Common */,
-				C03E9AD01D6ECDB900D93016 /* ViewController.swift */,
-				C00FC4101DDAE57700C03D2C /* SegmentMenu.swift */,
-				C01FB2A21D7E7680000C2D6D /* ChartViewController.swift */,
-				C06400051D780C9800B2760A /* LandscapeViewController.swift */,
-				C0A53C751D77C30800F4192B /* StockMarketDataViewController.swift */,
-				C0A53C761D77C30800F4192B /* StockMarketDataViewController.xib */,
-			);
-			path = StockChartDemo;
-			sourceTree = "<group>";
-		};
 		C03E9AC91D6ECDB900D93016 /* Common */ = {
 			isa = PBXGroup;
 			children = (
 				C03E9ACA1D6ECDB900D93016 /* Common.swift */,
 				C03E9ACB1D6ECDB900D93016 /* Extension.swift */,
 			);
-			path = Common;
-			sourceTree = "<group>";
-		};
-		C060A2F71E67CF9200BC59CC /* HSStockChart */ = {
-			isa = PBXGroup;
-			children = (
-				C060A2F81E67CF9200BC59CC /* HSCAShapeLayer.swift */,
-				C060A2F91E67CF9200BC59CC /* HSDrawLayerProtocol.swift */,
-				C060A2FA1E67CF9200BC59CC /* KLine */,
-				C060A2FE1E67CF9200BC59CC /* StockBriefView */,
-				C060A3031E67CF9200BC59CC /* StockModel */,
-				C060A3091E67CF9200BC59CC /* Theme */,
-				C060A30B1E67CF9200BC59CC /* TimeLine */,
-			);
-			path = HSStockChart;
-			sourceTree = SOURCE_ROOT;
-		};
-		C060A2FA1E67CF9200BC59CC /* KLine */ = {
-			isa = PBXGroup;
-			children = (
-				C060A2FB1E67CF9200BC59CC /* HSKLine.swift */,
-				C060A2FC1E67CF9200BC59CC /* HSKLineUpFrontView.swift */,
-				C060A2FD1E67CF9200BC59CC /* HSKLineView.swift */,
-			);
-			path = KLine;
-			sourceTree = "<group>";
-		};
-		C060A2FE1E67CF9200BC59CC /* StockBriefView */ = {
-			isa = PBXGroup;
-			children = (
-				C060A2FF1E67CF9200BC59CC /* HSKLineBriefView.swift */,
-				C060A3001E67CF9200BC59CC /* HSKLineBriefView.xib */,
-				C060A3011E67CF9200BC59CC /* HSStockBriefView.swift */,
-				C060A3021E67CF9200BC59CC /* HSStockBriefView.xib */,
-			);
-			path = StockBriefView;
-			sourceTree = "<group>";
-		};
-		C060A3031E67CF9200BC59CC /* StockModel */ = {
-			isa = PBXGroup;
-			children = (
-				C060A3041E67CF9200BC59CC /* HSKLineCoordModel.swift */,
-				C060A3051E67CF9200BC59CC /* HSKLineModel.swift */,
-				C060A3061E67CF9200BC59CC /* HSStockBasicInfoModel.swift */,
-				C060A3071E67CF9200BC59CC /* HSTimeLineCoordModel.swift */,
-				C060A3081E67CF9200BC59CC /* HSTimeLineModel.swift */,
-			);
-			path = StockModel;
-			sourceTree = "<group>";
-		};
-		C060A3091E67CF9200BC59CC /* Theme */ = {
-			isa = PBXGroup;
-			children = (
-				C060A30A1E67CF9200BC59CC /* HSStockChartTheme.swift */,
-			);
-			path = Theme;
-			sourceTree = "<group>";
-		};
-		C060A30B1E67CF9200BC59CC /* TimeLine */ = {
-			isa = PBXGroup;
-			children = (
-				C060A30C1E67CF9200BC59CC /* HSTimeLine.swift */,
-			);
-			path = TimeLine;
+			name = Common;
+			path = StockChartDemo/Common;
 			sourceTree = "<group>";
 		};
 		C0D0656A1D61C17A00AC5AAF = {
 			isa = PBXGroup;
 			children = (
+				8C077CAC1EDA1537007BCCFC /* HSStockChart.xcodeproj */,
 				C03E9AA91D6ECDB900D93016 /* HSStockChartDemo */,
 				C0D065741D61C17A00AC5AAF /* Products */,
 				6B26B4A8F4D22DD7D16D41DF /* Pods */,
@@ -263,10 +212,12 @@
 				C0D065711D61C17A00AC5AAF /* Resources */,
 				1FB52C879023D2145F95F52B /* [CP] Embed Pods Frameworks */,
 				777FD046FC3E5E43E8103DB7 /* [CP] Copy Pods Resources */,
+				8C077CB91EDA1545007BCCFC /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				8C077CB81EDA1545007BCCFC /* PBXTargetDependency */,
 			);
 			name = HSStockChartDemo;
 			productName = MyStockChartDemo;
@@ -285,8 +236,8 @@
 				TargetAttributes = {
 					C0D065721D61C17A00AC5AAF = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = XC238MH24L;
 						LastSwiftMigration = 0800;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -301,12 +252,35 @@
 			mainGroup = C0D0656A1D61C17A00AC5AAF;
 			productRefGroup = C0D065741D61C17A00AC5AAF /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 8C077CAD1EDA1537007BCCFC /* Products */;
+					ProjectRef = 8C077CAC1EDA1537007BCCFC /* HSStockChart.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				C0D065721D61C17A00AC5AAF /* HSStockChartDemo */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		8C077CB21EDA1537007BCCFC /* HSStockChart.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = HSStockChart.framework;
+			remoteRef = 8C077CB11EDA1537007BCCFC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8C077CB41EDA1537007BCCFC /* HSStockChartTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = HSStockChartTests.xctest;
+			remoteRef = 8C077CB31EDA1537007BCCFC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		C0D065711D61C17A00AC5AAF /* Resources */ = {
@@ -315,12 +289,10 @@
 			files = (
 				C0A983051D7FB6A2003C3B4C /* FiveTrade.json in Resources */,
 				C0FAA64E1D7D68D900F15200 /* timeLineForDay.json in Resources */,
-				C060A3131E67CF9200BC59CC /* HSKLineBriefView.xib in Resources */,
 				C03E9AD51D6ECDB900D93016 /* Main.storyboard in Resources */,
 				C0FAA6521D7D736800F15200 /* SZ300033.json in Resources */,
 				C03E9AD31D6ECDB900D93016 /* Assets.xcassets in Resources */,
 				C0A983031D7FB5EF003C3B4C /* kLineForWeek.json in Resources */,
-				C060A3151E67CF9200BC59CC /* HSStockBriefView.xib in Resources */,
 				C0A53C781D77C30800F4192B /* StockMarketDataViewController.xib in Resources */,
 				C01FB2A71D7E94E6000C2D6D /* timeLineForFiveday.json in Resources */,
 				C0A983021D7FB5EF003C3B4C /* kLineForMonth.json in Resources */,
@@ -384,32 +356,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C060A30F1E67CF9200BC59CC /* HSKLine.swift in Sources */,
 				C01FB2A31D7E7680000C2D6D /* ChartViewController.swift in Sources */,
 				C00FC4111DDAE57700C03D2C /* SegmentMenu.swift in Sources */,
 				C03E9AEB1D6ECDB900D93016 /* Extension.swift in Sources */,
-				C060A3141E67CF9200BC59CC /* HSStockBriefView.swift in Sources */,
-				C060A3121E67CF9200BC59CC /* HSKLineBriefView.swift in Sources */,
-				C060A3181E67CF9200BC59CC /* HSStockBasicInfoModel.swift in Sources */,
-				C060A3191E67CF9200BC59CC /* HSTimeLineCoordModel.swift in Sources */,
 				C03E9AF01D6ECDB900D93016 /* ViewController.swift in Sources */,
-				C060A30E1E67CF9200BC59CC /* HSDrawLayerProtocol.swift in Sources */,
-				C060A3171E67CF9200BC59CC /* HSKLineModel.swift in Sources */,
-				C060A31C1E67CF9200BC59CC /* HSTimeLine.swift in Sources */,
-				C060A3161E67CF9200BC59CC /* HSKLineCoordModel.swift in Sources */,
-				C060A3101E67CF9200BC59CC /* HSKLineUpFrontView.swift in Sources */,
 				C0A53C771D77C30800F4192B /* StockMarketDataViewController.swift in Sources */,
 				C03E9AEA1D6ECDB900D93016 /* Common.swift in Sources */,
-				C060A30D1E67CF9200BC59CC /* HSCAShapeLayer.swift in Sources */,
 				C03E9AD21D6ECDB900D93016 /* AppDelegate.swift in Sources */,
 				C06400061D780C9800B2760A /* LandscapeViewController.swift in Sources */,
-				C060A3111E67CF9200BC59CC /* HSKLineView.swift in Sources */,
-				C060A31B1E67CF9200BC59CC /* HSStockChartTheme.swift in Sources */,
-				C060A31A1E67CF9200BC59CC /* HSTimeLineModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		8C077CB81EDA1545007BCCFC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = HSStockChart;
+			targetProxy = 8C077CB71EDA1545007BCCFC /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		C03E9AAC1D6ECDB900D93016 /* LaunchScreen.storyboard */ = {
@@ -532,13 +498,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = XC238MH24L;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "$(SRCROOT)/HSStockChartDemo/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = org.hanson.HSStockChartDemo;
 				PRODUCT_NAME = HSStockChartDemo;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -549,13 +516,14 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = XC238MH24L;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "$(SRCROOT)/HSStockChartDemo/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = org.hanson.HSStockChartDemo;
 				PRODUCT_NAME = HSStockChartDemo;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
