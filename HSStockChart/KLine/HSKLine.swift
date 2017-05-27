@@ -16,10 +16,10 @@ public enum HSChartType: Int {
     case kLineForMonth
 }
 
-public class HSKLine: UIView, HSDrawLayerProtocol {
+open class HSKLine: UIView, HSDrawLayerProtocol {
 
     var kLineType: HSChartType = HSChartType.kLineForDay
-    var theme = HSStockChartTheme()
+    public var theme = HSStockChartTheme()
     
     var dataK: [HSKLineModel] = []
     var positionModels: [HSKLineCoordModel] = []

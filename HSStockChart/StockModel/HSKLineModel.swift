@@ -8,19 +8,19 @@
 
 import UIKit
 
-class HSKLineModel: NSObject {
-    var date: String = ""
-    var open: CGFloat = 0
-    var close: CGFloat = 0
-    var high: CGFloat = 0
-    var low: CGFloat = 0
-    var volume: CGFloat = 0
-    var ma5: CGFloat = 0
-    var ma10: CGFloat = 0
-    var ma20: CGFloat = 0
-    var ma30: CGFloat = 0
-    var diff: CGFloat = 0
-    var dea: CGFloat = 0
-    var macd: CGFloat = 0
-    var rate: CGFloat = 0
+open class HSKLineModel: NSObject {
+    public var date: String = ""
+    public var open: CGFloat = 0
+    public var close: CGFloat = 0
+    public var high: CGFloat = 0
+    public var low: CGFloat = 0
+    public var volume: CGFloat = 0
+    public var ma5: CGFloat = 0
+    public var ma10: CGFloat = 0
+    public var ma20: CGFloat = 0
+    public var ma30: CGFloat = 0
+    public var diff: CGFloat = 0
+    public var dea: CGFloat = 0
+    public var macd: CGFloat = 0
+    public var rate: CGFloat = 0
 }

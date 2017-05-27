@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HSKLineUpFrontView: UIView, HSDrawLayerProtocol {
+open class HSKLineUpFrontView: UIView, HSDrawLayerProtocol {
     
     var rrText = CATextLayer()
     var volText = CATextLayer()
@@ -41,11 +41,11 @@ class HSKLineUpFrontView: UIView, HSDrawLayerProtocol {
         drawMarkLayer()
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+    override open func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         let view = super.hitTest(point, with: event)
         if view == self {
             // 交给下一层级的view响应事件（解决该 view 在 scrollView 上面到时scrollView无法滚动问题）
@@ -54,7 +54,7 @@ class HSKLineUpFrontView: UIView, HSDrawLayerProtocol {
         return view
     }
     
-    func configureAxis(max: CGFloat, min: CGFloat, maxVol: CGFloat) {
+    open func configureAxis(max: CGFloat, min: CGFloat, maxVol: CGFloat) {
         let maxPriceStr = max.toStringWithFormat(".2")
         let minPriceStr = min.toStringWithFormat(".2")
         let midPriceStr = ((max + min) / 2).toStringWithFormat(".2")
@@ -65,7 +65,7 @@ class HSKLineUpFrontView: UIView, HSDrawLayerProtocol {
         maxVolMark.string = maxVolStr
     }
     
-    func drawMarkLayer() {
+    public func drawMarkLayer() {
         rrText = getYAxisMarkLayer(frame: frame, text: "不复权", y: theme.viewMinYGap, isLeft: true)
         volText = getYAxisMarkLayer(frame: frame, text: "成交量", y: lowerChartTop + theme.volumeGap, isLeft: true)
         maxMark = getYAxisMarkLayer(frame: frame, text: "0.00", y: theme.viewMinYGap, isLeft: false)
@@ -80,13 +80,13 @@ class HSKLineUpFrontView: UIView, HSDrawLayerProtocol {
         self.layer.addSublayer(maxVolMark)
     }
     
-    func drawCrossLine(pricePoint: CGPoint, volumePoint: CGPoint, model: AnyObject?) {
+    public func drawCrossLine(pricePoint: CGPoint, volumePoint: CGPoint, model: AnyObject?) {
         corssLineLayer.removeFromSuperlayer()
         corssLineLayer = getCrossLineLayer(frame: frame, pricePoint: pricePoint, volumePoint: volumePoint, model: model)
         self.layer.addSublayer(corssLineLayer)
     }
     
-    func removeCrossLine() {
+    public func removeCrossLine() {
         self.corssLineLayer.removeFromSuperlayer()
     }
 }

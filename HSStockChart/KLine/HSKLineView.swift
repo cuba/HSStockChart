@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HSKLineView: UIView {
+open class HSKLineView: UIView {
 
     var scrollView: UIScrollView!
     var kLine: HSKLine!
@@ -19,7 +19,7 @@ class HSKLineView: UIView {
     var theme = HSStockChartTheme()
     var dataK: [HSKLineModel] = []
     
-    var isLandscapeMode = false
+    public var isLandscapeMode = false
 
     var allDataK: [HSKLineModel] = []
     var enableKVO: Bool = true
@@ -38,8 +38,9 @@ class HSKLineView: UIView {
         }
     }
     
-    init(frame: CGRect, data: [HSKLineModel]) {
+    public init(frame: CGRect, data: [HSKLineModel], type: HSChartType) {
         super.init(frame: frame)
+        self.allDataK = data
         backgroundColor = UIColor.white
         
         drawFrameLayer()
@@ -52,7 +53,7 @@ class HSKLineView: UIView {
         addSubview(scrollView)
         
         kLine = HSKLine()
-        kLine.kLineType = kLineType
+        kLine.kLineType = type
         scrollView.addSubview(kLine)
         
         upFrontView = HSKLineUpFrontView(frame: bounds)
@@ -65,10 +66,13 @@ class HSKLineView: UIView {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapGestureAction(_:)))
         kLine.addGestureRecognizer(tapGesture)
         
+        let tmpDataK = Array(allDataK[allDataK.count-70..<allDataK.count])
+        self.configureView(data: tmpDataK)
+        
         self.configureView(data: data)
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -76,7 +80,7 @@ class HSKLineView: UIView {
         scrollView.removeObserver(self, forKeyPath: #keyPath(UIScrollView.contentOffset))
     }
     
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
+    override open func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == #keyPath(UIScrollView.contentOffset) && enableKVO {
             print("in klineview scrollView?.contentOffset.x " + "\(scrollView.contentOffset.x)")
             
@@ -276,7 +280,7 @@ class HSKLineView: UIView {
 }
 
 extension HSKLineView: UIScrollViewDelegate {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
         // MARK: - 用于滑动加载更多 KLine 数据
         if (scrollView.contentOffset.x < 0 && dataK.count < allDataK.count) {

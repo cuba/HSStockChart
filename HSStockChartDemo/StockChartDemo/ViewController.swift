@@ -7,10 +7,9 @@
 //
 
 import UIKit
+import HSStockChart
 
 class ViewController: UIViewController {
-    
-    @IBOutlet weak var headerStockInfoView: UIView!
     var segmentMenu: SegmentMenu!
     var stockBriefView: HSStockBriefView?
     var kLineBriefView: HSKLineBriefView?
@@ -48,14 +47,14 @@ class ViewController: UIViewController {
     // MARK: - Functioin
     
     func setUpView() {
-        segmentMenu = SegmentMenu(frame: CGRect(x: 0, y: headerStockInfoView.frame.maxY, width: ScreenWidth, height: 40))
+        segmentMenu = SegmentMenu(frame: CGRect(x: 0, y: 0, width: ScreenWidth, height: 40))
         segmentMenu.menuTitleArray = ["分时", "五日", "日K", "周K", "月K"]
         segmentMenu.delegate = self
         
-        stockBriefView = HSStockBriefView(frame: CGRect(x: 0, y: headerStockInfoView.frame.maxY, width: self.view.frame.width, height: 40))
+        stockBriefView = HSStockBriefView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 40))
         stockBriefView?.isHidden = true
         
-        kLineBriefView = HSKLineBriefView(frame: CGRect(x: 0, y: headerStockInfoView.frame.maxY, width: self.view.frame.width, height: 40))
+        kLineBriefView = HSKLineBriefView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 40))
         kLineBriefView?.isHidden = true
         
         self.view.addSubview(segmentMenu)

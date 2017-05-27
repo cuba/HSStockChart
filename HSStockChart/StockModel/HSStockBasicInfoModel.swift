@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HSStockBasicInfoModel: NSObject {
-    var stockName: String = ""
-    var preClosePrice: CGFloat = 0
+open class HSStockBasicInfoModel: NSObject {
+    public var stockName: String = ""
+    public var preClosePrice: CGFloat = 0
 }

@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-protocol HSDrawLayerProtocol {
+public protocol HSDrawLayerProtocol {
     
     var theme: HSStockChartTheme { get }
     
@@ -22,11 +22,11 @@ protocol HSDrawLayerProtocol {
 
 extension HSDrawLayerProtocol {
     
-    var theme: HSStockChartTheme {
+    public var theme: HSStockChartTheme {
         return HSStockChartTheme()
     }
     
-    func drawLine(lineWidth: CGFloat,
+    public func drawLine(lineWidth: CGFloat,
                   startPoint: CGPoint,
                   endPoint: CGPoint,
                   strokeColor: UIColor,
@@ -61,7 +61,7 @@ extension HSDrawLayerProtocol {
         return lineLayer
     }
     
-    func drawTextLayer(frame: CGRect,
+    public func drawTextLayer(frame: CGRect,
                        text: String,
                        foregroundColor: UIColor,
                        backgroundColor: UIColor = UIColor.clear,
@@ -93,16 +93,13 @@ extension HSDrawLayerProtocol {
         }
         
         let labelY: CGFloat = y - textSize.height / 2.0
-        
-        let yMarkLayer = drawTextLayer(frame: CGRect(x: labelX, y: labelY, width: textSize.width, height: textSize.height),
-                                       text: text,
-                                       foregroundColor: theme.textColor)
+        let yMarkLayer = drawTextLayer(frame: CGRect(x: labelX, y: labelY, width: textSize.width, height: textSize.height), text: text, foregroundColor: theme.textColor)
         
         return yMarkLayer
     }
     
     /// 获取长按显示的十字线及其标签图层
-    func getCrossLineLayer(frame: CGRect, pricePoint: CGPoint, volumePoint: CGPoint, model: AnyObject?) -> CAShapeLayer {
+    public func getCrossLineLayer(frame: CGRect, pricePoint: CGPoint, volumePoint: CGPoint, model: AnyObject?) -> CAShapeLayer {
         let highlightLayer = CAShapeLayer()
         
         let corssLineLayer = CAShapeLayer()
@@ -115,19 +112,17 @@ extension HSDrawLayerProtocol {
         
         guard let model = model else { return highlightLayer }
         
-        if model.isKind(of: HSKLineModel.self) {
-            let entity = model as! HSKLineModel
+        if let entity = model as? HSKLineModel {
             yAxisMarkString = entity.close.toStringWithFormat(".2")
             bottomMarkerString = entity.date.toDate("yyyyMMddHHmmss")?.toString("MM-dd") ?? ""
             volumeMarkerString = entity.volume.toStringWithFormat(".2")
             
-        } else if model.isKind(of: HSTimeLineModel.self){
-            let entity = model as! HSTimeLineModel
+        } else if let entity = model as? HSTimeLineModel {
             yAxisMarkString = entity.price.toStringWithFormat(".2")
             bottomMarkerString = entity.time
             volumeMarkerString = entity.volume.toStringWithFormat(".2")
             
-        } else{
+        } else {
             return highlightLayer
         }
         
@@ -143,9 +138,6 @@ extension HSDrawLayerProtocol {
         // 标记交易量的横线
         linePath.move(to: CGPoint(x: frame.minX, y: volumePoint.y))
         linePath.addLine(to: CGPoint(x: frame.maxX, y: volumePoint.y))
-        
-        // 交叉点
-        //linePath.addArc(withCenter: pricePoint, radius: 3, startAngle: 0, endAngle: 180, clockwise: true)
         
         corssLineLayer.lineWidth = theme.lineWidth
         corssLineLayer.strokeColor = theme.crossLineColor.cgColor

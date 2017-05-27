@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import HSStockChart
 
 class HSStockBriefView: UIView {
     
