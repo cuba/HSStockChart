@@ -1,5 +1,6 @@
 # HSStockChart
 
+[![BuddyBuild](https://dashboard.buddybuild.com/api/statusImage?appID=592b3929f7b88a0001cd804a&branch=master&build=latest)](https://dashboard.buddybuild.com/apps/592b3929f7b88a0001cd804a/build/latest?branch=master)
 ![iOS 8.0+](https://img.shields.io/badge/iOS-8.0%2B-blue.svg?style=flat)
 ![Swift 3.0+](https://img.shields.io/badge/Swift-3.0%2B-orange.svg?style=flat)
 [![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
