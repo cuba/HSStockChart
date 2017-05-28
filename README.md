@@ -48,7 +48,7 @@ Run `carthage update` to build the framework and drag the built `NetworkKit.fram
 See the included example [ViewController](https://github.com/cuba/HSStockChart/blob/master/HSStockChartDemo/StockChartDemo/ViewController.swift)
 
 ## Credits
-Original code by ![Hanson Zhang](https://github.com/zyphs21/HSStockChart).  Awesome work, but not a framework :(
+Original code by [Hanson Zhang](https://github.com/zyphs21/HSStockChart).  Awesome work, but not a framework :(
 
 ## License
 
