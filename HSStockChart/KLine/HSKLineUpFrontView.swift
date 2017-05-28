@@ -8,36 +8,31 @@
 
 import UIKit
 
-open class HSKLineUpFrontView: UIView, HSDrawLayerProtocol {
+open class AxisView: UIView, HSDrawLayerProtocol {
+    private var rrText = CATextLayer()
+    private var volText = CATextLayer()
+    private var maxMark = CATextLayer()
+    private var midMark = CATextLayer()
+    private var minMark = CATextLayer()
+    private var maxVolMark = CATextLayer()
+    private var yAxisLayer = CAShapeLayer()
     
-    var rrText = CATextLayer()
-    var volText = CATextLayer()
-    var maxMark = CATextLayer()
-    var midMark = CATextLayer()
-    var minMark = CATextLayer()
-    var maxVolMark = CATextLayer()
-    var yAxisLayer = CAShapeLayer()
+    private var corssLineLayer = CAShapeLayer()
+    private var volMarkLayer = CATextLayer()
+    private var leftMarkLayer = CATextLayer()
+    private var bottomMarkLayer = CATextLayer()
+    private var yAxisMarkLayer = CATextLayer()
     
-    var corssLineLayer = CAShapeLayer()
-    var volMarkLayer = CATextLayer()
-    var leftMarkLayer = CATextLayer()
-    var bottomMarkLayer = CATextLayer()
-    var yAxisMarkLayer = CATextLayer()
-    
-    var upperChartHeight: CGFloat {
-        get {
-            return theme.upperChartHeightScale * self.frame.height
-        }
+    private var upperChartHeight: CGFloat {
+        return theme.upperChartHeightScale * self.frame.height
     }
-    var lowerChartTop: CGFloat {
-        get {
-            return upperChartHeight + theme.xAxisHeitht
-        }
+    
+    private var lowerChartTop: CGFloat {
+        return upperChartHeight + theme.xAxisHeight
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         drawMarkLayer()
     }
     
@@ -55,10 +50,10 @@ open class HSKLineUpFrontView: UIView, HSDrawLayerProtocol {
     }
     
     open func configureAxis(max: CGFloat, min: CGFloat, maxVol: CGFloat) {
-        let maxPriceStr = max.toStringWithFormat(".2")
-        let minPriceStr = min.toStringWithFormat(".2")
-        let midPriceStr = ((max + min) / 2).toStringWithFormat(".2")
-        let maxVolStr = maxVol.toStringWithFormat(".2")
+        let maxPriceStr = String(format: "%0.2f", max)
+        let minPriceStr = String(format: "%0.2f", min)
+        let midPriceStr = String(format: "%0.2f", (max + min) / 2)
+        let maxVolStr = String(format: "%0.2f", maxVol)
         maxMark.string = maxPriceStr
         minMark.string = minPriceStr
         midMark.string = midPriceStr
@@ -66,8 +61,8 @@ open class HSKLineUpFrontView: UIView, HSDrawLayerProtocol {
     }
     
     public func drawMarkLayer() {
-        rrText = getYAxisMarkLayer(frame: frame, text: "不复权", y: theme.viewMinYGap, isLeft: true)
-        volText = getYAxisMarkLayer(frame: frame, text: "成交量", y: lowerChartTop + theme.volumeGap, isLeft: true)
+        rrText = getYAxisMarkLayer(frame: frame, text: "Price", y: theme.viewMinYGap, isLeft: true)
+        volText = getYAxisMarkLayer(frame: frame, text: "Trade Volume", y: lowerChartTop + theme.volumeGap, isLeft: true)
         maxMark = getYAxisMarkLayer(frame: frame, text: "0.00", y: theme.viewMinYGap, isLeft: false)
         minMark = getYAxisMarkLayer(frame: frame, text: "0.00", y: upperChartHeight - theme.viewMinYGap, isLeft: false)
         midMark = getYAxisMarkLayer(frame: frame, text: "0.00", y: upperChartHeight / 2, isLeft: false)

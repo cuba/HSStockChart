@@ -17,11 +17,11 @@ open class CandlesticsView: UIView, HSDrawLayerProtocol {
     public var theme = HSStockChartTheme()
     
     private(set) var positionModels: [GraphCoordinate] = []
-    private var klineModels: [HSKLineModel] = []
+    private var klineModels: [Candlestick] = []
     private var kLineViewTotalWidth: CGFloat = 0
     private var showContentWidth: CGFloat = 0
     
-    private var highLightIndex: Int = 0
+    private var selectedIndex: Int = 0
     
     private var priceUnit: CGFloat = 0.1
     private var volumeUnit: CGFloat = 0
@@ -46,7 +46,7 @@ open class CandlesticsView: UIView, HSDrawLayerProtocol {
     // Accessable Properties
     var contentOffsetX: CGFloat = 0
     var renderWidth: CGFloat = 0
-    var data: [HSKLineModel] = []
+    var data: [Candlestick] = []
     var type = ChartType.timeLine
     
     private var upperChartHeight: CGFloat {
@@ -54,7 +54,7 @@ open class CandlesticsView: UIView, HSDrawLayerProtocol {
     }
     
     private var lowerChartHeight: CGFloat {
-        return self.frame.height * (1 - theme.upperChartHeightScale) - theme.xAxisHeitht
+        return self.frame.height * (1 - theme.upperChartHeightScale) - theme.xAxisHeight
     }
     
     var startIndex: Int {
@@ -140,7 +140,7 @@ open class CandlesticsView: UIView, HSDrawLayerProtocol {
     }
     
     
-    fileprivate func convertToPositionModel(data: [HSKLineModel]) {
+    fileprivate func convertToPositionModel(data: [Candlestick]) {
         self.positionModels.removeAll()
         self.klineModels.removeAll()
         
@@ -280,9 +280,9 @@ open class CandlesticsView: UIView, HSDrawLayerProtocol {
             
             switch type {
             case .timeLine:
-                xAxisTimeMarkLayer.addSublayer(drawXAxisTimeMark(xPosition: position.highPoint.x, dateString: date.toString("yyyy-MM")))
+                xAxisTimeMarkLayer.addSublayer(drawXAxisTimeMark(xPosition: position.highPoint.x, dateString: date.toString(withFormat: "yyyy-MM")!))
             case .candlesticks:
-                xAxisTimeMarkLayer.addSublayer(drawXAxisTimeMark(xPosition: position.highPoint.x, dateString: date.toString("MM-dd")))
+                xAxisTimeMarkLayer.addSublayer(drawXAxisTimeMark(xPosition: position.highPoint.x, dateString: date.toString(withFormat: "MM-dd")!))
             }
             
             lastDate = date
@@ -317,7 +317,7 @@ open class CandlesticsView: UIView, HSDrawLayerProtocol {
         let linePath = UIBezierPath()
         linePath.move(to: CGPoint(x: xPosition, y: 0))
         linePath.addLine(to: CGPoint(x: xPosition,  y: self.frame.height * theme.upperChartHeightScale))
-        linePath.move(to: CGPoint(x: xPosition, y: self.frame.height * theme.upperChartHeightScale + theme.xAxisHeitht))
+        linePath.move(to: CGPoint(x: xPosition, y: self.frame.height * theme.upperChartHeightScale + theme.xAxisHeight))
         linePath.addLine(to: CGPoint(x: xPosition, y: self.frame.height))
         let lineLayer = CAShapeLayer()
         lineLayer.path = linePath.cgPath

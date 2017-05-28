@@ -1,5 +1,5 @@
 //
-//  HSKLineModel.swift
+//  Candlestick.swift
 //  HSStockChartDemo
 //
 //  Created by Hanson on 16/8/29.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-open class HSKLineModel: NSObject {
+open class Candlestick: NSObject {
     public var date: Date?
     public var open: CGFloat = 0
     public var close: CGFloat = 0

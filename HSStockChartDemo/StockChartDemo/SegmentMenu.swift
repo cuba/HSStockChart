@@ -39,7 +39,7 @@ class SegmentMenu: UIView {
         stackView = UIStackView()
         stackView.distribution = .fillEqually
         bottomIndicator = UIView()
-        bottomIndicator.backgroundColor = UIColor(rgba: "#1782d0")
+        bottomIndicator.backgroundColor = UIColor(hexString: "#1782d0")
         
         bottomLine = UIView()
         bottomLine.backgroundColor = UIColor.groupTableViewBackground
@@ -103,7 +103,7 @@ class SegmentMenu: UIView {
         
         self.selectedButton = button
         delegate?.menuButtonDidClick(index: index)
-        self.selectedButton?.setTitleColor(UIColor(rgba: "#1782d0"), for: .normal)
+        self.selectedButton?.setTitleColor(UIColor(hexString: "#1782d0"), for: .normal)
         
         UIView.animate(withDuration: 0.3) {
             self.updateIndicatorFrame()

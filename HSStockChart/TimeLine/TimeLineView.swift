@@ -27,7 +27,7 @@ open class TimeLineView: UIView, HSDrawLayerProtocol {
     public var priceUnit: CGFloat = 0
     public var volumeUnit: CGFloat = 0
     
-    var highLightIndex: Int = 0
+    var selectedIndex: Int = 0
     
     let countOfTimes = 240 // 分时线的横坐标
     let fiveDayCount = 120 // 五日线总横坐标
@@ -51,29 +51,19 @@ open class TimeLineView: UIView, HSDrawLayerProtocol {
     }
     
     var upperChartHeight: CGFloat {
-        get {
-            return frame.height * theme.upperChartHeightScale
-        }
+        return frame.height * theme.upperChartHeightScale
     }
     var lowerChartHeight: CGFloat {
-        get {
-            return frame.height * (1 - theme.upperChartHeightScale) - theme.xAxisHeitht
-        }
+        return frame.height * (1 - theme.upperChartHeightScale) - theme.xAxisHeight
     }
     var uperChartDrawAreaTop: CGFloat {
-        get {
-            return theme.viewMinYGap
-        }
+        return theme.viewMinYGap
     }
     var uperChartDrawAreaBottom: CGFloat {
-        get {
-            return upperChartHeight - theme.viewMinYGap
-        }
+        return upperChartHeight - theme.viewMinYGap
     }
     var lowerChartTop: CGFloat {
-        get {
-            return upperChartHeight + theme.xAxisHeitht
-        }
+        return upperChartHeight + theme.xAxisHeight
     }
     
     
@@ -194,14 +184,14 @@ open class TimeLineView: UIView, HSDrawLayerProtocol {
         yAxisLayer.sublayers?.removeAll()
         
         // 画纵坐标的最高和最低价格标签
-        let maxPriceStr = maxPrice.toStringWithFormat(".2")
-        let minPriceStr = minPrice.toStringWithFormat(".2")
+        let maxPriceStr = maxPrice.toString(withFormat: ".2")
+        let minPriceStr = minPrice.toString(withFormat: ".2")
         yAxisLayer.addSublayer(getYAxisMarkLayer(frame: frame, text: maxPriceStr, y: theme.viewMinYGap, isLeft: false))
         yAxisLayer.addSublayer(getYAxisMarkLayer(frame: frame, text: minPriceStr, y: uperChartDrawAreaBottom, isLeft: false))
         
         // 最高成交量标签及其横线
         let y = frame.height - maxVolume * volumeUnit
-        let maxVolumeStr = maxVolume.toStringWithFormat(".2")
+        let maxVolumeStr = maxVolume.toString(withFormat: ".2")
         yAxisLayer.addSublayer(getYAxisMarkLayer(frame: frame, text: maxVolumeStr, y: y, isLeft: false))
         
         let maxVolLine = UIBezierPath()
@@ -215,8 +205,8 @@ open class TimeLineView: UIView, HSDrawLayerProtocol {
         yAxisLayer.addSublayer(maxVolLineLayer)
         
         // 画比率标签
-        let maxRatioStr = (self.maxRatio * 100).toPercentFormat()
-        let minRatioStr = (self.minRatio * 100).toPercentFormat()
+        let maxRatioStr = (self.maxRatio * 100).toPercentString(withFormat: ".2")
+        let minRatioStr = (self.minRatio * 100).toPercentString(withFormat: ".2")
         yAxisLayer.addSublayer(getYAxisMarkLayer(frame: frame, text: maxRatioStr, y: uperChartDrawAreaTop, isLeft: true))
         yAxisLayer.addSublayer(getYAxisMarkLayer(frame: frame, text: minRatioStr, y: uperChartDrawAreaBottom, isLeft: true))
         
@@ -238,7 +228,7 @@ open class TimeLineView: UIView, HSDrawLayerProtocol {
             dashLineLayer.lineDashPattern = [6, 3]
             yAxisLayer.addSublayer(dashLineLayer)
             
-            yAxisLayer.addSublayer(getYAxisMarkLayer(frame: frame, text: price.toStringWithFormat(".2"), y: preClosePriceYaxis, isLeft: false))
+            yAxisLayer.addSublayer(getYAxisMarkLayer(frame: frame, text: price.toString(withFormat: ".2"), y: preClosePriceYaxis, isLeft: false))
         }
         
         self.layer.addSublayer(yAxisLayer)
@@ -410,12 +400,12 @@ open class TimeLineView: UIView, HSDrawLayerProtocol {
     lazy var animatePoint: CALayer = {
         let animatePoint = CALayer()
         self.layer.addSublayer(animatePoint)
-        animatePoint.backgroundColor = UIColor(rgba: "#0095ff").cgColor
+        animatePoint.backgroundColor = UIColor(hexString: "#0095ff")!.cgColor
         animatePoint.cornerRadius = 1.5
         
         let layer = CALayer()
         layer.frame = CGRect(x: 0, y: 0, width: 3, height: 3)
-        layer.backgroundColor = UIColor(rgba: "#0095ff").cgColor
+        layer.backgroundColor = UIColor(hexString: "#0095ff")!.cgColor
         layer.cornerRadius = 1.5
         layer.add(self.breathingLightAnimate(2), forKey: nil)
         
@@ -461,17 +451,17 @@ open class TimeLineView: UIView, HSDrawLayerProtocol {
                 let index = Int(point.x / volumeStep)
                 
                 if index > dataT.count - 1 {
-                    self.highLightIndex = dataT.count - 1
+                    self.selectedIndex = dataT.count - 1
                 } else {
-                    self.highLightIndex = index
+                    self.selectedIndex = index
                 }
                 
                 crossLineLayer.removeFromSuperlayer()
-                crossLineLayer = getCrossLineLayer(frame: frame, pricePoint: positionModels[highLightIndex].pricePoint, volumePoint: positionModels[highLightIndex].volumeStartPoint, model: dataT[highLightIndex])
+                crossLineLayer = getCrossLineLayer(frame: frame, pricePoint: positionModels[selectedIndex].pricePoint, volumePoint: positionModels[selectedIndex].volumeStartPoint, model: dataT[selectedIndex])
                 self.layer.addSublayer(crossLineLayer)
             }
-            if self.highLightIndex < dataT.count {
-                NotificationCenter.default.post(name: Notification.Name(rawValue: ChartLongPress), object: self, userInfo: ["timeLineEntity": dataT[self.highLightIndex]])
+            if self.selectedIndex < dataT.count {
+                NotificationCenter.default.post(name: Notification.Name(rawValue: ChartLongPress), object: self, userInfo: ["timeLineEntity": dataT[self.selectedIndex]])
             }
         }
         

@@ -8,10 +8,14 @@
 
 import UIKit
 
+protocol StockChartViewDelegate {
+    
+}
+
 open class StockChartView: UIView {
     private var scrollView: UIScrollView!
-    private var kLine: CandlesticsView!
-    private var upFrontView: HSKLineUpFrontView!
+    private var candlesticsView: CandlesticsView!
+    private var axisView: AxisView!
     
     private var type: ChartType!
     private var theme = HSStockChartTheme()
@@ -20,18 +24,18 @@ open class StockChartView: UIView {
     private var enableKVO: Bool = true
     private var lineViewWidth: CGFloat = 0.0
     
-    fileprivate var data: [HSKLineModel] = []
-    fileprivate var allData: [HSKLineModel] = []
+    fileprivate var data: [Candlestick] = []
+    fileprivate var allData: [Candlestick] = []
     
     private var upperChartHeight: CGFloat {
         return theme.upperChartHeightScale * self.frame.height
     }
     
     private var lowerChartTop: CGFloat {
-        return upperChartHeight + theme.xAxisHeitht
+        return upperChartHeight + theme.xAxisHeight
     }
     
-    public init(frame: CGRect, data: [HSKLineModel], type: ChartType) {
+    public init(frame: CGRect, data: [Candlestick], type: ChartType) {
         super.init(frame: frame)
         self.allData = data
         backgroundColor = UIColor.white
@@ -45,15 +49,15 @@ open class StockChartView: UIView {
         scrollView.addObserver(self, forKeyPath: #keyPath(UIScrollView.contentOffset), options: .new, context: nil)
         addSubview(scrollView)
         
-        kLine = CandlesticsView()
-        kLine.type = type
-        scrollView.addSubview(kLine)
+        candlesticsView = CandlesticsView()
+        candlesticsView.type = type
+        scrollView.addSubview(candlesticsView)
         
-        upFrontView = HSKLineUpFrontView(frame: bounds)
-        addSubview(upFrontView)
+        axisView = AxisView(frame: bounds)
+        addSubview(axisView)
         
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPressGestureAction(_:)))
-        kLine.addGestureRecognizer(longPressGesture)
+        candlesticsView.addGestureRecognizer(longPressGesture)
         
         let tmpdata = Array(allData[allData.count-70..<allData.count])
         self.configureView(data: tmpdata)
@@ -70,17 +74,17 @@ open class StockChartView: UIView {
     
     override open func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == #keyPath(UIScrollView.contentOffset) && enableKVO {
-            kLine.contentOffsetX = scrollView.contentOffset.x
-            kLine.renderWidth = scrollView.frame.width
-            kLine.drawKLineView()
+            candlesticsView.contentOffsetX = scrollView.contentOffset.x
+            candlesticsView.renderWidth = scrollView.frame.width
+            candlesticsView.drawKLineView()
             
-            upFrontView.configureAxis(max: kLine.maxPrice, min: kLine.minPrice, maxVol: kLine.maxVolume)
+            axisView.configureAxis(max: candlesticsView.maxPrice, min: candlesticsView.minPrice, maxVol: candlesticsView.maxVolume)
         }
     }
     
-    func configureView(data: [HSKLineModel]) {
+    func configureView(data: [Candlestick]) {
         self.data = data
-        kLine.data = data
+        candlesticsView.data = data
         let count: CGFloat = CGFloat(data.count)
         
         lineViewWidth = count * theme.candleWidth + (count + 1) * theme.candleGap
@@ -90,25 +94,25 @@ open class StockChartView: UIView {
             lineViewWidth = count * theme.candleWidth + (count + 1) * theme.candleGap
         }
         
-        kLine.frame = CGRect(x: self.frame.origin.x, y: self.frame.origin.y, width: lineViewWidth, height: scrollView.frame.height)
+        candlesticsView.frame = CGRect(x: self.frame.origin.x, y: self.frame.origin.y, width: lineViewWidth, height: scrollView.frame.height)
         
         var contentOffsetX: CGFloat = 0
         
         if scrollView.contentSize.width > 0 {
             contentOffsetX = lineViewWidth - scrollView.contentSize.width
         } else {
-            // 首次加载，将 kLine 的右边和scrollview的右边对齐
-            contentOffsetX = kLine.frame.width - scrollView.frame.width
+            // 首次加载，将 candlesticsView 的右边和scrollview的右边对齐
+            contentOffsetX = candlesticsView.frame.width - scrollView.frame.width
         }
         
         scrollView.contentSize = CGSize(width: lineViewWidth, height: self.frame.height)
         scrollView.contentOffset = CGPoint(x: contentOffsetX, y: 0)
-        kLine.contentOffsetX = scrollView.contentOffset.x
+        candlesticsView.contentOffsetX = scrollView.contentOffset.x
 
     }
     
     func updateKlineViewWidth() {
-        let count: CGFloat = CGFloat(kLine.data.count)
+        let count: CGFloat = CGFloat(candlesticsView.data.count)
         // 总长度
         lineViewWidth = count * theme.candleWidth + (count + 1) * theme.candleGap
         if lineViewWidth < self.frame.width {
@@ -117,7 +121,7 @@ open class StockChartView: UIView {
             lineViewWidth = count * theme.candleWidth + (count + 1) * theme.candleGap
         }
         
-        kLine.frame = CGRect(x: self.frame.origin.x, y: self.frame.origin.y, width: lineViewWidth, height: scrollView.frame.height)
+        candlesticsView.frame = CGRect(x: self.frame.origin.x, y: self.frame.origin.y, width: lineViewWidth, height: scrollView.frame.height)
         scrollView.contentSize = CGSize(width: lineViewWidth, height: self.frame.height)
     }
     
@@ -139,10 +143,10 @@ open class StockChartView: UIView {
         upperFrameLayer.fillColor = UIColor.clear.cgColor
         upperFrameLayer.path = upperFramePath.cgPath
         
-        let volFramePath = UIBezierPath(rect: CGRect(x: 0, y: upperChartHeight + theme.xAxisHeitht, width: frame.width, height: frame.height - upperChartHeight - theme.xAxisHeitht))
+        let volFramePath = UIBezierPath(rect: CGRect(x: 0, y: upperChartHeight + theme.xAxisHeight, width: frame.width, height: frame.height - upperChartHeight - theme.xAxisHeight))
         
-        volFramePath.move(to: CGPoint(x: 0, y: upperChartHeight + theme.xAxisHeitht + theme.volumeGap))
-        volFramePath.addLine(to: CGPoint(x: frame.maxX, y: upperChartHeight + theme.xAxisHeitht + theme.volumeGap))
+        volFramePath.move(to: CGPoint(x: 0, y: upperChartHeight + theme.xAxisHeight + theme.volumeGap))
+        volFramePath.addLine(to: CGPoint(x: frame.maxX, y: upperChartHeight + theme.xAxisHeight + theme.volumeGap))
         
         let volumeFrameLayer = CAShapeLayer()
         volumeFrameLayer.lineWidth = theme.frameWidth
@@ -154,31 +158,34 @@ open class StockChartView: UIView {
         self.layer.addSublayer(volumeFrameLayer)
     }
     
-    // 长按操作
+    func showDetails(at point: CGPoint) {
+        
+    }
+    
     func handleLongPressGestureAction(_ recognizer: UILongPressGestureRecognizer) {
         if recognizer.state == .began || recognizer.state == .changed {
-            let point = recognizer.location(in: kLine)
-            let highLightIndex = Int(point.x / (theme.candleWidth + theme.candleGap))
-            guard highLightIndex < kLine.data.count else { return }
-            let index = highLightIndex - kLine.startIndex
-            guard index < kLine.positionModels.count else { return }
+            let point = recognizer.location(in: candlesticsView)
+            let selectedIndex = Int(point.x / (theme.candleWidth + theme.candleGap))
+            guard selectedIndex < candlesticsView.data.count else { return }
+            let index = selectedIndex - candlesticsView.startIndex
+            guard index < candlesticsView.positionModels.count else { return }
             
-            let entity = kLine.data[highLightIndex]
-            let left = kLine.startX + CGFloat(highLightIndex - kLine.startIndex) * (self.theme.candleWidth + theme.candleGap) - scrollView.contentOffset.x
+            let entity = candlesticsView.data[selectedIndex]
+            let left = candlesticsView.startX + CGFloat(selectedIndex - candlesticsView.startIndex) * (self.theme.candleWidth + theme.candleGap) - scrollView.contentOffset.x
             let centerX = left + theme.candleWidth / 2.0
-            let highLightVolume = kLine.positionModels[index].volumeStartPoint.y
-            let highLightClose = kLine.positionModels[index].closeY
+            let highLightVolume = candlesticsView.positionModels[index].volumeStartPoint.y
+            let highLightClose = candlesticsView.positionModels[index].closeY
             
-            upFrontView.drawCrossLine(pricePoint: CGPoint(x: centerX, y: highLightClose), volumePoint: CGPoint(x: centerX, y: highLightVolume), model: entity)
+            axisView.drawCrossLine(pricePoint: CGPoint(x: centerX, y: highLightClose), volumePoint: CGPoint(x: centerX, y: highLightVolume), model: entity)
             
-            let lastData = highLightIndex > 0 ? kLine.data[highLightIndex - 1] : kLine.data[0]
-            let userInfo: [AnyHashable: Any]? = ["preClose" : lastData.close, "kLineEntity" : kLine.data[highLightIndex]]
+            let lastData = selectedIndex > 0 ? candlesticsView.data[selectedIndex - 1] : candlesticsView.data[0]
+            let userInfo: [AnyHashable: Any]? = ["preClose" : lastData.close, "kLineEntity" : candlesticsView.data[selectedIndex]]
             
             NotificationCenter.default.post(name: Notification.Name(rawValue: ChartLongPress), object: self, userInfo: userInfo)
         }
         
         if recognizer.state == .ended {
-            upFrontView.removeCrossLine()
+            axisView.removeCrossLine()
             NotificationCenter.default.post(name: Notification.Name(rawValue: ChartLongPressDismiss), object: self)
         }
     }

@@ -13,6 +13,11 @@
 		8C077CD11EDA1C39007BCCFC /* HSKLineBriefView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C077CCD1EDA1C39007BCCFC /* HSKLineBriefView.xib */; };
 		8C077CD21EDA1C39007BCCFC /* HSStockBriefView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C077CCE1EDA1C39007BCCFC /* HSStockBriefView.swift */; };
 		8C077CD31EDA1C39007BCCFC /* HSStockBriefView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C077CCF1EDA1C39007BCCFC /* HSStockBriefView.xib */; };
+		8C84729A1EDB556B00B64A1D /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8472991EDB556B00B64A1D /* UIColor+Extensions.swift */; };
+		8C84729E1EDB570B00B64A1D /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C84729D1EDB570B00B64A1D /* String+Extensions.swift */; };
+		8C8472A01EDB57A700B64A1D /* DateFormatter+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C84729F1EDB57A700B64A1D /* DateFormatter+Extensions.swift */; };
+		8C8472A21EDB586100B64A1D /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8472A11EDB586100B64A1D /* Date+Extensions.swift */; };
+		8C8472A41EDB589500B64A1D /* CGFloat+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8472A31EDB589500B64A1D /* CGFloat+Extensions.swift */; };
 		C00FC4111DDAE57700C03D2C /* SegmentMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00FC4101DDAE57700C03D2C /* SegmentMenu.swift */; };
 		C01FB2A31D7E7680000C2D6D /* ChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01FB2A21D7E7680000C2D6D /* ChartViewController.swift */; };
 		C01FB2A71D7E94E6000C2D6D /* timeLineForFiveday.json in Resources */ = {isa = PBXBuildFile; fileRef = C01FB2A61D7E94E6000C2D6D /* timeLineForFiveday.json */; };
@@ -77,6 +82,11 @@
 		8C077CCD1EDA1C39007BCCFC /* HSKLineBriefView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HSKLineBriefView.xib; sourceTree = "<group>"; };
 		8C077CCE1EDA1C39007BCCFC /* HSStockBriefView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSStockBriefView.swift; sourceTree = "<group>"; };
 		8C077CCF1EDA1C39007BCCFC /* HSStockBriefView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HSStockBriefView.xib; sourceTree = "<group>"; };
+		8C8472991EDB556B00B64A1D /* UIColor+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
+		8C84729D1EDB570B00B64A1D /* String+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
+		8C84729F1EDB57A700B64A1D /* DateFormatter+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Extensions.swift"; sourceTree = "<group>"; };
+		8C8472A11EDB586100B64A1D /* Date+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
+		8C8472A31EDB589500B64A1D /* CGFloat+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGFloat+Extensions.swift"; sourceTree = "<group>"; };
 		91CC8D58DAF1D622DA5BF254 /* Pods-HSStockChartDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HSStockChartDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-HSStockChartDemo/Pods-HSStockChartDemo.release.xcconfig"; sourceTree = "<group>"; };
 		B4D5F8E2FF58BC1092E5C722 /* Pods_HSStockChartDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HSStockChartDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C00FC4101DDAE57700C03D2C /* SegmentMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SegmentMenu.swift; path = StockChartDemo/SegmentMenu.swift; sourceTree = "<group>"; };
@@ -151,7 +161,14 @@
 			path = StockBriefView;
 			sourceTree = "<group>";
 		};
-		C03E9AA91D6ECDB900D93016 /* HSStockChartDemo */ = {
+		8C84728A1EDB4C6D00B64A1D /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		8C84728C1EDB4C7500B64A1D /* Supporting Fiels */ = {
 			isa = PBXGroup;
 			children = (
 				C03E9AAA1D6ECDB900D93016 /* AppDelegate.swift */,
@@ -159,7 +176,15 @@
 				C03E9AAC1D6ECDB900D93016 /* LaunchScreen.storyboard */,
 				C03E9AAE1D6ECDB900D93016 /* Main.storyboard */,
 				C03E9AB01D6ECDB900D93016 /* Info.plist */,
-				C03E9AC91D6ECDB900D93016 /* Common */,
+			);
+			name = "Supporting Fiels";
+			sourceTree = "<group>";
+		};
+		C03E9AA91D6ECDB900D93016 /* HSStockChartDemo */ = {
+			isa = PBXGroup;
+			children = (
+				8C84728A1EDB4C6D00B64A1D /* Models */,
+				C03E9AC91D6ECDB900D93016 /* Extensions */,
 				8C077CCB1EDA1C39007BCCFC /* StockBriefView */,
 				C03E9AD01D6ECDB900D93016 /* ViewController.swift */,
 				C00FC4101DDAE57700C03D2C /* SegmentMenu.swift */,
@@ -167,6 +192,7 @@
 				C0A53C751D77C30800F4192B /* StockMarketDataViewController.swift */,
 				C0A53C761D77C30800F4192B /* StockMarketDataViewController.xib */,
 				C03E9AB31D6ECDB900D93016 /* SampleData */,
+				8C84728C1EDB4C7500B64A1D /* Supporting Fiels */,
 			);
 			path = HSStockChartDemo;
 			sourceTree = "<group>";
@@ -185,12 +211,17 @@
 			path = SampleData;
 			sourceTree = "<group>";
 		};
-		C03E9AC91D6ECDB900D93016 /* Common */ = {
+		C03E9AC91D6ECDB900D93016 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
 				C03E9ACB1D6ECDB900D93016 /* Extension.swift */,
+				8C8472A11EDB586100B64A1D /* Date+Extensions.swift */,
+				8C84729D1EDB570B00B64A1D /* String+Extensions.swift */,
+				8C84729F1EDB57A700B64A1D /* DateFormatter+Extensions.swift */,
+				8C8472991EDB556B00B64A1D /* UIColor+Extensions.swift */,
+				8C8472A31EDB589500B64A1D /* CGFloat+Extensions.swift */,
 			);
-			name = Common;
+			name = Extensions;
 			path = StockChartDemo/Common;
 			sourceTree = "<group>";
 		};
@@ -373,13 +404,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C84729E1EDB570B00B64A1D /* String+Extensions.swift in Sources */,
+				8C8472A41EDB589500B64A1D /* CGFloat+Extensions.swift in Sources */,
 				C01FB2A31D7E7680000C2D6D /* ChartViewController.swift in Sources */,
+				8C84729A1EDB556B00B64A1D /* UIColor+Extensions.swift in Sources */,
 				C00FC4111DDAE57700C03D2C /* SegmentMenu.swift in Sources */,
 				C03E9AEB1D6ECDB900D93016 /* Extension.swift in Sources */,
+				8C8472A21EDB586100B64A1D /* Date+Extensions.swift in Sources */,
 				C03E9AF01D6ECDB900D93016 /* ViewController.swift in Sources */,
 				C0A53C771D77C30800F4192B /* StockMarketDataViewController.swift in Sources */,
 				8C077CD01EDA1C39007BCCFC /* HSKLineBriefView.swift in Sources */,
 				C03E9AD21D6ECDB900D93016 /* AppDelegate.swift in Sources */,
+				8C8472A01EDB57A700B64A1D /* DateFormatter+Extensions.swift in Sources */,
 				8C077CD21EDA1C39007BCCFC /* HSStockBriefView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -49,7 +49,7 @@ class HSStockBriefView: UIView {
         
         var labelColor: UIColor
         if timeLineEntity.rate < 0 {
-            labelColor = UIColor(rgba: "#1DBF60")
+            labelColor = UIColor(hexString: "#1DBF60")!
         } else if timeLineEntity.rate > 0 {
             labelColor = UIColor.red
         } else {
@@ -58,10 +58,10 @@ class HSStockBriefView: UIView {
         priceLabel.textColor = labelColor
         ratioLabel.textColor = labelColor
         
-        priceLabel.text = timeLineEntity.price.toStringWithFormat(".2")
-        ratioLabel.text = (timeLineEntity.rate * 100).toStringWithFormat(".2") + "%"
-        timeLabel.text = timeLineEntity.time
-        volumeLabel.text = timeLineEntity.volume.toStringWithFormat(".2")
+        priceLabel.text = timeLineEntity.price.toString(withFormat: ".2")
+        ratioLabel.text = (timeLineEntity.rate * 100).toPercentString(withFormat: ".2")
+        timeLabel.text = timeLineEntity.time.toString(withFormat: "HH:mm")
+        volumeLabel.text = timeLineEntity.volume.toString(withFormat: ".2")
     }
 
 }

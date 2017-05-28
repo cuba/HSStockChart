@@ -12,15 +12,13 @@ import SwiftyJSON
 
 public enum HSChartType: Int {
     case timeLineForDay
-    case timeLineForFiveday
     case kLineForDay
     case kLineForWeek
     case kLineForMonth
     
     var chartType: ChartType {
         switch self {
-        case .timeLineForDay:       fallthrough
-        case .timeLineForFiveday:   return .timeLine
+        case .timeLineForDay:       return .timeLine
         case .kLineForMonth:        fallthrough
         case .kLineForDay:          fallthrough
         case .kLineForWeek:         return .candlesticks
@@ -29,8 +27,7 @@ public enum HSChartType: Int {
     
     var title: String {
         switch self {
-        case .timeLineForDay:       return "Day"
-        case .timeLineForFiveday:   return "5 Days"
+        case .timeLineForDay:       return "TimeLine"
         case .kLineForDay:          return "Day"
         case .kLineForWeek:         return "Week"
         case .kLineForMonth:        return "Month"
@@ -40,7 +37,6 @@ public enum HSChartType: Int {
     var filename: String {
         switch self {
         case .timeLineForDay:       return "timeLineForDay"
-        case .timeLineForFiveday:   return "timeLineForFiveday"
         case .kLineForDay:          return "kLineForDay"
         case .kLineForWeek:         return "kLineForWeek"
         case .kLineForMonth:        return "kLineForMonth"
@@ -55,7 +51,7 @@ class ViewController: UIViewController {
     var lineBriefView: HSKLineBriefView!
     var currentChartView: UIView?
     
-    var chartTypes: [HSChartType] = [.timeLineForDay, .timeLineForFiveday, .kLineForDay, .kLineForWeek, .kLineForMonth]
+    var chartTypes: [HSChartType] = [.timeLineForDay, .kLineForDay, .kLineForWeek, .kLineForMonth]
     
     var menuTitles: [String] {
         return self.chartTypes.map { $0.title }
@@ -106,7 +102,7 @@ class ViewController: UIViewController {
         segmentMenu.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor, constant: 0).isActive = true
         segmentMenu.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
         segmentMenu.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
-        segmentMenu.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        segmentMenu.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
         stockBriefView.topAnchor.constraint(equalTo: segmentMenu.topAnchor, constant: 0).isActive = true
         stockBriefView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
@@ -139,7 +135,7 @@ class ViewController: UIViewController {
         } else {
             let dataDictionary = (notification as NSNotification).userInfo as! [String: AnyObject]
             let preClose = dataDictionary["preClose"] as! CGFloat
-            let klineModel = dataDictionary["kLineEntity"] as! HSKLineModel
+            let klineModel = dataDictionary["kLineEntity"] as! Candlestick
             lineBriefView?.configureView(preClose, kLineModel: klineModel)
             lineBriefView?.isHidden = false
         }
@@ -153,8 +149,9 @@ class ViewController: UIViewController {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         coordinator.animate(alongsideTransition: { coordinator in
             self.segmentMenu.updateIndicatorFrame()
+            self.removeCurrentChart()
         }, completion: { coordinator in
-            self.updateChartFrames()
+            self.setChart(at: self.segmentMenu.currentIndex)
         })
     }
 }
@@ -163,15 +160,18 @@ class ViewController: UIViewController {
 // MARK: - SegmentMenuDelegate
 
 extension ViewController: SegmentMenuDelegate {
-    func updateChartFrames() {
-        currentChartView?.frame = containerView.bounds
+    func menuButtonDidClick(index: Int) {
+        setChart(at: index)
     }
     
-    func menuButtonDidClick(index: Int) {
+    func setChart(at index: Int) {
         currentChartView?.removeFromSuperview()
         let type = self.chartTypes[index]
         let chartView = getChart(for: type, with: containerView.bounds)
         currentChartView = chartView
+        chartView.alpha = 0
+        
+        fadeIn(view: chartView, duration: 0.5)
         
         if chartView.superview == nil {
             self.view.addSubview(chartView)
@@ -182,6 +182,26 @@ extension ViewController: SegmentMenuDelegate {
             chartView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: 0).isActive = true
             chartView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 0).isActive = true
         }
+    }
+    
+    func removeCurrentChart() {
+        if let view = currentChartView {
+            fadeOut(view: view, duration: 0.5)
+        }
+    }
+    
+    func fadeOut(view: UIView, duration: CGFloat) {
+        UIView.animate(withDuration: TimeInterval(duration), animations: {
+            view.alpha = 0
+        }, completion: { status in
+            view.removeFromSuperview()
+        })
+    }
+    
+    func fadeIn(view: UIView, duration: CGFloat) {
+        UIView.animate(withDuration: TimeInterval(duration), animations: {
+            view.alpha = 1
+        }, completion: nil)
     }
 }
 
@@ -198,7 +218,7 @@ extension ViewController {
             
             return timeLineView
         case .candlesticks:
-            let data = HSKLineModel.getKLineModelArray(getJsonDataFromFile(type.filename))
+            let data = Candlestick.getKLineModelArray(getJsonDataFromFile(type.filename))
             let stockChartView = StockChartView(frame: frame, data: data, type: type.chartType)
             return stockChartView
         }

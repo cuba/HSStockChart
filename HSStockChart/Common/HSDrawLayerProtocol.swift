@@ -10,7 +10,6 @@ import Foundation
 import UIKit
 
 public protocol HSDrawLayerProtocol {
-    
     var theme: HSStockChartTheme { get }
     
     func drawLine(lineWidth: CGFloat, startPoint: CGPoint, endPoint: CGPoint, strokeColor: UIColor, fillColor: UIColor, isDash: Bool, isAnimate: Bool) -> CAShapeLayer
@@ -108,15 +107,15 @@ extension HSDrawLayerProtocol {
         
         guard let model = model else { return highlightLayer }
         
-        if let entity = model as? HSKLineModel {
-            yAxisMarkString = entity.close.toStringWithFormat(".2")
-            bottomMarkerString = entity.date?.toString("MM-dd") ?? ""
-            volumeMarkerString = entity.volume.toStringWithFormat(".2")
+        if let entity = model as? Candlestick {
+            yAxisMarkString = entity.close.toString(withFormat: ".2")
+            bottomMarkerString = entity.date?.toString(withFormat: "MM-dd") ?? ""
+            volumeMarkerString = entity.volume.toString(withFormat: ".2")
             
         } else if let entity = model as? HSTimeLineModel {
-            yAxisMarkString = entity.price.toStringWithFormat(".2")
-            bottomMarkerString = entity.time
-            volumeMarkerString = entity.volume.toStringWithFormat(".2")
+            yAxisMarkString = entity.price.toString(withFormat: ".2")
+            bottomMarkerString = entity.time.toString(withFormat: "HH:mm")!
+            volumeMarkerString = entity.volume.toString(withFormat: ".2")
             
         } else {
             return highlightLayer

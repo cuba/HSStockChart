@@ -48,9 +48,9 @@ class HSKLineBriefView: UIView {
         return view
     }
     
-    func configureView(_ preClose: CGFloat, kLineModel: HSKLineModel) {
+    func configureView(_ preClose: CGFloat, kLineModel: Candlestick) {
         let riseColor = UIColor.red
-        let downColor = UIColor(rgba: "#1DBF60")
+        let downColor = UIColor(hexString: "#1DBF60")
 
         if kLineModel.rate > 0 {
             close.textColor = riseColor
@@ -77,13 +77,13 @@ class HSKLineBriefView: UIView {
         } else {
             low.textColor = downColor
         }
-        open.text = kLineModel.open.toStringWithFormat(".2")
-        close.text = kLineModel.close.toStringWithFormat(".2")
-        high.text = kLineModel.high.toStringWithFormat(".2")
-        low.text = kLineModel.low.toStringWithFormat(".2")
-        volume.text = (kLineModel.volume / 10000).toStringWithFormat(".2") + "万"
-        ratio.text = kLineModel.rate.toStringWithFormat(".2") + "%"
-        time.text = kLineModel.date?.toString("yyyy-MM-dd")
+        open.text = kLineModel.open.toString(withFormat: ".2")
+        close.text = kLineModel.close.toString(withFormat: ".2")
+        high.text = kLineModel.high.toString(withFormat: ".2")
+        low.text = kLineModel.low.toString(withFormat: ".2")
+        volume.text = (kLineModel.volume / 10000).toString(withFormat: ".2") + "万"
+        ratio.text = kLineModel.rate.toString(withFormat: ".2") + "%"
+        time.text = kLineModel.date?.toString(withFormat: "yyyy-MM-dd")
     }
 
 }

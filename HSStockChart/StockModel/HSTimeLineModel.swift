@@ -9,8 +9,7 @@
 import UIKit
 
 open class HSTimeLineModel: NSObject {
-
-    public var time: String = ""
+    public var time = Date()
     public var price: CGFloat = 0
     public var volume: CGFloat = 0
     public var days: [String] = []

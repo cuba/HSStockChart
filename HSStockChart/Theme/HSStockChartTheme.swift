@@ -16,7 +16,7 @@ public struct HSStockChartTheme  {
     public var lineWidth: CGFloat = 1
     public var frameWidth: CGFloat = 0.25
     
-    public var xAxisHeitht: CGFloat = 30
+    public var xAxisHeight: CGFloat = 30
     public var viewMinYGap: CGFloat = 15
     public var volumeGap: CGFloat = 10
     
@@ -26,17 +26,17 @@ public struct HSStockChartTheme  {
     public var candleMaxWidth: CGFloat = 30
     public var candleMinWidth: CGFloat = 2
     
-    public var ma5Color = UIColor(netHex: 0xe8de85, alpha: 1)
-    public var ma10Color = UIColor(netHex: 0x6fa8bb, alpha: 1)
-    public var ma20Color = UIColor(netHex: 0xdf8fc6, alpha: 1)
-    public var borderColor = UIColor(rgba: "#e4e4e4")
-    public var crossLineColor = UIColor(rgba: "#546679")
-    public var textColor = UIColor(rgba: "#8695a6")
-    public var riseColor = UIColor(rgba: "#1dbf60") // green
-    public var fallColor = UIColor(rgba: "#f24957") // red
-    public var priceLineColor = UIColor(rgba: "#0095ff")
-    public var avgLineColor = UIColor(rgba: "#ffc004")
-    public var fillColor = UIColor(rgba: "#e3efff")
+    public var ma5Color = UIColor(hex: 0xe8de85, alpha: 1)
+    public var ma10Color = UIColor(hex: 0x6fa8bb, alpha: 1)
+    public var ma20Color = UIColor(hex: 0xdf8fc6, alpha: 1)
+    public var borderColor = UIColor(hexString: "#e4e4e4")!
+    public var crossLineColor = UIColor(hexString: "#546679")!
+    public var textColor = UIColor(hexString: "#8695a6")!
+    public var riseColor = UIColor(hexString: "#1dbf60")! // green
+    public var fallColor = UIColor(hexString: "#f24957")! // red
+    public var priceLineColor = UIColor(hexString: "#0095ff")!
+    public var avgLineColor = UIColor(hexString: "#ffc004")!
+    public var fillColor = UIColor(hexString: "#e3efff")!
     
     public var baseFont = UIFont.systemFont(ofSize: 10)
     
