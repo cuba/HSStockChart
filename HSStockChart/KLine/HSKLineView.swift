@@ -14,33 +14,29 @@ open class HSKLineView: UIView {
     var kLine: HSKLine!
     var upFrontView: HSKLineUpFrontView!
     
-    var kLineType: HSChartType!
+    var type: ChartType!
     var widthOfKLineView: CGFloat = 0
     var theme = HSStockChartTheme()
-    var dataK: [HSKLineModel] = []
+    var data: [HSKLineModel] = []
     
     public var isLandscapeMode = false
 
-    var allDataK: [HSKLineModel] = []
+    var allData: [HSKLineModel] = []
     var enableKVO: Bool = true
 
     var kLineViewWidth: CGFloat = 0.0
     var oldRightOffset: CGFloat = -1
     
     var uperChartHeight: CGFloat {
-        get {
-            return theme.uperChartHeightScale * self.frame.height
-        }
+        return theme.uperChartHeightScale * self.frame.height
     }
     var lowerChartTop: CGFloat {
-        get {
-            return uperChartHeight + theme.xAxisHeitht
-        }
+        return uperChartHeight + theme.xAxisHeitht
     }
     
-    public init(frame: CGRect, data: [HSKLineModel], type: HSChartType) {
+    public init(frame: CGRect, data: [HSKLineModel], type: ChartType) {
         super.init(frame: frame)
-        self.allDataK = data
+        self.allData = data
         backgroundColor = UIColor.white
         
         drawFrameLayer()
@@ -53,7 +49,7 @@ open class HSKLineView: UIView {
         addSubview(scrollView)
         
         kLine = HSKLine()
-        kLine.kLineType = type
+        kLine.type = type
         scrollView.addSubview(kLine)
         
         upFrontView = HSKLineUpFrontView(frame: bounds)
@@ -63,11 +59,9 @@ open class HSKLineView: UIView {
         kLine.addGestureRecognizer(longPressGesture)
         let pinGesture = UIPinchGestureRecognizer(target: self, action: #selector(handlePinGestureAction(_:)))
         kLine.addGestureRecognizer(pinGesture)
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapGestureAction(_:)))
-        kLine.addGestureRecognizer(tapGesture)
         
-        let tmpDataK = Array(allDataK[allDataK.count-70..<allDataK.count])
-        self.configureView(data: tmpDataK)
+        let tmpdata = Array(allData[allData.count-70..<allData.count])
+        self.configureView(data: tmpdata)
         
         self.configureView(data: data)
     }
@@ -94,8 +88,8 @@ open class HSKLineView: UIView {
     }
     
     func configureView(data: [HSKLineModel]) {
-        dataK = data
-        kLine.dataK = data
+        self.data = data
+        kLine.data = data
         let count: CGFloat = CGFloat(data.count)
         
         // 总长度
@@ -122,12 +116,11 @@ open class HSKLineView: UIView {
         scrollView.contentSize = CGSize(width: kLineViewWidth, height: self.frame.height)
         scrollView.contentOffset = CGPoint(x: contentOffsetX, y: 0)
         kLine.contentOffsetX = scrollView.contentOffset.x
-        print("ScrollKLine contentOffsetX " + "\(contentOffsetX)")
 
     }
     
     func updateKlineViewWidth() {
-        let count: CGFloat = CGFloat(kLine.dataK.count)
+        let count: CGFloat = CGFloat(kLine.data.count)
         // 总长度
         kLineViewWidth = count * theme.candleWidth + (count + 1) * theme.candleGap
         if kLineViewWidth < self.frame.width {
@@ -136,8 +129,6 @@ open class HSKLineView: UIView {
             kLineViewWidth = count * theme.candleWidth + (count + 1) * theme.candleGap
         }
         
-        // 更新view长度
-        print("currentWidth " + "\(kLineViewWidth)")
         kLine.frame = CGRect(x: self.frame.origin.x, y: self.frame.origin.y, width: kLineViewWidth, height: scrollView.frame.height)
         scrollView.contentSize = CGSize(width: kLineViewWidth, height: self.frame.height)
     }
@@ -185,27 +176,29 @@ open class HSKLineView: UIView {
     // 长按操作
     func handleLongPressGestureAction(_ recognizer: UILongPressGestureRecognizer) {
         if recognizer.state == .began || recognizer.state == .changed {
-            let  point = recognizer.location(in: kLine)
+            let point = recognizer.location(in: kLine)
             let highLightIndex = Int(point.x / (theme.candleWidth + theme.candleGap))
-            if highLightIndex < kLine.dataK.count {
-                let index = highLightIndex - kLine.startIndex
-                let entity = kLine.dataK[highLightIndex]
-                let left = kLine.startX + CGFloat(highLightIndex - kLine.startIndex) * (self.theme.candleWidth + theme.candleGap) - scrollView.contentOffset.x
-                let centerX = left + theme.candleWidth / 2.0
-                let highLightVolume = kLine.positionModels[index].volumeStartPoint.y
-                let highLightClose = kLine.positionModels[index].closeY
-                
-                upFrontView.drawCrossLine(pricePoint: CGPoint(x: centerX, y: highLightClose), volumePoint: CGPoint(x: centerX, y: highLightVolume), model: entity)
-                
-                let lastData = highLightIndex > 0 ? kLine.dataK[highLightIndex - 1] : kLine.dataK[0]
-                let userInfo: [AnyHashable: Any]? = ["preClose" : lastData.close, "kLineEntity" : kLine.dataK[highLightIndex]]
-                NotificationCenter.default.post(name: Notification.Name(rawValue: KLineChartLongPress), object: self, userInfo: userInfo)
-            }
+            guard highLightIndex < kLine.data.count else { return }
+            let index = highLightIndex - kLine.startIndex
+            guard index < kLine.positionModels.count else { return }
+            
+            let entity = kLine.data[highLightIndex]
+            let left = kLine.startX + CGFloat(highLightIndex - kLine.startIndex) * (self.theme.candleWidth + theme.candleGap) - scrollView.contentOffset.x
+            let centerX = left + theme.candleWidth / 2.0
+            let highLightVolume = kLine.positionModels[index].volumeStartPoint.y
+            let highLightClose = kLine.positionModels[index].closeY
+            
+            upFrontView.drawCrossLine(pricePoint: CGPoint(x: centerX, y: highLightClose), volumePoint: CGPoint(x: centerX, y: highLightVolume), model: entity)
+            
+            let lastData = highLightIndex > 0 ? kLine.data[highLightIndex - 1] : kLine.data[0]
+            let userInfo: [AnyHashable: Any]? = ["preClose" : lastData.close, "kLineEntity" : kLine.data[highLightIndex]]
+            
+            NotificationCenter.default.post(name: Notification.Name(rawValue: ChartLongPress), object: self, userInfo: userInfo)
         }
         
         if recognizer.state == .ended {
             upFrontView.removeCrossLine()
-            NotificationCenter.default.post(name: Notification.Name(rawValue: KLineChartUnLongPress), object: self)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: ChartLongPressDismiss), object: self)
         }
     }
     
@@ -267,26 +260,16 @@ open class HSKLineView: UIView {
             kLine.drawKLineView()
         }
     }
-    
-    /// 处理点击事件
-    func handleTapGestureAction(_ recognizer: UITapGestureRecognizer) {
-        if !isLandscapeMode {
-            let  point = recognizer.location(in: kLine)
-            if point.y < lowerChartTop {
-                NotificationCenter.default.post(name: Notification.Name(rawValue: KLineUperChartDidTap), object: self.tag)
-            }
-        }
-    }
 }
 
 extension HSKLineView: UIScrollViewDelegate {
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
         // MARK: - 用于滑动加载更多 KLine 数据
-        if (scrollView.contentOffset.x < 0 && dataK.count < allDataK.count) {
+        if (scrollView.contentOffset.x < 0 && data.count < allData.count) {
             self.oldRightOffset = scrollView.contentSize.width - scrollView.contentOffset.x
             print("load more")
-            self.configureView(data: allDataK)
+            self.configureView(data: allData)
         } else {
             
         }

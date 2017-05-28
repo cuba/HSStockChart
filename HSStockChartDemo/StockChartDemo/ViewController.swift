@@ -8,138 +8,154 @@
 
 import UIKit
 import HSStockChart
+import SwiftyJSON
+
+public enum HSChartType: Int {
+    case timeLineForDay
+    case timeLineForFiveday
+    case kLineForDay
+    case kLineForWeek
+    case kLineForMonth
+    
+    var chartType: ChartType {
+        switch self {
+        case .timeLineForDay:       fallthrough
+        case .timeLineForFiveday:   return .timeLine
+        case .kLineForMonth:        fallthrough
+        case .kLineForDay:          fallthrough
+        case .kLineForWeek:         return .candlesticks
+        }
+    }
+    
+    var title: String {
+        switch self {
+        case .timeLineForDay:       return "Day"
+        case .timeLineForFiveday:   return "5 Days"
+        case .kLineForDay:          return "Day"
+        case .kLineForWeek:         return "Week"
+        case .kLineForMonth:        return "Month"
+        }
+    }
+    
+    var filename: String {
+        switch self {
+        case .timeLineForDay:       return "timeLineForDay"
+        case .timeLineForFiveday:   return "timeLineForFiveday"
+        case .kLineForDay:          return "kLineForDay"
+        case .kLineForWeek:         return "kLineForWeek"
+        case .kLineForMonth:        return "kLineForMonth"
+        }
+    }
+}
 
 class ViewController: UIViewController {
+    var containerView: UIView!
     var segmentMenu: SegmentMenu!
-    var stockBriefView: HSStockBriefView?
-    var kLineBriefView: HSKLineBriefView?
-    var currentShowingChartVC: UIViewController?
-    var controllerArray : [UIViewController] = []
+    var stockBriefView: HSStockBriefView!
+    var lineBriefView: HSKLineBriefView!
+    var currentChartView: UIView?
+    
+    var chartTypes: [HSChartType] = [.timeLineForDay, .timeLineForFiveday, .kLineForDay, .kLineForWeek, .kLineForMonth]
+    
+    var menuTitles: [String] {
+        return self.chartTypes.map { $0.title }
+    }
     
     
     // MARK: - Life Circle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        addNotificationsObservers()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        segmentMenu.selectButton(at: segmentMenu.currentIndex)
+    }
+    
+    // MARK: -
+    
+    override func loadView() {
+        super.loadView()
+        segmentMenu = SegmentMenu(frame: CGRect.zero)
+        segmentMenu.setButtons(from: menuTitles)
+        stockBriefView = HSStockBriefView(frame: CGRect.zero)
+        lineBriefView = HSKLineBriefView(frame: CGRect.zero)
+        containerView = UIView()
         
-        setUpView()
-        addNoticficationObserve()
-        addChartController()
-        
-        // 默认展示第一个
-        segmentMenu.setSelectButton(index: 0)
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-    
-    override var shouldAutorotate : Bool {
-        // 确保从横屏展示切换回来，布局仍以竖屏模式展示
-        return false
-    }
-    
-    override var preferredInterfaceOrientationForPresentation : UIInterfaceOrientation {
-        return UIInterfaceOrientation.portrait
-    }
-    
-    
-    // MARK: - Functioin
-    
-    func setUpView() {
-        segmentMenu = SegmentMenu(frame: CGRect(x: 0, y: 0, width: ScreenWidth, height: 40))
-        segmentMenu.menuTitleArray = ["分时", "五日", "日K", "周K", "月K"]
+        containerView.backgroundColor = UIColor.white
+        lineBriefView?.isHidden = true
+        stockBriefView?.isHidden = true
         segmentMenu.delegate = self
         
-        stockBriefView = HSStockBriefView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 40))
-        stockBriefView?.isHidden = true
-        
-        kLineBriefView = HSKLineBriefView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 40))
-        kLineBriefView?.isHidden = true
-        
         self.view.addSubview(segmentMenu)
-        self.view.addSubview(stockBriefView!)
-        self.view.addSubview(kLineBriefView!)
+        self.view.addSubview(stockBriefView)
+        self.view.addSubview(lineBriefView)
+        self.view.addSubview(containerView)
+        
+        segmentMenu.translatesAutoresizingMaskIntoConstraints = false
+        lineBriefView.translatesAutoresizingMaskIntoConstraints = false
+        stockBriefView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        
+        segmentMenu.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor, constant: 0).isActive = true
+        segmentMenu.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
+        segmentMenu.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+        segmentMenu.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        
+        stockBriefView.topAnchor.constraint(equalTo: segmentMenu.topAnchor, constant: 0).isActive = true
+        stockBriefView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
+        stockBriefView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+        stockBriefView.bottomAnchor.constraint(equalTo: segmentMenu.bottomAnchor, constant: 0).isActive = true
+        
+        lineBriefView.topAnchor.constraint(equalTo: segmentMenu.topAnchor, constant: 0).isActive = true
+        lineBriefView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
+        lineBriefView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+        lineBriefView.bottomAnchor.constraint(equalTo: segmentMenu.bottomAnchor, constant: 0).isActive = true
+        
+        containerView.topAnchor.constraint(equalTo: segmentMenu.bottomAnchor, constant: 0).isActive = true
+        containerView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0).isActive = true
+        containerView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0).isActive = true
+        containerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
     }
     
-    func addNoticficationObserve() {
-        NotificationCenter.default.addObserver(self, selector: #selector(showLongPressView), name: NSNotification.Name(rawValue: TimeLineLongpress), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(showUnLongPressView), name: NSNotification.Name(rawValue: TimeLineUnLongpress), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(showKLineChartLongPressView), name: NSNotification.Name(rawValue: KLineChartLongPress), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(showKLineChartUnLongPressView), name: NSNotification.Name(rawValue: KLineChartUnLongPress), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(showLandScapeChartView), name: NSNotification.Name(rawValue: KLineUperChartDidTap), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(showLandScapeChartView), name: NSNotification.Name(rawValue: TimeLineChartDidTap), object: nil)
+    func addNotificationsObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(showLongPressView), name: NSNotification.Name(rawValue: ChartLongPress), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(hideLongPressView), name: NSNotification.Name(rawValue: ChartLongPressDismiss), object: nil)
     }
-    
-    func addChartController() {
-        // 分时线
-        let timeViewcontroller = ChartViewController()
-        timeViewcontroller.chartType = HSChartType.timeLineForDay
-        controllerArray.append(timeViewcontroller)
-        
-        // 五日分时线
-        let fiveDayTimeViewController = ChartViewController()
-        fiveDayTimeViewController.chartType = HSChartType.timeLineForFiveday
-        controllerArray.append(fiveDayTimeViewController)
-        
-        // 日 K 线
-        let kLineViewController = ChartViewController()
-        kLineViewController.chartType = HSChartType.kLineForDay
-        controllerArray.append(kLineViewController)
-        
-        // 周 K 线
-        let weeklyKLineViewController = ChartViewController()
-        weeklyKLineViewController.chartType = HSChartType.kLineForWeek
-        controllerArray.append(weeklyKLineViewController)
-        
-        // 月 K 线
-        let monthlyKLineViewController = ChartViewController()
-        monthlyKLineViewController.chartType = HSChartType.kLineForMonth
-        controllerArray.append(monthlyKLineViewController)
-    }
-    
-    @IBAction func showStockMarketData(_ sender: AnyObject) {
-        let stockMarketViewController = StockMarketDataViewController(nibName: "StockMarketDataViewController", bundle: nil)
-        stockMarketViewController.modalPresentationStyle = .overCurrentContext
-        self.present(stockMarketViewController, animated: false, completion: nil)
-    }
-    
     
     // 长按分时线图，显示摘要信息
     func showLongPressView(_ notification: Notification) {
-        let dataDictionary = (notification as NSNotification).userInfo as! [String: AnyObject]
-        let timeLineEntity = dataDictionary["timeLineEntity"] as! HSTimeLineModel
-        stockBriefView?.isHidden = false
-        stockBriefView?.configureView(timeLineEntity)
+        if currentChartView is HSTimeLine {
+            let dataDictionary = (notification as NSNotification).userInfo as! [String: AnyObject]
+            let timeLineEntity = dataDictionary["timeLineEntity"] as! HSTimeLineModel
+            stockBriefView?.isHidden = false
+            stockBriefView?.configureView(timeLineEntity)
+        } else {
+            let dataDictionary = (notification as NSNotification).userInfo as! [String: AnyObject]
+            let preClose = dataDictionary["preClose"] as! CGFloat
+            let klineModel = dataDictionary["kLineEntity"] as! HSKLineModel
+            lineBriefView?.configureView(preClose, kLineModel: klineModel)
+            lineBriefView?.isHidden = false
+        }
     }
 
-    func showUnLongPressView(_ notification: Notification) {
+    func hideLongPressView(_ notification: Notification) {
         stockBriefView?.isHidden = true
+        lineBriefView?.isHidden = true
     }
     
-    
-    // 长按 K线图，显示摘要信息
-    func showKLineChartLongPressView(_ notification: Notification) {
-        let dataDictionary = (notification as NSNotification).userInfo as! [String: AnyObject]
-        let preClose = dataDictionary["preClose"] as! CGFloat
-        let klineModel = dataDictionary["kLineEntity"] as! HSKLineModel
-        kLineBriefView?.configureView(preClose, kLineModel: klineModel)
-        kLineBriefView?.isHidden = false
-    }
-    
-    func showKLineChartUnLongPressView(_ notification: Notification) {
-        kLineBriefView?.isHidden = true
-    }
-    
-    
-    // 跳转到横屏页面展示
-    func showLandScapeChartView(_ notification: Notification) {
-        let index = notification.object as! Int
-        if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LandscapeViewController") as? LandscapeViewController {
-            vc.modalTransitionStyle = .crossDissolve
-            vc.viewindex = index
-            self.present(vc, animated: true, completion: nil)
-        }
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        coordinator.animate(alongsideTransition: { coordinator in
+            self.segmentMenu.updateIndicatorFrame()
+        }, completion: { coordinator in
+            self.updateChartFrames()
+        })
     }
 }
 
@@ -147,23 +163,52 @@ class ViewController: UIViewController {
 // MARK: - SegmentMenuDelegate
 
 extension ViewController: SegmentMenuDelegate {
+    func updateChartFrames() {
+        currentChartView?.frame = containerView.bounds
+    }
     
     func menuButtonDidClick(index: Int) {
-        currentShowingChartVC?.willMove(toParentViewController: nil)
-        currentShowingChartVC?.view.removeFromSuperview()
-        currentShowingChartVC?.removeFromParentViewController()
+        currentChartView?.removeFromSuperview()
+        let type = self.chartTypes[index]
+        let chartView = getChart(for: type, with: containerView.bounds)
+        currentChartView = chartView
         
-        let selectedVC = self.controllerArray[index] as! ChartViewController
-        selectedVC.chartRect = CGRect(x: 0, y: 0, width: ScreenWidth, height: 300)
-        selectedVC.view.frame = CGRect(x: 0, y: segmentMenu.frame.maxY, width: ScreenWidth, height: 300)
-        
-        addChildViewController(selectedVC)
-        if (selectedVC.view.superview == nil){
-            view.addSubview(selectedVC.view)
+        if chartView.superview == nil {
+            self.view.addSubview(chartView)
+            chartView.translatesAutoresizingMaskIntoConstraints = false
+            
+            chartView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 0).isActive = true
+            chartView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 0).isActive = true
+            chartView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: 0).isActive = true
+            chartView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 0).isActive = true
         }
-        selectedVC.didMove(toParentViewController: self)
+    }
+}
+
+extension ViewController {
+    func getChart(for type: HSChartType, with frame: CGRect) -> UIView {
         
-        currentShowingChartVC = selectedVC
+        switch type.chartType {
+        case .timeLine:
+            let stockBasicInfo = HSStockBasicInfoModel.getStockBasicInfoModel(getJsonDataFromFile("SZ300033"))
+            let modelArray = HSTimeLineModel.getTimeLineModelArray(getJsonDataFromFile(type.filename), type: type, basicInfo: stockBasicInfo)
+            let timeLineView = HSTimeLine(frame: frame)
+            timeLineView.dataT = modelArray
+            timeLineView.isUserInteractionEnabled = true
+            
+            return timeLineView
+        case .candlesticks:
+            let data = HSKLineModel.getKLineModelArray(getJsonDataFromFile(type.filename))
+            let stockChartView = HSKLineView(frame: frame, data: data, type: type.chartType)
+            return stockChartView
+        }
+    }
+    
+    func getJsonDataFromFile(_ fileName: String) -> JSON {
+        let pathForResource = Bundle.main.path(forResource: fileName, ofType: "json")
+        let content = try! String(contentsOfFile: pathForResource!, encoding: String.Encoding.utf8)
+        let jsonContent = content.data(using: String.Encoding.utf8)!
+        return JSON(data: jsonContent)
     }
 }
 

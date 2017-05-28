@@ -9,16 +9,5 @@
 import Foundation
 import UIKit
 
-public let ScreenWidth = UIScreen.main.bounds.width
-
-public let ScreenHeight = UIScreen.main.bounds.height
-
-public let TimeLineLongpress = "TimeLineLongpress"
-public let TimeLineUnLongpress = "TimeLineUnLongpress"
-
-public let TimeLineChartDidTap = "TimeLineChartDidTap"
-
-public let KLineChartLongPress = "kLineChartLongPress"
-public let KLineChartUnLongPress = "kLineChartUnLongPress"
-
-public let KLineUperChartDidTap = "KLineUperChartDidTap"
+public let ChartLongPress = "ChartLongPress"
+public let ChartLongPressDismiss = "ChartLongPressDismiss"

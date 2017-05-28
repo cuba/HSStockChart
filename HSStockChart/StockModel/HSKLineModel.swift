@@ -9,7 +9,7 @@
 import UIKit
 
 open class HSKLineModel: NSObject {
-    public var date: String = ""
+    public var date: Date?
     public var open: CGFloat = 0
     public var close: CGFloat = 0
     public var high: CGFloat = 0

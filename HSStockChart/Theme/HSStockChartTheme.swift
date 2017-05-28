@@ -32,8 +32,8 @@ public struct HSStockChartTheme  {
     public var borderColor = UIColor(rgba: "#e4e4e4")
     public var crossLineColor = UIColor(rgba: "#546679")
     public var textColor = UIColor(rgba: "#8695a6")
-    public var riseColor = UIColor(rgba: "#f24957") // 涨 red
-    public var fallColor = UIColor(rgba: "#1dbf60") // 跌 green
+    public var riseColor = UIColor(rgba: "#1dbf60") // 跌 green
+    public var fallColor = UIColor(rgba: "#f24957") // 涨 red
     public var priceLineCorlor = UIColor(rgba: "#0095ff")
     public var avgLineCorlor = UIColor(rgba: "#ffc004") // 均线颜色
     public var fillColor = UIColor(rgba: "#e3efff")

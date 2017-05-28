@@ -97,10 +97,7 @@ open class HSTimeLine: UIView, HSDrawLayerProtocol {
     
     func addGestures() {
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPressGestureAction(_:)))
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapGestureAction(_:)))
-        
         self.addGestureRecognizer(longPressGesture)
-        self.addGestureRecognizer(tapGesture)
     }
     
     // 绘图
@@ -474,22 +471,13 @@ open class HSTimeLine: UIView, HSDrawLayerProtocol {
                 self.layer.addSublayer(crossLineLayer)
             }
             if self.highLightIndex < dataT.count {
-                NotificationCenter.default.post(name: Notification.Name(rawValue: "TimeLineLongpress"), object: self, userInfo: ["timeLineEntity": dataT[self.highLightIndex]])
+                NotificationCenter.default.post(name: Notification.Name(rawValue: ChartLongPress), object: self, userInfo: ["timeLineEntity": dataT[self.highLightIndex]])
             }
         }
         
         if recognizer.state == .ended {
             crossLineLayer.removeFromSuperlayer()
-            NotificationCenter.default.post(name: Notification.Name(rawValue: "TimeLineUnLongpress"), object: self)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: ChartLongPressDismiss), object: self)
         }
     }
-    
-    
-    /// 处理点击事件
-    func handleTapGestureAction(_ recognizer: UIPanGestureRecognizer) {
-        if !isLandscapeMode {
-            NotificationCenter.default.post(name: Notification.Name(rawValue: "TimeLineChartDidTap"), object: recognizer.view?.tag)
-        }
-    }
-
 }

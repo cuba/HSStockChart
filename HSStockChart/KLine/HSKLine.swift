@@ -8,20 +8,15 @@
 
 import UIKit
 
-public enum HSChartType: Int {
-    case timeLineForDay
-    case timeLineForFiveday
-    case kLineForDay
-    case kLineForWeek
-    case kLineForMonth
+public enum ChartType {
+    case timeLine
+    case candlesticks
 }
 
 open class HSKLine: UIView, HSDrawLayerProtocol {
-
-    var kLineType: HSChartType = HSChartType.kLineForDay
     public var theme = HSStockChartTheme()
     
-    var dataK: [HSKLineModel] = []
+    var type = ChartType.timeLine
     var positionModels: [HSKLineCoordModel] = []
     var klineModels: [HSKLineModel] = []
     
@@ -50,47 +45,39 @@ open class HSKLine: UIView, HSDrawLayerProtocol {
     var ma20LineLayer = HSCAShapeLayer()
     var xAxisTimeMarkLayer = HSCAShapeLayer()
     
+    public var data: [HSKLineModel] = []
+    
     var uperChartHeight: CGFloat {
-        get {
-            return theme.uperChartHeightScale * self.frame.height
-        }
+        return theme.uperChartHeightScale * self.frame.height
     }
     var lowerChartHeight: CGFloat {
-        get {
-            return self.frame.height * (1 - theme.uperChartHeightScale) - theme.xAxisHeitht
-        }
+        return self.frame.height * (1 - theme.uperChartHeightScale) - theme.xAxisHeitht
     }
     
     // 计算处于当前显示区域左边隐藏的蜡烛图的个数，即为当前显示的初始 index
     var startIndex: Int {
-        get {
-            let scrollViewOffsetX = contentOffsetX < 0 ? 0 : contentOffsetX
-            var leftCandleCount = Int(abs(scrollViewOffsetX) / (theme.candleWidth + theme.candleGap))
-            
-            if leftCandleCount > dataK.count {
-                leftCandleCount = dataK.count - 1
-                return leftCandleCount
-            } else if leftCandleCount == 0 {
-                return leftCandleCount
-            } else {
-                return leftCandleCount + 1
-            }
+        let scrollViewOffsetX = contentOffsetX < 0 ? 0 : contentOffsetX
+        var leftCandleCount = Int(abs(scrollViewOffsetX) / (theme.candleWidth + theme.candleGap))
+        
+        if leftCandleCount > data.count {
+            leftCandleCount = data.count - 1
+            return leftCandleCount
+        } else if leftCandleCount == 0 {
+            return leftCandleCount
+        } else {
+            return leftCandleCount + 1
         }
     }
     
     // 当前显示区域起始横坐标 x
     var startX: CGFloat {
-        get {
-            let scrollViewOffsetX = contentOffsetX < 0 ? 0 : contentOffsetX
-            return scrollViewOffsetX
-        }
+        let scrollViewOffsetX = contentOffsetX < 0 ? 0 : contentOffsetX
+        return scrollViewOffsetX
     }
     
     // 当前显示区域最多显示的蜡烛图个数
     var countOfshowCandle: Int {
-        get{
-            return Int((renderWidth - theme.candleWidth) / ( theme.candleWidth + theme.candleGap))
-        }
+        return Int((renderWidth - theme.candleWidth) / ( theme.candleWidth + theme.candleGap))
     }
     
     
@@ -110,7 +97,7 @@ open class HSKLine: UIView, HSDrawLayerProtocol {
     
     func drawKLineView() {
         calcMaxAndMinData()
-        convertToPositionModel(data: dataK)
+        convertToPositionModel(data: data)
 
         clearLayer()
         drawxAxisTimeMarkLayer()
@@ -121,38 +108,40 @@ open class HSKLine: UIView, HSDrawLayerProtocol {
     
     /// 计算当前显示区域的最大最小值
     fileprivate func calcMaxAndMinData() {
-        if dataK.count > 0 {
-            self.maxPrice = CGFloat.leastNormalMagnitude
-            self.minPrice = CGFloat.greatestFiniteMagnitude
-            self.maxVolume = CGFloat.leastNormalMagnitude
-            self.maxMA = CGFloat.leastNormalMagnitude
-            self.minMA = CGFloat.greatestFiniteMagnitude
-            self.maxMACD = CGFloat.leastNormalMagnitude
-            let startIndex = self.startIndex
-            // 比计算出来的多加一个，是为了避免计算结果的取整导致少画
-            let count = (startIndex + countOfshowCandle + 1) > dataK.count ? dataK.count : (startIndex + countOfshowCandle + 1)
-            if startIndex < count {
-                for i in startIndex ..< count {
-                    let entity = dataK[i]
-                    self.maxPrice = self.maxPrice > entity.high ? self.maxPrice : entity.high
-                    self.minPrice = self.minPrice < entity.low ? self.minPrice : entity.low
-                    
-                    self.maxVolume = self.maxVolume > entity.volume ? self.maxVolume : entity.volume
-                    
-                    let tempMAMax = max(entity.ma5, entity.ma10, entity.ma20)
-                    self.maxMA = self.maxMA > tempMAMax ? self.maxMA : tempMAMax
-                    
-                    let tempMAMin = min(entity.ma5, entity.ma10, entity.ma20)
-                    self.minMA = self.minMA < tempMAMin ? self.minMA : tempMAMin
-                    
-                    let tempMax = max(abs(entity.diff), abs(entity.dea), abs(entity.macd))
-                    self.maxMACD = tempMax > self.maxMACD ? tempMax : self.maxMACD
-                }
+        guard data.count > 0 else { return }
+        
+        self.maxPrice = CGFloat.leastNormalMagnitude
+        self.minPrice = CGFloat.greatestFiniteMagnitude
+        self.maxVolume = CGFloat.leastNormalMagnitude
+        self.maxMA = CGFloat.leastNormalMagnitude
+        self.minMA = CGFloat.greatestFiniteMagnitude
+        self.maxMACD = CGFloat.leastNormalMagnitude
+        let startIndex = self.startIndex
+        
+        let count = (startIndex + countOfshowCandle + 1) > data.count ? data.count : (startIndex + countOfshowCandle + 1)
+        
+        if startIndex < count {
+            for i in startIndex ..< count {
+                let entity = data[i]
+                self.maxPrice = self.maxPrice > entity.high ? self.maxPrice : entity.high
+                self.minPrice = self.minPrice < entity.low ? self.minPrice : entity.low
+                
+                self.maxVolume = self.maxVolume > entity.volume ? self.maxVolume : entity.volume
+                
+                let tempMAMax = max(entity.ma5, entity.ma10, entity.ma20)
+                self.maxMA = self.maxMA > tempMAMax ? self.maxMA : tempMAMax
+                
+                let tempMAMin = min(entity.ma5, entity.ma10, entity.ma20)
+                self.minMA = self.minMA < tempMAMin ? self.minMA : tempMAMin
+                
+                let tempMax = max(abs(entity.diff), abs(entity.dea), abs(entity.macd))
+                self.maxMACD = tempMax > self.maxMACD ? tempMax : self.maxMACD
             }
-            // 当均线数据缺失时候，注意注释这段，不然 minPrice 为 0，导致整体绘画比例不对
-            self.maxPrice = self.maxPrice > self.maxMA ? self.maxPrice : self.maxMA
-            self.minPrice = self.minPrice < self.minMA ? self.minPrice : self.minMA
         }
+        
+        // 当均线数据缺失时候，注意注释这段，不然 minPrice 为 0，导致整体绘画比例不对
+        self.maxPrice = self.maxPrice > self.maxMA ? self.maxPrice : self.maxMA
+        self.minPrice = self.minPrice < self.minMA ? self.minPrice : self.minMA
     }
     
     
@@ -167,10 +156,12 @@ open class HSKLine: UIView, HSDrawLayerProtocol {
         let gap = theme.viewMinYGap
         let minY = gap
         let maxDiff = self.maxPrice - self.minPrice
+        
         if maxDiff > 0, maxVolume > 0 {
             priceUnit = (uperChartHeight - 2 * minY) / maxDiff
             volumeUnit = (lowerChartHeight - theme.volumeGap) / self.maxVolume
         }
+        
         let count = (startIndex + countOfshowCandle + 1) > data.count ? data.count : (startIndex + countOfshowCandle + 1)
         if startIndex < count {
             for index in startIndex ..< count {
@@ -303,22 +294,26 @@ open class HSKLine: UIView, HSDrawLayerProtocol {
     func drawxAxisTimeMarkLayer() {
         var lastDate: Date?
         xAxisTimeMarkLayer.sublayers?.removeAll()
+        
         for (index, position) in positionModels.enumerated() {
-            if let date = klineModels[index].date.toDate("yyyyMMddHHmmss") {
-                if lastDate == nil {
-                    lastDate = date
-                }
-                if position.isDrawAxis {
-                    switch kLineType {
-                    case .kLineForDay, .kLineForWeek, .kLineForMonth:
-                        xAxisTimeMarkLayer.addSublayer(drawXaxisTimeMark(xPosition: position.highPoint.x, dateString: date.toString("yyyy-MM")))
-                    default:
-                        xAxisTimeMarkLayer.addSublayer(drawXaxisTimeMark(xPosition: position.highPoint.x, dateString: date.toString("MM-dd")))
-                    }
-                    lastDate = date
-                }
+            guard let date = klineModels[index].date else { break }
+            
+            if lastDate == nil {
+                lastDate = date
             }
+            
+            guard position.isDrawAxis else { break }
+            
+            switch type {
+            case .timeLine:
+                xAxisTimeMarkLayer.addSublayer(drawXaxisTimeMark(xPosition: position.highPoint.x, dateString: date.toString("yyyy-MM")))
+            case .candlesticks:
+                xAxisTimeMarkLayer.addSublayer(drawXaxisTimeMark(xPosition: position.highPoint.x, dateString: date.toString("MM-dd")))
+            }
+            
+            lastDate = date
         }
+        
         self.layer.addSublayer(xAxisTimeMarkLayer)
     }
     

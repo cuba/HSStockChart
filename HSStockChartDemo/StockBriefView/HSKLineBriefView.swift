@@ -83,7 +83,7 @@ class HSKLineBriefView: UIView {
         low.text = kLineModel.low.toStringWithFormat(".2")
         volume.text = (kLineModel.volume / 10000).toStringWithFormat(".2") + "万"
         ratio.text = kLineModel.rate.toStringWithFormat(".2") + "%"
-        time.text = kLineModel.date.toDate("yyyyMMddHHmmss")?.toString("yyyy-MM-dd")
+        time.text = kLineModel.date?.toString("yyyy-MM-dd")
     }
 
 }

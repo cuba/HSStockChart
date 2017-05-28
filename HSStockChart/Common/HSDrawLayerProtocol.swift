@@ -61,11 +61,7 @@ extension HSDrawLayerProtocol {
         return lineLayer
     }
     
-    public func drawTextLayer(frame: CGRect,
-                       text: String,
-                       foregroundColor: UIColor,
-                       backgroundColor: UIColor = UIColor.clear,
-                       fontSize: CGFloat = 10) -> CATextLayer {
+    public func drawTextLayer(frame: CGRect, text: String, foregroundColor: UIColor, backgroundColor: UIColor = UIColor.clear, fontSize: CGFloat = 10) -> CATextLayer {
         
         let textLayer = CATextLayer()
         textLayer.frame = frame
@@ -114,7 +110,7 @@ extension HSDrawLayerProtocol {
         
         if let entity = model as? HSKLineModel {
             yAxisMarkString = entity.close.toStringWithFormat(".2")
-            bottomMarkerString = entity.date.toDate("yyyyMMddHHmmss")?.toString("MM-dd") ?? ""
+            bottomMarkerString = entity.date?.toString("MM-dd") ?? ""
             volumeMarkerString = entity.volume.toStringWithFormat(".2")
             
         } else if let entity = model as? HSTimeLineModel {
@@ -158,6 +154,7 @@ extension HSDrawLayerProtocol {
         } else {
             labelX = frame.maxX - yAxisMarkSize.width
         }
+        
         labelY = pricePoint.y - yAxisMarkSize.height / 2.0
         yAxisMarkLayer = drawTextLayer(frame: CGRect(x: labelX, y: labelY, width: yAxisMarkSize.width, height: yAxisMarkSize.height),
                                        text: yAxisMarkString,
@@ -168,15 +165,14 @@ extension HSDrawLayerProtocol {
         let maxX = frame.maxX - bottomMarkSize.width
         labelX = pricePoint.x - bottomMarkSize.width / 2.0
         labelY = frame.height * theme.uperChartHeightScale
+        
         if labelX > maxX {
             labelX = frame.maxX - bottomMarkSize.width
         } else if labelX < frame.minX {
             labelX = frame.minX
         }
-        bottomMarkLayer = drawTextLayer(frame: CGRect(x: labelX, y: labelY, width: bottomMarkSize.width, height: bottomMarkSize.height),
-                                        text: bottomMarkerString,
-                                        foregroundColor: UIColor.white,
-                                        backgroundColor: theme.textColor)
+        
+        bottomMarkLayer = drawTextLayer(frame: CGRect(x: labelX, y: labelY, width: bottomMarkSize.width, height: bottomMarkSize.height), text: bottomMarkerString, foregroundColor: UIColor.white, backgroundColor: theme.textColor)
         
         // 交易量右标签
         if pricePoint.x > frame.width / 2 {
@@ -184,13 +180,12 @@ extension HSDrawLayerProtocol {
         } else {
             labelX = frame.maxX - volMarkSize.width
         }
+        
         let maxY = frame.maxY - volMarkSize.height
         labelY = volumePoint.y - volMarkSize.height / 2.0
         labelY = labelY > maxY ? maxY : labelY
-        volMarkLayer = drawTextLayer(frame: CGRect(x: labelX, y: labelY, width: volMarkSize.width, height: volMarkSize.height),
-                                        text: volumeMarkerString,
-                                        foregroundColor: UIColor.white,
-                                        backgroundColor: theme.textColor)
+        
+        volMarkLayer = drawTextLayer(frame: CGRect(x: labelX, y: labelY, width: volMarkSize.width, height: volMarkSize.height), text: volumeMarkerString, foregroundColor: UIColor.white, backgroundColor: theme.textColor)
         
         highlightLayer.addSublayer(corssLineLayer)
         highlightLayer.addSublayer(yAxisMarkLayer)

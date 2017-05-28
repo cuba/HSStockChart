@@ -20,10 +20,8 @@
 		C03E9AD31D6ECDB900D93016 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C03E9AAB1D6ECDB900D93016 /* Assets.xcassets */; };
 		C03E9AD41D6ECDB900D93016 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C03E9AAC1D6ECDB900D93016 /* LaunchScreen.storyboard */; };
 		C03E9AD51D6ECDB900D93016 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C03E9AAE1D6ECDB900D93016 /* Main.storyboard */; };
-		C03E9AEA1D6ECDB900D93016 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03E9ACA1D6ECDB900D93016 /* Common.swift */; };
 		C03E9AEB1D6ECDB900D93016 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03E9ACB1D6ECDB900D93016 /* Extension.swift */; };
 		C03E9AF01D6ECDB900D93016 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03E9AD01D6ECDB900D93016 /* ViewController.swift */; };
-		C06400061D780C9800B2760A /* LandscapeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06400051D780C9800B2760A /* LandscapeViewController.swift */; };
 		C0A53C771D77C30800F4192B /* StockMarketDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A53C751D77C30800F4192B /* StockMarketDataViewController.swift */; };
 		C0A53C781D77C30800F4192B /* StockMarketDataViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0A53C761D77C30800F4192B /* StockMarketDataViewController.xib */; };
 		C0A983011D7FB5EF003C3B4C /* kLineForDay.json in Resources */ = {isa = PBXBuildFile; fileRef = C0A982FE1D7FB5EF003C3B4C /* kLineForDay.json */; };
@@ -89,10 +87,8 @@
 		C03E9AAD1D6ECDB900D93016 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C03E9AAF1D6ECDB900D93016 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C03E9AB01D6ECDB900D93016 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C03E9ACA1D6ECDB900D93016 /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
 		C03E9ACB1D6ECDB900D93016 /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		C03E9AD01D6ECDB900D93016 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewController.swift; path = StockChartDemo/ViewController.swift; sourceTree = "<group>"; };
-		C06400051D780C9800B2760A /* LandscapeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LandscapeViewController.swift; path = StockChartDemo/LandscapeViewController.swift; sourceTree = "<group>"; };
 		C0A53C751D77C30800F4192B /* StockMarketDataViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StockMarketDataViewController.swift; path = StockChartDemo/StockMarketDataViewController.swift; sourceTree = "<group>"; };
 		C0A53C761D77C30800F4192B /* StockMarketDataViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = StockMarketDataViewController.xib; path = StockChartDemo/StockMarketDataViewController.xib; sourceTree = "<group>"; };
 		C0A982FE1D7FB5EF003C3B4C /* kLineForDay.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = kLineForDay.json; sourceTree = "<group>"; };
@@ -168,7 +164,6 @@
 				C03E9AD01D6ECDB900D93016 /* ViewController.swift */,
 				C00FC4101DDAE57700C03D2C /* SegmentMenu.swift */,
 				C01FB2A21D7E7680000C2D6D /* ChartViewController.swift */,
-				C06400051D780C9800B2760A /* LandscapeViewController.swift */,
 				C0A53C751D77C30800F4192B /* StockMarketDataViewController.swift */,
 				C0A53C761D77C30800F4192B /* StockMarketDataViewController.xib */,
 				C03E9AB31D6ECDB900D93016 /* SampleData */,
@@ -193,7 +188,6 @@
 		C03E9AC91D6ECDB900D93016 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				C03E9ACA1D6ECDB900D93016 /* Common.swift */,
 				C03E9ACB1D6ECDB900D93016 /* Extension.swift */,
 			);
 			name = Common;
@@ -256,8 +250,9 @@
 				TargetAttributes = {
 					C0D065721D61C17A00AC5AAF = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = 5P99QDD6WR;
 						LastSwiftMigration = 0800;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -384,9 +379,7 @@
 				C03E9AF01D6ECDB900D93016 /* ViewController.swift in Sources */,
 				C0A53C771D77C30800F4192B /* StockMarketDataViewController.swift in Sources */,
 				8C077CD01EDA1C39007BCCFC /* HSKLineBriefView.swift in Sources */,
-				C03E9AEA1D6ECDB900D93016 /* Common.swift in Sources */,
 				C03E9AD21D6ECDB900D93016 /* AppDelegate.swift in Sources */,
-				C06400061D780C9800B2760A /* LandscapeViewController.swift in Sources */,
 				8C077CD21EDA1C39007BCCFC /* HSStockBriefView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -522,12 +515,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 5P99QDD6WR;
 				INFOPLIST_FILE = "$(SRCROOT)/HSStockChartDemo/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = org.hanson.HSStockChartDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jacobsikorski.HSStockChartDemo;
 				PRODUCT_NAME = HSStockChartDemo;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
@@ -540,12 +534,13 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 5P99QDD6WR;
 				INFOPLIST_FILE = "$(SRCROOT)/HSStockChartDemo/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = org.hanson.HSStockChartDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jacobsikorski.HSStockChartDemo;
 				PRODUCT_NAME = HSStockChartDemo;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
