@@ -1,5 +1,5 @@
 //
-//  HSKLineCoordModel.swift
+//  GraphCoordinate.swift
 //  HSStockChartDemo
 //
 //  Created by Hanson on 2017/1/20.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HSKLineCoordModel: NSObject {
+class GraphCoordinate: NSObject {
 
     var openPoint: CGPoint = .zero
     var closePoint: CGPoint = .zero

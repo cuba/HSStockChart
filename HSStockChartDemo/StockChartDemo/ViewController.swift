@@ -131,7 +131,7 @@ class ViewController: UIViewController {
     
     // 长按分时线图，显示摘要信息
     func showLongPressView(_ notification: Notification) {
-        if currentChartView is HSTimeLine {
+        if currentChartView is TimeLineView {
             let dataDictionary = (notification as NSNotification).userInfo as! [String: AnyObject]
             let timeLineEntity = dataDictionary["timeLineEntity"] as! HSTimeLineModel
             stockBriefView?.isHidden = false
@@ -192,14 +192,14 @@ extension ViewController {
         case .timeLine:
             let stockBasicInfo = HSStockBasicInfoModel.getStockBasicInfoModel(getJsonDataFromFile("SZ300033"))
             let modelArray = HSTimeLineModel.getTimeLineModelArray(getJsonDataFromFile(type.filename), type: type, basicInfo: stockBasicInfo)
-            let timeLineView = HSTimeLine(frame: frame)
+            let timeLineView = TimeLineView(frame: frame)
             timeLineView.dataT = modelArray
             timeLineView.isUserInteractionEnabled = true
             
             return timeLineView
         case .candlesticks:
             let data = HSKLineModel.getKLineModelArray(getJsonDataFromFile(type.filename))
-            let stockChartView = HSKLineView(frame: frame, data: data, type: type.chartType)
+            let stockChartView = StockChartView(frame: frame, data: data, type: type.chartType)
             return stockChartView
         }
     }

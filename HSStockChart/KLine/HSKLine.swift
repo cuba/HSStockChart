@@ -13,55 +13,56 @@ public enum ChartType {
     case candlesticks
 }
 
-open class HSKLine: UIView, HSDrawLayerProtocol {
+open class CandlesticsView: UIView, HSDrawLayerProtocol {
     public var theme = HSStockChartTheme()
     
-    var type = ChartType.timeLine
-    var positionModels: [HSKLineCoordModel] = []
-    var klineModels: [HSKLineModel] = []
+    private(set) var positionModels: [GraphCoordinate] = []
+    private var klineModels: [HSKLineModel] = []
+    private var kLineViewTotalWidth: CGFloat = 0
+    private var showContentWidth: CGFloat = 0
     
-    var kLineViewTotalWidth: CGFloat = 0
-    var showContentWidth: CGFloat = 0
+    private var highLightIndex: Int = 0
+    
+    private var priceUnit: CGFloat = 0.1
+    private var volumeUnit: CGFloat = 0
+    private var renderRect: CGRect = CGRect.zero
+    
+    // Layers
+    private var candleChartLayer = CAShapeLayer()
+    private var volumeLayer = CAShapeLayer()
+    private var ma5LineLayer = CAShapeLayer()
+    private var ma10LineLayer = CAShapeLayer()
+    private var ma20LineLayer = CAShapeLayer()
+    private var xAxisTimeMarkLayer = CAShapeLayer()
+    
+    // Bounds
+    private(set) var maxPrice: CGFloat = 0
+    private(set) var minPrice: CGFloat = 0
+    private(set) var maxVolume: CGFloat = 0
+    private(set) var maxMA: CGFloat = 0
+    private(set) var minMA: CGFloat = 0
+    private(set) var maxMACD: CGFloat = 0
+    
+    // Accessable Properties
     var contentOffsetX: CGFloat = 0
-    var highLightIndex: Int = 0
-    
-    var maxPrice: CGFloat = 0
-    var minPrice: CGFloat = 0
-    var maxVolume: CGFloat = 0
-    var maxMA: CGFloat = 0
-    var minMA: CGFloat = 0
-    var maxMACD: CGFloat = 0
-    
-    var priceUnit: CGFloat = 0.1
-    var volumeUnit: CGFloat = 0
-    
-    var renderRect: CGRect = CGRect.zero
     var renderWidth: CGFloat = 0
+    var data: [HSKLineModel] = []
+    var type = ChartType.timeLine
     
-    var candleChartLayer = HSCAShapeLayer()
-    var volumeLayer = HSCAShapeLayer()
-    var ma5LineLayer = HSCAShapeLayer()
-    var ma10LineLayer = HSCAShapeLayer()
-    var ma20LineLayer = HSCAShapeLayer()
-    var xAxisTimeMarkLayer = HSCAShapeLayer()
-    
-    public var data: [HSKLineModel] = []
-    
-    var uperChartHeight: CGFloat {
-        return theme.uperChartHeightScale * self.frame.height
-    }
-    var lowerChartHeight: CGFloat {
-        return self.frame.height * (1 - theme.uperChartHeightScale) - theme.xAxisHeitht
+    private var upperChartHeight: CGFloat {
+        return theme.upperChartHeightScale * self.frame.height
     }
     
-    // 计算处于当前显示区域左边隐藏的蜡烛图的个数，即为当前显示的初始 index
+    private var lowerChartHeight: CGFloat {
+        return self.frame.height * (1 - theme.upperChartHeightScale) - theme.xAxisHeitht
+    }
+    
     var startIndex: Int {
-        let scrollViewOffsetX = contentOffsetX < 0 ? 0 : contentOffsetX
-        var leftCandleCount = Int(abs(scrollViewOffsetX) / (theme.candleWidth + theme.candleGap))
+        let scrollViewOffsetX = max(0, contentOffsetX)
+        let leftCandleCount = Int(abs(scrollViewOffsetX) / (theme.candleWidth + theme.candleGap))
         
         if leftCandleCount > data.count {
-            leftCandleCount = data.count - 1
-            return leftCandleCount
+            return data.count - 1
         } else if leftCandleCount == 0 {
             return leftCandleCount
         } else {
@@ -69,14 +70,11 @@ open class HSKLine: UIView, HSDrawLayerProtocol {
         }
     }
     
-    // 当前显示区域起始横坐标 x
     var startX: CGFloat {
-        let scrollViewOffsetX = contentOffsetX < 0 ? 0 : contentOffsetX
-        return scrollViewOffsetX
+        return max(0, contentOffsetX)
     }
     
-    // 当前显示区域最多显示的蜡烛图个数
-    var countOfshowCandle: Int {
+    private var numberOfCandles: Int {
         return Int((renderWidth - theme.candleWidth) / ( theme.candleWidth + theme.candleGap))
     }
     
@@ -92,7 +90,6 @@ open class HSKLine: UIView, HSDrawLayerProtocol {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
     // MARK: - Drawing Function
     
     func drawKLineView() {
@@ -103,10 +100,9 @@ open class HSKLine: UIView, HSDrawLayerProtocol {
         drawxAxisTimeMarkLayer()
         drawCandleChartLayer(array: positionModels)
         drawVolumeLayer(array: positionModels)
-        drawMALayer(array: positionModels)
+        drawMALayer(coordinates: positionModels)
     }
     
-    /// 计算当前显示区域的最大最小值
     fileprivate func calcMaxAndMinData() {
         guard data.count > 0 else { return }
         
@@ -118,7 +114,7 @@ open class HSKLine: UIView, HSDrawLayerProtocol {
         self.maxMACD = CGFloat.leastNormalMagnitude
         let startIndex = self.startIndex
         
-        let count = (startIndex + countOfshowCandle + 1) > data.count ? data.count : (startIndex + countOfshowCandle + 1)
+        let count = (startIndex + numberOfCandles + 1) > data.count ? data.count : (startIndex + numberOfCandles + 1)
         
         if startIndex < count {
             for i in startIndex ..< count {
@@ -139,30 +135,26 @@ open class HSKLine: UIView, HSDrawLayerProtocol {
             }
         }
         
-        // 当均线数据缺失时候，注意注释这段，不然 minPrice 为 0，导致整体绘画比例不对
         self.maxPrice = self.maxPrice > self.maxMA ? self.maxPrice : self.maxMA
         self.minPrice = self.minPrice < self.minMA ? self.minPrice : self.minMA
     }
     
     
-    /// 转换为坐标 model
-    ///
-    /// - Parameter data: [HSKLineModel]
     fileprivate func convertToPositionModel(data: [HSKLineModel]) {
         self.positionModels.removeAll()
         self.klineModels.removeAll()
         
-        let axisGap = countOfshowCandle / 3
+        let axisGap = numberOfCandles / 3
         let gap = theme.viewMinYGap
         let minY = gap
         let maxDiff = self.maxPrice - self.minPrice
         
         if maxDiff > 0, maxVolume > 0 {
-            priceUnit = (uperChartHeight - 2 * minY) / maxDiff
+            priceUnit = (upperChartHeight - 2 * minY) / maxDiff
             volumeUnit = (lowerChartHeight - theme.volumeGap) / self.maxVolume
         }
         
-        let count = (startIndex + countOfshowCandle + 1) > data.count ? data.count : (startIndex + countOfshowCandle + 1)
+        let count = (startIndex + numberOfCandles + 1) > data.count ? data.count : (startIndex + numberOfCandles + 1)
         if startIndex < count {
             for index in startIndex ..< count {
                 let model = data[index]
@@ -205,7 +197,7 @@ open class HSKLine: UIView, HSDrawLayerProtocol {
                     }
                 }
                 
-                let positionModel = HSKLineCoordModel()
+                let positionModel = GraphCoordinate()
                 positionModel.highPoint = highPoint
                 positionModel.lowPoint = lowPoint
                 positionModel.closeY = closePointY
@@ -225,70 +217,52 @@ open class HSKLine: UIView, HSDrawLayerProtocol {
         }
     }
     
-    /// 画蜡烛图
-    func drawCandleChartLayer(array: [HSKLineCoordModel]) {
+    func drawCandleChartLayer(array: [GraphCoordinate]) {
         candleChartLayer.sublayers?.removeAll()
+        
         for object in array.enumerated() {
             let candleLayer = getCandleLayer(model: object.element)
             candleChartLayer.addSublayer(candleLayer)
         }
+        
         self.layer.addSublayer(candleChartLayer)
     }
     
-    /// 画交易量图
-    func drawVolumeLayer(array: [HSKLineCoordModel]) {
+    func drawVolumeLayer(array: [GraphCoordinate]) {
         volumeLayer.sublayers?.removeAll()
         for object in array.enumerated() {
             let model = object.element
-            let volLayer = drawLine(lineWidth: theme.candleWidth,
-                                    startPoint: model.volumeStartPoint,
-                                    endPoint: model.volumeEndPoint,
-                                    strokeColor: model.candleFillColor,
-                                    fillColor: model.candleFillColor)
+            let volLayer = drawLine(lineWidth: theme.candleWidth, startPoint: model.volumeStartPoint, endPoint: model.volumeEndPoint, strokeColor: model.candleFillColor, fillColor: model.candleFillColor)
             volumeLayer.addSublayer(volLayer)
         }
         self.layer.addSublayer(volumeLayer)
     }
     
-    /// 画交均线图
-    func drawMALayer(array: [HSKLineCoordModel]) {
-        let ma5LinePath = UIBezierPath()
-        let ma10LinePath = UIBezierPath()
-        let ma20LinePath = UIBezierPath()
-        for index in 1 ..< array.count {
-            let preMa5Point = array[index - 1].ma5Point
-            let ma5Point = array[index].ma5Point
-            ma5LinePath.move(to: preMa5Point)
-            ma5LinePath.addLine(to: ma5Point)
-            
-            let preMa10Point = array[index - 1].ma10Point
-            let ma10Point = array[index].ma10Point
-            ma10LinePath.move(to: preMa10Point)
-            ma10LinePath.addLine(to: ma10Point)
-            
-            let preMa20Point = array[index - 1].ma20Point
-            let ma20Point = array[index].ma20Point
-            ma20LinePath.move(to: preMa20Point)
-            ma20LinePath.addLine(to: ma20Point)
-        }
-        ma5LineLayer = HSCAShapeLayer()
-        ma5LineLayer.path = ma5LinePath.cgPath
-        ma5LineLayer.strokeColor = theme.ma5Color.cgColor
-        ma5LineLayer.fillColor = UIColor.clear.cgColor
-        
-        ma10LineLayer = HSCAShapeLayer()
-        ma10LineLayer.path = ma10LinePath.cgPath
-        ma10LineLayer.strokeColor = theme.ma10Color.cgColor
-        ma10LineLayer.fillColor = UIColor.clear.cgColor
-        
-        ma20LineLayer = HSCAShapeLayer()
-        ma20LineLayer.path = ma20LinePath.cgPath
-        ma20LineLayer.strokeColor = theme.ma20Color.cgColor
-        ma20LineLayer.fillColor = UIColor.clear.cgColor
+    func drawMALayer(coordinates: [GraphCoordinate]) {
+        ma5LineLayer = createMALayer(for: coordinates.map({ $0.ma5Point }), color: theme.ma5Color.cgColor)
+        ma10LineLayer = createMALayer(for: coordinates.map({ $0.ma10Point }), color: theme.ma10Color.cgColor)
+        ma20LineLayer = createMALayer(for: coordinates.map({ $0.ma20Point }), color: theme.ma20Color.cgColor)
         
         self.layer.addSublayer(ma5LineLayer)
         self.layer.addSublayer(ma10LineLayer)
         self.layer.addSublayer(ma20LineLayer)
+    }
+    
+    private func createMALayer(for coordinates: [CGPoint], color: CGColor) -> CAShapeLayer {
+        let linePath = UIBezierPath()
+        
+        for index in 1 ..< coordinates.count {
+            let previousPoint = coordinates[index - 1]
+            let point = coordinates[index]
+            linePath.move(to: previousPoint)
+            linePath.addLine(to: point)
+        }
+        
+        let lineLayer = CAShapeLayer()
+        lineLayer.path = linePath.cgPath
+        lineLayer.strokeColor = color
+        lineLayer.fillColor = UIColor.clear.cgColor
+        return lineLayer
     }
     
     func drawxAxisTimeMarkLayer() {
@@ -306,9 +280,9 @@ open class HSKLine: UIView, HSDrawLayerProtocol {
             
             switch type {
             case .timeLine:
-                xAxisTimeMarkLayer.addSublayer(drawXaxisTimeMark(xPosition: position.highPoint.x, dateString: date.toString("yyyy-MM")))
+                xAxisTimeMarkLayer.addSublayer(drawXAxisTimeMark(xPosition: position.highPoint.x, dateString: date.toString("yyyy-MM")))
             case .candlesticks:
-                xAxisTimeMarkLayer.addSublayer(drawXaxisTimeMark(xPosition: position.highPoint.x, dateString: date.toString("MM-dd")))
+                xAxisTimeMarkLayer.addSublayer(drawXAxisTimeMark(xPosition: position.highPoint.x, dateString: date.toString("MM-dd")))
             }
             
             lastDate = date
@@ -317,8 +291,6 @@ open class HSKLine: UIView, HSDrawLayerProtocol {
         self.layer.addSublayer(xAxisTimeMarkLayer)
     }
     
-    
-    /// 清除图层
     func clearLayer() {
         ma5LineLayer.removeFromSuperlayer()
         ma10LineLayer.removeFromSuperlayer()
@@ -328,15 +300,12 @@ open class HSKLine: UIView, HSDrawLayerProtocol {
         xAxisTimeMarkLayer.removeFromSuperlayer()
     }
     
-    /// 获取单个蜡烛图的layer
-    fileprivate func getCandleLayer(model: HSKLineCoordModel) -> HSCAShapeLayer {
-        // K线
+    fileprivate func getCandleLayer(model: GraphCoordinate) -> CAShapeLayer {
         let linePath = UIBezierPath(rect: model.candleRect)
-        // 影线
         linePath.move(to: model.lowPoint)
         linePath.addLine(to: model.highPoint)
         
-        let klayer = HSCAShapeLayer()
+        let klayer = CAShapeLayer()
         klayer.path = linePath.cgPath
         klayer.strokeColor = model.candleFillColor.cgColor
         klayer.fillColor = model.candleFillColor.cgColor
@@ -344,15 +313,13 @@ open class HSKLine: UIView, HSDrawLayerProtocol {
         return klayer
     }
     
-    
-    /// 横坐标单个时间标签
-    func drawXaxisTimeMark(xPosition: CGFloat, dateString: String) -> HSCAShapeLayer {
+    func drawXAxisTimeMark(xPosition: CGFloat, dateString: String) -> CAShapeLayer {
         let linePath = UIBezierPath()
         linePath.move(to: CGPoint(x: xPosition, y: 0))
-        linePath.addLine(to: CGPoint(x: xPosition,  y: self.frame.height * theme.uperChartHeightScale))
-        linePath.move(to: CGPoint(x: xPosition, y: self.frame.height * theme.uperChartHeightScale + theme.xAxisHeitht))
+        linePath.addLine(to: CGPoint(x: xPosition,  y: self.frame.height * theme.upperChartHeightScale))
+        linePath.move(to: CGPoint(x: xPosition, y: self.frame.height * theme.upperChartHeightScale + theme.xAxisHeitht))
         linePath.addLine(to: CGPoint(x: xPosition, y: self.frame.height))
-        let lineLayer = HSCAShapeLayer()
+        let lineLayer = CAShapeLayer()
         lineLayer.path = linePath.cgPath
         lineLayer.lineWidth = 0.25
         lineLayer.strokeColor = theme.borderColor.cgColor
@@ -364,22 +331,20 @@ open class HSKLine: UIView, HSDrawLayerProtocol {
         var labelY: CGFloat = 0
         let maxX = frame.maxX - textSize.width
         labelX = xPosition - textSize.width / 2.0
-        labelY = self.frame.height * theme.uperChartHeightScale
+        labelY = self.frame.height * theme.upperChartHeightScale
+        
         if labelX > maxX {
             labelX = maxX
         } else if labelX < frame.minX {
             labelX = frame.minX
         }
         
-        let timeLayer = drawTextLayer(frame: CGRect(x: labelX, y: labelY, width: textSize.width, height: textSize.height),
-                                      text: dateString,
-                                      foregroundColor: theme.textColor)
+        let timeLayer = drawTextLayer(frame: CGRect(x: labelX, y: labelY, width: textSize.width, height: textSize.height),text: dateString, foregroundColor: theme.textColor)
         
-        let shaperLayer = HSCAShapeLayer()
+        let shaperLayer = CAShapeLayer()
         shaperLayer.addSublayer(lineLayer)
         shaperLayer.addSublayer(timeLayer)
         
         return shaperLayer
     }
-
 }

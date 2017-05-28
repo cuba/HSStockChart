@@ -22,7 +22,6 @@
 		8C077CAB1EDA14E0007BCCFC /* HSTimeLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C077C9B1EDA14E0007BCCFC /* HSTimeLine.swift */; };
 		8C077CC31EDA17DD007BCCFC /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C077CC21EDA17DD007BCCFC /* Common.swift */; };
 		8C077CC61EDA1829007BCCFC /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C077CC51EDA1829007BCCFC /* Extension.swift */; };
-		8C077CC91EDA1A09007BCCFC /* HSCAShapeLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C077CC71EDA1A09007BCCFC /* HSCAShapeLayer.swift */; };
 		8C077CCA1EDA1A09007BCCFC /* HSDrawLayerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C077CC81EDA1A09007BCCFC /* HSDrawLayerProtocol.swift */; };
 /* End PBXBuildFile section */
 
@@ -55,7 +54,6 @@
 		8C077C9B1EDA14E0007BCCFC /* HSTimeLine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSTimeLine.swift; sourceTree = "<group>"; };
 		8C077CC21EDA17DD007BCCFC /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
 		8C077CC51EDA1829007BCCFC /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
-		8C077CC71EDA1A09007BCCFC /* HSCAShapeLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSCAShapeLayer.swift; sourceTree = "<group>"; };
 		8C077CC81EDA1A09007BCCFC /* HSDrawLayerProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSDrawLayerProtocol.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -161,7 +159,6 @@
 		8C077CC11EDA17DD007BCCFC /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				8C077CC71EDA1A09007BCCFC /* HSCAShapeLayer.swift */,
 				8C077CC81EDA1A09007BCCFC /* HSDrawLayerProtocol.swift */,
 				8C077CC21EDA17DD007BCCFC /* Common.swift */,
 			);
@@ -299,7 +296,6 @@
 				8C077C9F1EDA14E0007BCCFC /* HSKLineUpFrontView.swift in Sources */,
 				8C077CA01EDA14E0007BCCFC /* HSKLineView.swift in Sources */,
 				8C077C9E1EDA14E0007BCCFC /* HSKLine.swift in Sources */,
-				8C077CC91EDA1A09007BCCFC /* HSCAShapeLayer.swift in Sources */,
 				8C077CC31EDA17DD007BCCFC /* Common.swift in Sources */,
 				8C077CCA1EDA1A09007BCCFC /* HSDrawLayerProtocol.swift in Sources */,
 				8C077CA91EDA14E0007BCCFC /* HSTimeLineModel.swift in Sources */,

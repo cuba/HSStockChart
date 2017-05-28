@@ -8,7 +8,7 @@
 
 import UIKit
 
-open class HSTimeLine: UIView, HSDrawLayerProtocol {
+open class TimeLineView: UIView, HSDrawLayerProtocol {
     
     var timeLineLayer = CAShapeLayer()
     var volumeLayer = CAShapeLayer()
@@ -50,14 +50,14 @@ open class HSTimeLine: UIView, HSDrawLayerProtocol {
         }
     }
     
-    var uperChartHeight: CGFloat {
+    var upperChartHeight: CGFloat {
         get {
-            return frame.height * theme.uperChartHeightScale
+            return frame.height * theme.upperChartHeightScale
         }
     }
     var lowerChartHeight: CGFloat {
         get {
-            return frame.height * (1 - theme.uperChartHeightScale) - theme.xAxisHeitht
+            return frame.height * (1 - theme.upperChartHeightScale) - theme.xAxisHeitht
         }
     }
     var uperChartDrawAreaTop: CGFloat {
@@ -67,12 +67,12 @@ open class HSTimeLine: UIView, HSDrawLayerProtocol {
     }
     var uperChartDrawAreaBottom: CGFloat {
         get {
-            return uperChartHeight - theme.viewMinYGap
+            return upperChartHeight - theme.viewMinYGap
         }
     }
     var lowerChartTop: CGFloat {
         get {
-            return uperChartHeight + theme.xAxisHeitht
+            return upperChartHeight + theme.xAxisHeitht
         }
     }
     
@@ -169,17 +169,17 @@ open class HSTimeLine: UIView, HSDrawLayerProtocol {
         } else {
             let startTimeSize = theme.getTextSize(text: openTime)
             
-            let startTime = drawTextLayer(frame: CGRect(x: 0, y: uperChartHeight, width: startTimeSize.width, height: startTimeSize.height),
+            let startTime = drawTextLayer(frame: CGRect(x: 0, y: upperChartHeight, width: startTimeSize.width, height: startTimeSize.height),
                                           text: openTime,
                                           foregroundColor: theme.textColor)
             
             let midTimeSize = theme.getTextSize(text: middleTime)
-            let midTime = drawTextLayer(frame: CGRect(x: frame.width / 2.0 - midTimeSize.width / 2.0, y: uperChartHeight, width: midTimeSize.width, height: midTimeSize.height),
+            let midTime = drawTextLayer(frame: CGRect(x: frame.width / 2.0 - midTimeSize.width / 2.0, y: upperChartHeight, width: midTimeSize.width, height: midTimeSize.height),
                                         text: middleTime,
                                         foregroundColor: theme.textColor)
             
             let stopTimeSize = theme.getTextSize(text: closeTime)
-            let stopTime = drawTextLayer(frame: CGRect(x: frame.width - stopTimeSize.width, y: uperChartHeight, width: stopTimeSize.width, height: stopTimeSize.height),
+            let stopTime = drawTextLayer(frame: CGRect(x: frame.width - stopTimeSize.width, y: upperChartHeight, width: stopTimeSize.width, height: stopTimeSize.height),
                                          text: closeTime,
                                          foregroundColor: theme.textColor)
             
@@ -248,7 +248,7 @@ open class HSTimeLine: UIView, HSDrawLayerProtocol {
     func convertToPoints(data: [HSTimeLineModel]) {
         let maxDiff = self.maxPrice - self.minPrice
         if maxDiff > 0, maxVolume > 0 {
-            priceUnit = (uperChartHeight - 2 * theme.viewMinYGap) / maxDiff
+            priceUnit = (upperChartHeight - 2 * theme.viewMinYGap) / maxDiff
             volumeUnit = (lowerChartHeight - theme.volumeGap) / self.maxVolume
         }
         
@@ -288,13 +288,13 @@ open class HSTimeLine: UIView, HSDrawLayerProtocol {
     /// 边框
     func drawFrameLayer() {
         // 分时线区域 frame
-        let framePath = UIBezierPath(rect: CGRect(x: 0, y: 0, width: frame.width, height: uperChartHeight))
+        let framePath = UIBezierPath(rect: CGRect(x: 0, y: 0, width: frame.width, height: upperChartHeight))
         if isFiveDayTime {
             //五日分时图的四条竖线
             let width = self.frame.width / 5
             for i in 1 ..< 5 {
                 let lineX = width * CGFloat(i)
-                let startPoint = CGPoint(x: lineX, y: uperChartHeight)
+                let startPoint = CGPoint(x: lineX, y: upperChartHeight)
                 let stopPoint = CGPoint(x: lineX, y: 0)
                 framePath.move(to: startPoint)
                 framePath.addLine(to: stopPoint)
@@ -302,7 +302,7 @@ open class HSTimeLine: UIView, HSDrawLayerProtocol {
         } else {
             //分时线的中间竖线
             let startPoint = CGPoint(x: frame.width / 2.0, y: 0)
-            let stopPoint = CGPoint(x: frame.width / 2.0, y: uperChartHeight)
+            let stopPoint = CGPoint(x: frame.width / 2.0, y: upperChartHeight)
             framePath.move(to: startPoint)
             framePath.addLine(to: stopPoint)
         }
@@ -319,14 +319,14 @@ open class HSTimeLine: UIView, HSDrawLayerProtocol {
         volFramePath.move(to: CGPoint(x: 0, y: y))
         volFramePath.addLine(to: CGPoint(x: frame.width, y: y))
         
-        let volFrameLayer = CAShapeLayer()
-        volFrameLayer.path = volFramePath.cgPath
-        volFrameLayer.lineWidth = theme.frameWidth
-        volFrameLayer.strokeColor = theme.borderColor.cgColor
-        volFrameLayer.fillColor = UIColor.clear.cgColor
+        let volumeFrameLayer = CAShapeLayer()
+        volumeFrameLayer.path = volFramePath.cgPath
+        volumeFrameLayer.lineWidth = theme.frameWidth
+        volumeFrameLayer.strokeColor = theme.borderColor.cgColor
+        volumeFrameLayer.fillColor = UIColor.clear.cgColor
         
         self.layer.addSublayer(frameLayer)
-        self.layer.addSublayer(volFrameLayer)
+        self.layer.addSublayer(volumeFrameLayer)
     }
     
     
@@ -339,12 +339,12 @@ open class HSTimeLine: UIView, HSDrawLayerProtocol {
         }
         timeLineLayer.path = timeLinePath.cgPath
         timeLineLayer.lineWidth = 1
-        timeLineLayer.strokeColor = theme.priceLineCorlor.cgColor
+        timeLineLayer.strokeColor = theme.priceLineColor.cgColor
         timeLineLayer.fillColor = UIColor.clear.cgColor
         
         // 填充颜色
-        timeLinePath.addLine(to: CGPoint(x: array.last!.pricePoint.x, y: theme.uperChartHeightScale * frame.height))
-        timeLinePath.addLine(to: CGPoint(x: array[0].pricePoint.x, y: theme.uperChartHeightScale * frame.height))
+        timeLinePath.addLine(to: CGPoint(x: array.last!.pricePoint.x, y: theme.upperChartHeightScale * frame.height))
+        timeLinePath.addLine(to: CGPoint(x: array[0].pricePoint.x, y: theme.upperChartHeightScale * frame.height))
         fillColorLayer.path = timeLinePath.cgPath
         fillColorLayer.fillColor = theme.fillColor.cgColor
         fillColorLayer.strokeColor = UIColor.clear.cgColor
@@ -386,7 +386,7 @@ open class HSTimeLine: UIView, HSDrawLayerProtocol {
             maLinePath.addLine(to: maPoint)
         }
         maLineLayer.path = maLinePath.cgPath
-        maLineLayer.strokeColor = theme.avgLineCorlor.cgColor
+        maLineLayer.strokeColor = theme.avgLineColor.cgColor
         maLineLayer.fillColor = UIColor.clear.cgColor
         self.layer.addSublayer(maLineLayer)
     }

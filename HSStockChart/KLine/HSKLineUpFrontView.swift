@@ -24,14 +24,14 @@ open class HSKLineUpFrontView: UIView, HSDrawLayerProtocol {
     var bottomMarkLayer = CATextLayer()
     var yAxisMarkLayer = CATextLayer()
     
-    var uperChartHeight: CGFloat {
+    var upperChartHeight: CGFloat {
         get {
-            return theme.uperChartHeightScale * self.frame.height
+            return theme.upperChartHeightScale * self.frame.height
         }
     }
     var lowerChartTop: CGFloat {
         get {
-            return uperChartHeight + theme.xAxisHeitht
+            return upperChartHeight + theme.xAxisHeitht
         }
     }
     
@@ -69,8 +69,8 @@ open class HSKLineUpFrontView: UIView, HSDrawLayerProtocol {
         rrText = getYAxisMarkLayer(frame: frame, text: "不复权", y: theme.viewMinYGap, isLeft: true)
         volText = getYAxisMarkLayer(frame: frame, text: "成交量", y: lowerChartTop + theme.volumeGap, isLeft: true)
         maxMark = getYAxisMarkLayer(frame: frame, text: "0.00", y: theme.viewMinYGap, isLeft: false)
-        minMark = getYAxisMarkLayer(frame: frame, text: "0.00", y: uperChartHeight - theme.viewMinYGap, isLeft: false)
-        midMark = getYAxisMarkLayer(frame: frame, text: "0.00", y: uperChartHeight / 2, isLeft: false)
+        minMark = getYAxisMarkLayer(frame: frame, text: "0.00", y: upperChartHeight - theme.viewMinYGap, isLeft: false)
+        midMark = getYAxisMarkLayer(frame: frame, text: "0.00", y: upperChartHeight / 2, isLeft: false)
         maxVolMark = getYAxisMarkLayer(frame: frame, text: "0.00", y: lowerChartTop + theme.volumeGap, isLeft: false)
         self.layer.addSublayer(rrText)
         self.layer.addSublayer(volText)

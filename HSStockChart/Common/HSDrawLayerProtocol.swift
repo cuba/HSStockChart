@@ -164,7 +164,7 @@ extension HSDrawLayerProtocol {
         // 底部时间标签
         let maxX = frame.maxX - bottomMarkSize.width
         labelX = pricePoint.x - bottomMarkSize.width / 2.0
-        labelY = frame.height * theme.uperChartHeightScale
+        labelY = frame.height * theme.upperChartHeightScale
         
         if labelX > maxX {
             labelX = frame.maxX - bottomMarkSize.width

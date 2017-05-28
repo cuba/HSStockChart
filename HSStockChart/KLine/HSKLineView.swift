@@ -1,6 +1,6 @@
 //
-//  HSKLineView.swift
-//  HSStockChartDemo
+//  StockChartView.swift
+//  HSStockChart
 //
 //  Created by Hanson on 2017/2/16.
 //  Copyright © 2017年 hanson. All rights reserved.
@@ -8,30 +8,27 @@
 
 import UIKit
 
-open class HSKLineView: UIView {
-
-    var scrollView: UIScrollView!
-    var kLine: HSKLine!
-    var upFrontView: HSKLineUpFrontView!
+open class StockChartView: UIView {
+    private var scrollView: UIScrollView!
+    private var kLine: CandlesticsView!
+    private var upFrontView: HSKLineUpFrontView!
     
-    var type: ChartType!
-    var widthOfKLineView: CGFloat = 0
-    var theme = HSStockChartTheme()
-    var data: [HSKLineModel] = []
+    private var type: ChartType!
+    private var theme = HSStockChartTheme()
     
-    public var isLandscapeMode = false
-
-    var allData: [HSKLineModel] = []
-    var enableKVO: Bool = true
-
-    var kLineViewWidth: CGFloat = 0.0
-    var oldRightOffset: CGFloat = -1
+    private var widthOfKLineView: CGFloat = 0
+    private var enableKVO: Bool = true
+    private var lineViewWidth: CGFloat = 0.0
     
-    var uperChartHeight: CGFloat {
-        return theme.uperChartHeightScale * self.frame.height
+    fileprivate var data: [HSKLineModel] = []
+    fileprivate var allData: [HSKLineModel] = []
+    
+    private var upperChartHeight: CGFloat {
+        return theme.upperChartHeightScale * self.frame.height
     }
-    var lowerChartTop: CGFloat {
-        return uperChartHeight + theme.xAxisHeitht
+    
+    private var lowerChartTop: CGFloat {
+        return upperChartHeight + theme.xAxisHeitht
     }
     
     public init(frame: CGRect, data: [HSKLineModel], type: ChartType) {
@@ -48,7 +45,7 @@ open class HSKLineView: UIView {
         scrollView.addObserver(self, forKeyPath: #keyPath(UIScrollView.contentOffset), options: .new, context: nil)
         addSubview(scrollView)
         
-        kLine = HSKLine()
+        kLine = CandlesticsView()
         kLine.type = type
         scrollView.addSubview(kLine)
         
@@ -57,12 +54,9 @@ open class HSKLineView: UIView {
         
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPressGestureAction(_:)))
         kLine.addGestureRecognizer(longPressGesture)
-        let pinGesture = UIPinchGestureRecognizer(target: self, action: #selector(handlePinGestureAction(_:)))
-        kLine.addGestureRecognizer(pinGesture)
         
         let tmpdata = Array(allData[allData.count-70..<allData.count])
         self.configureView(data: tmpdata)
-        
         self.configureView(data: data)
     }
     
@@ -76,9 +70,6 @@ open class HSKLineView: UIView {
     
     override open func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == #keyPath(UIScrollView.contentOffset) && enableKVO {
-            print("in klineview scrollView?.contentOffset.x " + "\(scrollView.contentOffset.x)")
-            
-            // 拖动 ScrollView 时重绘当前显示的 klineview
             kLine.contentOffsetX = scrollView.contentOffset.x
             kLine.renderWidth = scrollView.frame.width
             kLine.drawKLineView()
@@ -92,28 +83,25 @@ open class HSKLineView: UIView {
         kLine.data = data
         let count: CGFloat = CGFloat(data.count)
         
-        // 总长度
-        kLineViewWidth = count * theme.candleWidth + (count + 1) * theme.candleGap
-        if kLineViewWidth < self.frame.width {
-            kLineViewWidth = self.frame.width
+        lineViewWidth = count * theme.candleWidth + (count + 1) * theme.candleGap
+        if lineViewWidth < self.frame.width {
+            lineViewWidth = self.frame.width
         } else {
-            kLineViewWidth = count * theme.candleWidth + (count + 1) * theme.candleGap
+            lineViewWidth = count * theme.candleWidth + (count + 1) * theme.candleGap
         }
         
-        // 更新view长度
-        print("currentWidth " + "\(kLineViewWidth)")
-        kLine.frame = CGRect(x: self.frame.origin.x, y: self.frame.origin.y, width: kLineViewWidth, height: scrollView.frame.height)
+        kLine.frame = CGRect(x: self.frame.origin.x, y: self.frame.origin.y, width: lineViewWidth, height: scrollView.frame.height)
         
         var contentOffsetX: CGFloat = 0
         
         if scrollView.contentSize.width > 0 {
-            contentOffsetX = kLineViewWidth - scrollView.contentSize.width
+            contentOffsetX = lineViewWidth - scrollView.contentSize.width
         } else {
             // 首次加载，将 kLine 的右边和scrollview的右边对齐
             contentOffsetX = kLine.frame.width - scrollView.frame.width
         }
         
-        scrollView.contentSize = CGSize(width: kLineViewWidth, height: self.frame.height)
+        scrollView.contentSize = CGSize(width: lineViewWidth, height: self.frame.height)
         scrollView.contentOffset = CGPoint(x: contentOffsetX, y: 0)
         kLine.contentOffsetX = scrollView.contentOffset.x
 
@@ -122,55 +110,48 @@ open class HSKLineView: UIView {
     func updateKlineViewWidth() {
         let count: CGFloat = CGFloat(kLine.data.count)
         // 总长度
-        kLineViewWidth = count * theme.candleWidth + (count + 1) * theme.candleGap
-        if kLineViewWidth < self.frame.width {
-            kLineViewWidth = self.frame.width
+        lineViewWidth = count * theme.candleWidth + (count + 1) * theme.candleGap
+        if lineViewWidth < self.frame.width {
+            lineViewWidth = self.frame.width
         } else {
-            kLineViewWidth = count * theme.candleWidth + (count + 1) * theme.candleGap
+            lineViewWidth = count * theme.candleWidth + (count + 1) * theme.candleGap
         }
         
-        kLine.frame = CGRect(x: self.frame.origin.x, y: self.frame.origin.y, width: kLineViewWidth, height: scrollView.frame.height)
-        scrollView.contentSize = CGSize(width: kLineViewWidth, height: self.frame.height)
+        kLine.frame = CGRect(x: self.frame.origin.x, y: self.frame.origin.y, width: lineViewWidth, height: scrollView.frame.height)
+        scrollView.contentSize = CGSize(width: lineViewWidth, height: self.frame.height)
     }
     
-    // 画边框
     func drawFrameLayer() {
-        // K线图
-        let uperFramePath = UIBezierPath(rect: CGRect(x: 0, y: 0, width: frame.width, height: uperChartHeight))
+        let upperFramePath = UIBezierPath(rect: CGRect(x: 0, y: 0, width: frame.width, height: upperChartHeight))
         
-        // K线图 内上边线 即最高价格线
-        uperFramePath.move(to: CGPoint(x: 0, y: theme.viewMinYGap))
-        uperFramePath.addLine(to: CGPoint(x: frame.maxX, y: theme.viewMinYGap))
+        upperFramePath.move(to: CGPoint(x: 0, y: theme.viewMinYGap))
+        upperFramePath.addLine(to: CGPoint(x: frame.maxX, y: theme.viewMinYGap))
         
-        // K线图 内下边线 即最低价格线
-        uperFramePath.move(to: CGPoint(x: 0, y: uperChartHeight - theme.viewMinYGap))
-        uperFramePath.addLine(to: CGPoint(x: frame.maxX, y: uperChartHeight - theme.viewMinYGap))
+        upperFramePath.move(to: CGPoint(x: 0, y: upperChartHeight - theme.viewMinYGap))
+        upperFramePath.addLine(to: CGPoint(x: frame.maxX, y: upperChartHeight - theme.viewMinYGap))
         
-        // K线图 中间的横线
-        uperFramePath.move(to: CGPoint(x: 0, y: uperChartHeight / 2.0))
-        uperFramePath.addLine(to: CGPoint(x: frame.maxX, y: uperChartHeight / 2.0))
+        upperFramePath.move(to: CGPoint(x: 0, y: upperChartHeight / 2.0))
+        upperFramePath.addLine(to: CGPoint(x: frame.maxX, y: upperChartHeight / 2.0))
         
-        let uperFrameLayer = CAShapeLayer()
-        uperFrameLayer.lineWidth = theme.frameWidth
-        uperFrameLayer.strokeColor = theme.borderColor.cgColor
-        uperFrameLayer.fillColor = UIColor.clear.cgColor
-        uperFrameLayer.path = uperFramePath.cgPath
+        let upperFrameLayer = CAShapeLayer()
+        upperFrameLayer.lineWidth = theme.frameWidth
+        upperFrameLayer.strokeColor = theme.borderColor.cgColor
+        upperFrameLayer.fillColor = UIColor.clear.cgColor
+        upperFrameLayer.path = upperFramePath.cgPath
         
-        // 交易量图
-        let volFramePath = UIBezierPath(rect: CGRect(x: 0, y: uperChartHeight + theme.xAxisHeitht, width: frame.width, height: frame.height - uperChartHeight - theme.xAxisHeitht))
+        let volFramePath = UIBezierPath(rect: CGRect(x: 0, y: upperChartHeight + theme.xAxisHeitht, width: frame.width, height: frame.height - upperChartHeight - theme.xAxisHeitht))
         
-        // 交易量图 内上边线 即最高交易量格线
-        volFramePath.move(to: CGPoint(x: 0, y: uperChartHeight + theme.xAxisHeitht + theme.volumeGap))
-        volFramePath.addLine(to: CGPoint(x: frame.maxX, y: uperChartHeight + theme.xAxisHeitht + theme.volumeGap))
+        volFramePath.move(to: CGPoint(x: 0, y: upperChartHeight + theme.xAxisHeitht + theme.volumeGap))
+        volFramePath.addLine(to: CGPoint(x: frame.maxX, y: upperChartHeight + theme.xAxisHeitht + theme.volumeGap))
         
-        let volFrameLayer = CAShapeLayer()
-        volFrameLayer.lineWidth = theme.frameWidth
-        volFrameLayer.strokeColor = theme.borderColor.cgColor
-        volFrameLayer.fillColor = UIColor.clear.cgColor
-        volFrameLayer.path = volFramePath.cgPath
+        let volumeFrameLayer = CAShapeLayer()
+        volumeFrameLayer.lineWidth = theme.frameWidth
+        volumeFrameLayer.strokeColor = theme.borderColor.cgColor
+        volumeFrameLayer.fillColor = UIColor.clear.cgColor
+        volumeFrameLayer.path = volFramePath.cgPath
         
-        self.layer.addSublayer(uperFrameLayer)
-        self.layer.addSublayer(volFrameLayer)
+        self.layer.addSublayer(upperFrameLayer)
+        self.layer.addSublayer(volumeFrameLayer)
     }
     
     // 长按操作
@@ -201,77 +182,12 @@ open class HSKLineView: UIView {
             NotificationCenter.default.post(name: Notification.Name(rawValue: ChartLongPressDismiss), object: self)
         }
     }
-    
-    // 捏合缩放扩大操作
-    func handlePinGestureAction(_ recognizer: UIPinchGestureRecognizer) {
-
-        guard recognizer.numberOfTouches == 2 else { return }
-
-        let scale = recognizer.scale
-        let originScale: CGFloat = 1.0
-        let kLineScaleFactor: CGFloat = 0.06
-        let kLineScaleBound: CGFloat = 0.03
-        let diffScale = scale - originScale // 获取缩放倍数
-
-        switch recognizer.state {
-        case .began:
-            enableKVO = false
-            scrollView.isScrollEnabled = false
-        case .ended:
-            enableKVO = true
-            scrollView.isScrollEnabled = true
-        default:
-            break
-        }
-
-        if abs(diffScale) > kLineScaleBound {
-            let point1 = recognizer.location(ofTouch: 0, in: self)
-            let point2 = recognizer.location(ofTouch: 1, in: self)
-
-            let pinCenterX = (point1.x + point2.x) / 2
-            let scrollViewPinCenterX = pinCenterX + scrollView.contentOffset.x
-            
-            // 中心点数据index
-            let pinCenterLeftCount = scrollViewPinCenterX / (theme.candleWidth + theme.candleGap)
-
-            // 缩放后的candle宽度
-            let newCandleWidth = theme.candleWidth * (diffScale > 0 ? (1 + kLineScaleFactor) : (1 - kLineScaleFactor))
-            if newCandleWidth > theme.candleMaxWidth {
-                self.theme.candleWidth = theme.candleMaxWidth
-                kLine.theme.candleWidth = theme.candleMaxWidth
-                
-            } else if newCandleWidth < theme.candleMinWidth {
-                self.theme.candleWidth = theme.candleMinWidth
-                kLine.theme.candleWidth = theme.candleMinWidth
-                
-            } else {
-                self.theme.candleWidth = newCandleWidth
-                kLine.theme.candleWidth = newCandleWidth
-            }
-            
-            // 更新容纳的总长度
-            self.updateKlineViewWidth()
-            
-            let newPinCenterX = pinCenterLeftCount * theme.candleWidth + (pinCenterLeftCount - 1) * theme.candleGap
-            let newOffsetX = newPinCenterX - pinCenterX
-            self.scrollView.contentOffset = CGPoint(x: newOffsetX > 0 ? newOffsetX : 0 , y: self.scrollView.contentOffset.y)
-
-            kLine.contentOffsetX = scrollView.contentOffset.x
-            kLine.drawKLineView()
-        }
-    }
 }
 
-extension HSKLineView: UIScrollViewDelegate {
+extension StockChartView: UIScrollViewDelegate {
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        
-        // MARK: - 用于滑动加载更多 KLine 数据
         if (scrollView.contentOffset.x < 0 && data.count < allData.count) {
-            self.oldRightOffset = scrollView.contentSize.width - scrollView.contentOffset.x
-            print("load more")
             self.configureView(data: allData)
-        } else {
-            
         }
     }
 }

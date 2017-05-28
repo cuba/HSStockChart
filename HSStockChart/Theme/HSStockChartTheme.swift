@@ -11,7 +11,7 @@ import UIKit
 
 public struct HSStockChartTheme  {
     
-    public var uperChartHeightScale: CGFloat = 0.7 // 70% 的空间是上部分的走势图
+    public var upperChartHeightScale: CGFloat = 0.7 // 70% 的空间是上部分的走势图
     
     public var lineWidth: CGFloat = 1
     public var frameWidth: CGFloat = 0.25
@@ -32,10 +32,10 @@ public struct HSStockChartTheme  {
     public var borderColor = UIColor(rgba: "#e4e4e4")
     public var crossLineColor = UIColor(rgba: "#546679")
     public var textColor = UIColor(rgba: "#8695a6")
-    public var riseColor = UIColor(rgba: "#1dbf60") // 跌 green
-    public var fallColor = UIColor(rgba: "#f24957") // 涨 red
-    public var priceLineCorlor = UIColor(rgba: "#0095ff")
-    public var avgLineCorlor = UIColor(rgba: "#ffc004") // 均线颜色
+    public var riseColor = UIColor(rgba: "#1dbf60") // green
+    public var fallColor = UIColor(rgba: "#f24957") // red
+    public var priceLineColor = UIColor(rgba: "#0095ff")
+    public var avgLineColor = UIColor(rgba: "#ffc004")
     public var fillColor = UIColor(rgba: "#e3efff")
     
     public var baseFont = UIFont.systemFont(ofSize: 10)
