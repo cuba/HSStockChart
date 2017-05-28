@@ -65,13 +65,10 @@ class ViewController: UIViewController {
         addNotificationsObservers()
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-    }
-    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        segmentMenu.selectButton(at: segmentMenu.currentIndex)
+        segmentMenu.selectButton(at: 0, animated: false)
+        setChart(at: segmentMenu.currentIndex)
     }
     
     // MARK: -

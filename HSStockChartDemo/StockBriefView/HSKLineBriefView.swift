@@ -77,11 +77,11 @@ class HSKLineBriefView: UIView {
         } else {
             low.textColor = downColor
         }
-        open.text = kLineModel.open.toString(withFormat: ".2")
-        close.text = kLineModel.close.toString(withFormat: ".2")
-        high.text = kLineModel.high.toString(withFormat: ".2")
-        low.text = kLineModel.low.toString(withFormat: ".2")
-        volume.text = (kLineModel.volume / 10000).toString(withFormat: ".2") + "万"
+        open.text = kLineModel.open.toString(withFormat: ".8")
+        close.text = kLineModel.close.toString(withFormat: ".8")
+        high.text = kLineModel.high.toString(withFormat: ".8")
+        low.text = kLineModel.low.toString(withFormat: ".8")
+        volume.text = kLineModel.volume.toString(withFormat: ".2")
         ratio.text = kLineModel.rate.toString(withFormat: ".2") + "%"
         time.text = kLineModel.date?.toString(withFormat: "yyyy-MM-dd")
     }

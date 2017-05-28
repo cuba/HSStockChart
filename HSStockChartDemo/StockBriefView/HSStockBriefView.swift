@@ -58,7 +58,7 @@ class HSStockBriefView: UIView {
         priceLabel.textColor = labelColor
         ratioLabel.textColor = labelColor
         
-        priceLabel.text = timeLineEntity.price.toString(withFormat: ".2")
+        priceLabel.text = timeLineEntity.price.toString(withFormat: ".8")
         ratioLabel.text = (timeLineEntity.rate * 100).toPercentString(withFormat: ".2")
         timeLabel.text = timeLineEntity.time.toString(withFormat: "HH:mm")
         volumeLabel.text = timeLineEntity.volume.toString(withFormat: ".2")

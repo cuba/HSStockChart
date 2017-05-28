@@ -93,7 +93,7 @@ class SegmentMenu: UIView {
         selectButton(at: index)
     }
     
-    func selectButton(at index: Int) {
+    func selectButton(at index: Int, animated: Bool = true) {
         guard index < self.buttons.count else { return }
         let button = self.buttons[index]
         
@@ -105,7 +105,11 @@ class SegmentMenu: UIView {
         delegate?.menuButtonDidClick(index: index)
         self.selectedButton?.setTitleColor(UIColor(hexString: "#1782d0"), for: .normal)
         
-        UIView.animate(withDuration: 0.3) {
+        if animated {
+            UIView.animate(withDuration: 0.3) {
+                self.updateIndicatorFrame()
+            }
+        } else {
             self.updateIndicatorFrame()
         }
     }
