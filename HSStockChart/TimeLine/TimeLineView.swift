@@ -118,7 +118,7 @@ open class TimeLineView: UIView, HSDrawLayerProtocol {
             self.minRatio = dataT[0].rate
             self.maxVolume = dataT[0].volume
             // 分时线和五日线的比较基准
-            let toComparePrice = isFiveDayTime ? dataT[0].price : dataT[0].preClosePx
+            let toComparePrice = isFiveDayTime ? dataT[0].price : dataT[0].preClosePrice
             
             if isFiveDayTime {
                 for i in 0 ..< dataT.count {
@@ -213,7 +213,7 @@ open class TimeLineView: UIView, HSDrawLayerProtocol {
         // 中间横虚线及其标签
         if let temp = dataT.first {
             // 日分时图中间区域线代表昨日的收盘价格，五日分时图的则代表五日内的第一天9点30分的价格
-            let price = isFiveDayTime ? temp.price : temp.preClosePx
+            let price = isFiveDayTime ? temp.price : temp.preClosePrice
             let preClosePriceYaxis = (self.maxPrice - price) * self.priceUnit + uperChartDrawAreaTop
             
             let dashLinePath = UIBezierPath()
@@ -349,10 +349,10 @@ open class TimeLineView: UIView, HSDrawLayerProtocol {
     func drawVolumeLayer(array: [HSTimeLineCoordModel]) {
         volumeLayer.sublayers?.removeAll()
         var strokeColor = UIColor.clear
-        let preClosePx = dataT.first?.preClosePx ?? 0
+        let preClosePrice = dataT.first?.preClosePrice ?? 0
         
         for index in 0 ..< array.count {
-            let comparePrice = (index == 0) ? preClosePx : dataT[index - 1].price
+            let comparePrice = (index == 0) ? preClosePrice : dataT[index - 1].price
             if dataT[index].price < comparePrice {
                 strokeColor = theme.fallColor
                 

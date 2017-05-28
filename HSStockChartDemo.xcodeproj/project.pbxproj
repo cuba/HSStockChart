@@ -18,6 +18,7 @@
 		8C8472A01EDB57A700B64A1D /* DateFormatter+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C84729F1EDB57A700B64A1D /* DateFormatter+Extensions.swift */; };
 		8C8472A21EDB586100B64A1D /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8472A11EDB586100B64A1D /* Date+Extensions.swift */; };
 		8C8472A41EDB589500B64A1D /* CGFloat+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8472A31EDB589500B64A1D /* CGFloat+Extensions.swift */; };
+		8C8472A61EDB5E9000B64A1D /* StockInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8472A51EDB5E9000B64A1D /* StockInfo.swift */; };
 		C00FC4111DDAE57700C03D2C /* SegmentMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00FC4101DDAE57700C03D2C /* SegmentMenu.swift */; };
 		C01FB2A31D7E7680000C2D6D /* ChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01FB2A21D7E7680000C2D6D /* ChartViewController.swift */; };
 		C01FB2A71D7E94E6000C2D6D /* timeLineForFiveday.json in Resources */ = {isa = PBXBuildFile; fileRef = C01FB2A61D7E94E6000C2D6D /* timeLineForFiveday.json */; };
@@ -87,6 +88,7 @@
 		8C84729F1EDB57A700B64A1D /* DateFormatter+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Extensions.swift"; sourceTree = "<group>"; };
 		8C8472A11EDB586100B64A1D /* Date+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		8C8472A31EDB589500B64A1D /* CGFloat+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGFloat+Extensions.swift"; sourceTree = "<group>"; };
+		8C8472A51EDB5E9000B64A1D /* StockInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StockInfo.swift; sourceTree = "<group>"; };
 		91CC8D58DAF1D622DA5BF254 /* Pods-HSStockChartDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HSStockChartDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-HSStockChartDemo/Pods-HSStockChartDemo.release.xcconfig"; sourceTree = "<group>"; };
 		B4D5F8E2FF58BC1092E5C722 /* Pods_HSStockChartDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HSStockChartDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C00FC4101DDAE57700C03D2C /* SegmentMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SegmentMenu.swift; path = StockChartDemo/SegmentMenu.swift; sourceTree = "<group>"; };
@@ -164,6 +166,7 @@
 		8C84728A1EDB4C6D00B64A1D /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				8C8472A51EDB5E9000B64A1D /* StockInfo.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -404,6 +407,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C8472A61EDB5E9000B64A1D /* StockInfo.swift in Sources */,
 				8C84729E1EDB570B00B64A1D /* String+Extensions.swift in Sources */,
 				8C8472A41EDB589500B64A1D /* CGFloat+Extensions.swift in Sources */,
 				C01FB2A31D7E7680000C2D6D /* ChartViewController.swift in Sources */,

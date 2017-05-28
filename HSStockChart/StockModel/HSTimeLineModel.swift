@@ -13,7 +13,7 @@ open class HSTimeLineModel: NSObject {
     public var price: CGFloat = 0
     public var volume: CGFloat = 0
     public var days: [String] = []
-    public var preClosePx: CGFloat = 0
+    public var preClosePrice: CGFloat = 0
     public var avgPirce: CGFloat = 0
     public var totalVolume: CGFloat = 0
     public var trade: CGFloat = 0

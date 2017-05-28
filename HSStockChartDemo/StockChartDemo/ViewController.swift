@@ -210,8 +210,8 @@ extension ViewController {
         
         switch type.chartType {
         case .timeLine:
-            let stockBasicInfo = HSStockBasicInfoModel.getStockBasicInfoModel(getJsonDataFromFile("SZ300033"))
-            let modelArray = HSTimeLineModel.getTimeLineModelArray(getJsonDataFromFile(type.filename), type: type, basicInfo: stockBasicInfo)
+            let stockInfo = StockInfo.getStockBasicInfoModel(getJsonDataFromFile("SZ300033"))
+            let modelArray = HSTimeLineModel.getTimeLineModelArray(getJsonDataFromFile(type.filename), type: type, stockInfo: stockInfo)
             let timeLineView = TimeLineView(frame: frame)
             timeLineView.dataT = modelArray
             timeLineView.isUserInteractionEnabled = true

@@ -40,9 +40,9 @@ extension Candlestick {
     }
 }
 
-extension HSStockBasicInfoModel {
-    class func getStockBasicInfoModel(_ json: JSON) -> HSStockBasicInfoModel {
-        let model = HSStockBasicInfoModel()
+extension StockInfo {
+    static func getStockBasicInfoModel(_ json: JSON) -> StockInfo {
+        var model = StockInfo()
         model.stockName = json["SZ300033"]["name"].stringValue
         model.preClosePrice = CGFloat(json["SZ300033"]["last_close"].doubleValue)
         
@@ -65,7 +65,7 @@ extension HSTimeLineModel {
         return modelArray
     }
     
-    class func getTimeLineModelArray(_ json: JSON, type: HSChartType, basicInfo: HSStockBasicInfoModel) -> [HSTimeLineModel] {
+    class func getTimeLineModelArray(_ json: JSON, type: HSChartType, stockInfo: StockInfo) -> [HSTimeLineModel] {
         var modelArray = [HSTimeLineModel]()
         let toComparePrice = CGFloat(json["chartlist"][0]["current"].doubleValue)
         
@@ -76,7 +76,7 @@ extension HSTimeLineModel {
             model.price = CGFloat(jsonData["current"].doubleValue)
             model.volume = CGFloat(jsonData["volume"].doubleValue)
             model.rate = (model.price - toComparePrice) / toComparePrice
-            model.preClosePx = basicInfo.preClosePrice
+            model.preClosePrice = stockInfo.preClosePrice
             model.days = (json["days"].arrayObject as? [String]) ?? [""]
             modelArray.append(model)
         }
