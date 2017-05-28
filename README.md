@@ -6,6 +6,8 @@
 
 Original code by [Hanson Zhang](https://github.com/zyphs21/HSStockChart)
 
+![](https://github.com/cuba/HSStockChart/blob/master/DemoScreenshot/screenshot_landscape.jpg)
+
 - [Features](#features)
 - [Requirements](#requirements)
 - [Installation](#installation)
