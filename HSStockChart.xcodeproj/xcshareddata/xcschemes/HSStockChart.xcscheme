@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "C0D065721D61C17A00AC5AAF"
-               BuildableName = "HSStockChartDemo.app"
-               BlueprintName = "HSStockChartDemo"
-               ReferencedContainer = "container:HSStockChartDemo.xcodeproj">
+               BlueprintIdentifier = "8C077C2B1EDA13E4007BCCFC"
+               BuildableName = "HSStockChart.framework"
+               BlueprintName = "HSStockChart"
+               ReferencedContainer = "container:HSStockChart.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -28,14 +28,24 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "8C077C341EDA13E5007BCCFC"
+               BuildableName = "HSStockChartTests.xctest"
+               BlueprintName = "HSStockChartTests"
+               ReferencedContainer = "container:HSStockChart.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "C0D065721D61C17A00AC5AAF"
-            BuildableName = "HSStockChartDemo.app"
-            BlueprintName = "HSStockChartDemo"
-            ReferencedContainer = "container:HSStockChartDemo.xcodeproj">
+            BlueprintIdentifier = "8C077C2B1EDA13E4007BCCFC"
+            BuildableName = "HSStockChart.framework"
+            BlueprintName = "HSStockChart"
+            ReferencedContainer = "container:HSStockChart.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -51,35 +61,33 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "C0D065721D61C17A00AC5AAF"
-            BuildableName = "HSStockChartDemo.app"
-            BlueprintName = "HSStockChartDemo"
-            ReferencedContainer = "container:HSStockChartDemo.xcodeproj">
+            BlueprintIdentifier = "8C077C2B1EDA13E4007BCCFC"
+            BuildableName = "HSStockChart.framework"
+            BlueprintName = "HSStockChart"
+            ReferencedContainer = "container:HSStockChart.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
-      buildConfiguration = "Debug"
+      buildConfiguration = "Release"
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "C0D065721D61C17A00AC5AAF"
-            BuildableName = "HSStockChartDemo.app"
-            BlueprintName = "HSStockChartDemo"
-            ReferencedContainer = "container:HSStockChartDemo.xcodeproj">
+            BlueprintIdentifier = "8C077C2B1EDA13E4007BCCFC"
+            BuildableName = "HSStockChart.framework"
+            BlueprintName = "HSStockChart"
+            ReferencedContainer = "container:HSStockChart.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
