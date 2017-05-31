@@ -54,6 +54,8 @@ See the included example [ViewController](https://github.com/cuba/HSStockChart/b
 Original code by [Hanson Zhang](https://github.com/zyphs21/HSStockChart).  
 Awesome work, but not a framework and non-customizable :(
 
+The original code was heavily modified by Jacob Sikorski
+
 ## License
 
 Released under the MIT license. [See LICENSE](https://github.com/cuba/HSStockChart/blob/master/LICENSE) for details
