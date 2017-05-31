@@ -15,7 +15,7 @@
 		8C077CA01EDA14E0007BCCFC /* StockChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C077C8C1EDA14E0007BCCFC /* StockChartView.swift */; };
 		8C077CA51EDA14E0007BCCFC /* GraphCoordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C077C931EDA14E0007BCCFC /* GraphCoordinate.swift */; };
 		8C077CA61EDA14E0007BCCFC /* Candlestick.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C077C941EDA14E0007BCCFC /* Candlestick.swift */; };
-		8C077CAA1EDA14E0007BCCFC /* HSStockChartTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C077C991EDA14E0007BCCFC /* HSStockChartTheme.swift */; };
+		8C077CAA1EDA14E0007BCCFC /* ChartTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C077C991EDA14E0007BCCFC /* ChartTheme.swift */; };
 		8C077CC31EDA17DD007BCCFC /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C077CC21EDA17DD007BCCFC /* Common.swift */; };
 		8C077CCA1EDA1A09007BCCFC /* DrawLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C077CC81EDA1A09007BCCFC /* DrawLayer.swift */; };
 		8C84728E1EDB4EB600B64A1D /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C84728D1EDB4EB600B64A1D /* UIColor+Extensions.swift */; };
@@ -50,7 +50,7 @@
 		8C077C8C1EDA14E0007BCCFC /* StockChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StockChartView.swift; sourceTree = "<group>"; };
 		8C077C931EDA14E0007BCCFC /* GraphCoordinate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphCoordinate.swift; sourceTree = "<group>"; };
 		8C077C941EDA14E0007BCCFC /* Candlestick.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Candlestick.swift; sourceTree = "<group>"; };
-		8C077C991EDA14E0007BCCFC /* HSStockChartTheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSStockChartTheme.swift; sourceTree = "<group>"; };
+		8C077C991EDA14E0007BCCFC /* ChartTheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartTheme.swift; sourceTree = "<group>"; };
 		8C077CC21EDA17DD007BCCFC /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
 		8C077CC81EDA1A09007BCCFC /* DrawLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawLayer.swift; sourceTree = "<group>"; };
 		8C84728D1EDB4EB600B64A1D /* UIColor+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
@@ -149,7 +149,7 @@
 		8C077C981EDA14E0007BCCFC /* Theme */ = {
 			isa = PBXGroup;
 			children = (
-				8C077C991EDA14E0007BCCFC /* HSStockChartTheme.swift */,
+				8C077C991EDA14E0007BCCFC /* ChartTheme.swift */,
 			);
 			path = Theme;
 			sourceTree = "<group>";
@@ -292,7 +292,7 @@
 			files = (
 				8C077CA51EDA14E0007BCCFC /* GraphCoordinate.swift in Sources */,
 				8C077CA61EDA14E0007BCCFC /* Candlestick.swift in Sources */,
-				8C077CAA1EDA14E0007BCCFC /* HSStockChartTheme.swift in Sources */,
+				8C077CAA1EDA14E0007BCCFC /* ChartTheme.swift in Sources */,
 				8C8472C71EDE4B2500B64A1D /* BaseModel.swift in Sources */,
 				8C077C9F1EDA14E0007BCCFC /* AxisView.swift in Sources */,
 				8C8472961EDB54AC00B64A1D /* DateFormatter+Extensions.swift in Sources */,
