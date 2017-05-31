@@ -24,8 +24,6 @@ open class StockChartView: UIView {
     fileprivate var data: [Candlestick] = []
     fileprivate var allData: [Candlestick] = []
     
-    var theme = ChartTheme()
-    
     private var upperChartHeight: CGFloat {
         return theme.upperChartHeightScale * self.frame.height
     }
@@ -33,6 +31,8 @@ open class StockChartView: UIView {
     private var lowerChartTop: CGFloat {
         return upperChartHeight + theme.xAxisHeight
     }
+    
+    public var theme = ChartTheme()
     
     public init(frame: CGRect, data: [Candlestick]) {
         super.init(frame: frame)
@@ -50,7 +50,7 @@ open class StockChartView: UIView {
         candlesticsView = CandlesticsView()
         scrollView.addSubview(candlesticsView)
         
-        axisView = AxisView(frame: bounds)
+        axisView = AxisView(frame: bounds, theme: theme)
         addSubview(axisView)
         
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPressGestureAction(_:)))
@@ -59,6 +59,11 @@ open class StockChartView: UIView {
         let tmpdata = Array(allData[allData.count-70..<allData.count])
         self.configureView(data: tmpdata)
         self.configureView(data: data)
+    }
+    
+    public convenience init(frame: CGRect, data: [Candlestick], theme: ChartTheme) {
+        self.init(frame: frame, data: data)
+        self.theme = theme
     }
     
     required public init?(coder aDecoder: NSCoder) {

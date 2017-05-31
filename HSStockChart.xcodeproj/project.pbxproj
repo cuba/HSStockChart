@@ -23,6 +23,9 @@
 		8C8472941EDB546500B64A1D /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8472931EDB546500B64A1D /* Date+Extensions.swift */; };
 		8C8472961EDB54AC00B64A1D /* DateFormatter+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8472951EDB54AC00B64A1D /* DateFormatter+Extensions.swift */; };
 		8C8472C71EDE4B2500B64A1D /* BaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8472C61EDE4B2500B64A1D /* BaseModel.swift */; };
+		8C8472CA1EDE63B900B64A1D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8C8472CC1EDE63B900B64A1D /* Localizable.strings */; };
+		8C8472CE1EDE640E00B64A1D /* Bundle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8472CD1EDE640E00B64A1D /* Bundle+Extensions.swift */; };
+		8C8472D01EDE648500B64A1D /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8472CF1EDE648500B64A1D /* String+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +58,9 @@
 		8C8472931EDB546500B64A1D /* Date+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		8C8472951EDB54AC00B64A1D /* DateFormatter+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Extensions.swift"; sourceTree = "<group>"; };
 		8C8472C61EDE4B2500B64A1D /* BaseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseModel.swift; sourceTree = "<group>"; };
+		8C8472CB1EDE63B900B64A1D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		8C8472CD1EDE640E00B64A1D /* Bundle+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bundle+Extensions.swift"; sourceTree = "<group>"; };
+		8C8472CF1EDE648500B64A1D /* String+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +110,7 @@
 				8C077C981EDA14E0007BCCFC /* Theme */,
 				8C077C2F1EDA13E4007BCCFC /* HSStockChart.h */,
 				8C077C301EDA13E4007BCCFC /* Info.plist */,
+				8C8472CC1EDE63B900B64A1D /* Localizable.strings */,
 			);
 			path = HSStockChart;
 			sourceTree = "<group>";
@@ -159,6 +166,8 @@
 		8C077CC41EDA1829007BCCFC /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				8C8472CD1EDE640E00B64A1D /* Bundle+Extensions.swift */,
+				8C8472CF1EDE648500B64A1D /* String+Extensions.swift */,
 				8C84728D1EDB4EB600B64A1D /* UIColor+Extensions.swift */,
 				8C8472911EDB52B500B64A1D /* CGFloat+Extensions.swift */,
 				8C8472931EDB546500B64A1D /* Date+Extensions.swift */,
@@ -263,6 +272,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C8472CA1EDE63B900B64A1D /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -290,9 +300,11 @@
 				8C077CA01EDA14E0007BCCFC /* StockChartView.swift in Sources */,
 				8C077C9E1EDA14E0007BCCFC /* CandlesticksView.swift in Sources */,
 				8C077CC31EDA17DD007BCCFC /* Common.swift in Sources */,
+				8C8472D01EDE648500B64A1D /* String+Extensions.swift in Sources */,
 				8C84728E1EDB4EB600B64A1D /* UIColor+Extensions.swift in Sources */,
 				8C077CCA1EDA1A09007BCCFC /* DrawLayer.swift in Sources */,
 				8C8472921EDB52B500B64A1D /* CGFloat+Extensions.swift in Sources */,
+				8C8472CE1EDE640E00B64A1D /* Bundle+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -313,6 +325,17 @@
 			targetProxy = 8C077C371EDA13E5007BCCFC /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		8C8472CC1EDE63B900B64A1D /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8C8472CB1EDE63B900B64A1D /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		8C077C3E1EDA13E5007BCCFC /* Debug */ = {

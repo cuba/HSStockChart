@@ -13,7 +13,7 @@ public enum ChartType {
     case candlesticks
 }
 
-open class CandlesticsView: UIView, HSDrawLayerProtocol {
+open class CandlesticsView: UIView, DrawLayer {
     public var theme = ChartTheme()
     
     private(set) var positionModels: [GraphCoordinate] = []

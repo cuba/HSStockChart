@@ -23,6 +23,7 @@ open class ChartTheme  {
         case titleLabel
     }
     
+    public var labelEdgeInsets: CGFloat = 5.0
     public var upperChartHeightScale: CGFloat = 0.7
     
     public var lineWidth: CGFloat = 1
@@ -41,15 +42,19 @@ open class ChartTheme  {
     public var ma5Color = UIColor(hex: 0xe8de85, alpha: 1)
     public var ma10Color = UIColor(hex: 0x6fa8bb, alpha: 1)
     public var ma20Color = UIColor(hex: 0xdf8fc6, alpha: 1)
+    
+    
     public var borderColor = UIColor(hexString: "#e4e4e4")!
     public var crossLineColor = UIColor(hexString: "#546679")!
     public var textColor = UIColor(hexString: "#8695a6")!
     public var riseColor = UIColor(hexString: "#1dbf60")! // green
     public var fallColor = UIColor(hexString: "#f24957")! // red
     public var priceLineColor = UIColor(hexString: "#0095ff")!
-    public var avgLineColor = UIColor(hexString: "#ffc004")!
     public var fillColor = UIColor(hexString: "#e3efff")!
     public var baseFont = UIFont.systemFont(ofSize: 10)
+    
+    public var priceLabel = "Label.Price".localized
+    public var volumeLabel = "Label.Volume".localized
     
     public func getFrameSize(for element: Element, text: String) -> CGSize {
         let size = text.size(attributes: [NSFontAttributeName: baseFont])

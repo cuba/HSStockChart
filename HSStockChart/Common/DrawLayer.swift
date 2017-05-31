@@ -1,5 +1,5 @@
 //
-//  HSDrawLayerProtocol.swift
+//  DrawLayer.swift
 //  HSStockChartDemo
 //
 //  Created by Hanson on 2017/2/28.
@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-public protocol HSDrawLayerProtocol {
+public protocol DrawLayer {
     var theme: ChartTheme { get }
     
     func drawLine(lineWidth: CGFloat, startPoint: CGPoint, endPoint: CGPoint, strokeColor: UIColor, fillColor: UIColor, isDash: Bool, isAnimated: Bool) -> CAShapeLayer
@@ -17,7 +17,7 @@ public protocol HSDrawLayerProtocol {
     func drawTextLayer(frame: CGRect, text: String, foregroundColor: UIColor, backgroundColor: UIColor, fontSize: CGFloat) -> CATextLayer
 }
 
-extension HSDrawLayerProtocol {
+extension DrawLayer {
     public var theme: ChartTheme {
         return ChartTheme()
     }
@@ -67,19 +67,22 @@ extension HSDrawLayerProtocol {
     
     
     func getYAxisMarkLayer(frame: CGRect, text: String, y: CGFloat, isLeft: Bool, element: ChartTheme.Element) -> CATextLayer {
-        let size = theme.getFrameSize(for: element, text: text)
-        let edgeInsets: CGFloat = 5.0
-        var positionX: CGFloat = edgeInsets
-        let positionY: CGFloat = y - size.height / 2
-        
-        if !isLeft {
-            positionX = frame.width - size.width - edgeInsets
-        }
-        
-        let origin = CGPoint(x: positionX, y: positionY)
-        let frame = CGRect(origin: origin, size: size)
+        let frame = createFrame(for: text, inFrame: frame, y: y, isLeft: isLeft, element: element)
         let yMarkLayer = drawTextLayer(frame: frame, text: text, foregroundColor: theme.textColor)
         
         return yMarkLayer
+    }
+    
+    func createFrame(for text: String, inFrame frame: CGRect, y: CGFloat, isLeft: Bool, element: ChartTheme.Element) -> CGRect {
+        let size = theme.getFrameSize(for: element, text: text)
+        var positionX: CGFloat = theme.labelEdgeInsets
+        let positionY: CGFloat = y - size.height / 2
+        
+        if !isLeft {
+            positionX = frame.width - size.width - theme.labelEdgeInsets
+        }
+        
+        let origin = CGPoint(x: positionX, y: positionY)
+        return CGRect(origin: origin, size: size)
     }
 }
