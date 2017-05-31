@@ -8,8 +8,9 @@
 
 import UIKit
 
-open class Candlestick: NSObject {
-    public var date: Date?
+open class Candlestick: Model {
+    // Protocol Values
+    public var date: Date = Date()
     public var open: CGFloat = 0
     public var close: CGFloat = 0
     public var high: CGFloat = 0
@@ -23,4 +24,16 @@ open class Candlestick: NSObject {
     public var dea: CGFloat = 0
     public var macd: CGFloat = 0
     public var rate: CGFloat = 0
+    
+    public var price: CGFloat {
+        return close
+    }
+    
+    public init(date: Date) {
+        self.date = date
+    }
+    
+    public init() {
+        
+    }
 }

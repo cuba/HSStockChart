@@ -14,7 +14,7 @@ public enum ChartType {
 }
 
 open class CandlesticsView: UIView, HSDrawLayerProtocol {
-    public var theme = HSStockChartTheme()
+    public var theme = ChartTheme()
     
     private(set) var positionModels: [GraphCoordinate] = []
     private var klineModels: [Candlestick] = []
@@ -270,20 +270,15 @@ open class CandlesticsView: UIView, HSDrawLayerProtocol {
         xAxisTimeMarkLayer.sublayers?.removeAll()
         
         for (index, position) in positionModels.enumerated() {
-            guard let date = klineModels[index].date else { break }
+            let date = klineModels[index].date
             
             if lastDate == nil {
                 lastDate = date
             }
             
             guard position.isDrawAxis else { break }
-            
-            switch type {
-            case .timeLine:
-                xAxisTimeMarkLayer.addSublayer(drawXAxisTimeMark(xPosition: position.highPoint.x, dateString: date.toString(withFormat: "yyyy-MM")!))
-            case .candlesticks:
-                xAxisTimeMarkLayer.addSublayer(drawXAxisTimeMark(xPosition: position.highPoint.x, dateString: date.toString(withFormat: "MM-dd")!))
-            }
+            let timeMark = drawXAxisTimeMark(xPosition: position.highPoint.x, date: date, index: index)
+            xAxisTimeMarkLayer.addSublayer(timeMark)
             
             lastDate = date
         }
@@ -313,7 +308,7 @@ open class CandlesticsView: UIView, HSDrawLayerProtocol {
         return klayer
     }
     
-    func drawXAxisTimeMark(xPosition: CGFloat, dateString: String) -> CAShapeLayer {
+    func drawXAxisTimeMark(xPosition: CGFloat, date: Date, index: Int) -> CAShapeLayer {
         let linePath = UIBezierPath()
         linePath.move(to: CGPoint(x: xPosition, y: 0))
         linePath.addLine(to: CGPoint(x: xPosition,  y: self.frame.height * theme.upperChartHeightScale))
@@ -325,12 +320,13 @@ open class CandlesticsView: UIView, HSDrawLayerProtocol {
         lineLayer.strokeColor = theme.borderColor.cgColor
         lineLayer.fillColor = UIColor.clear.cgColor
         
-        let textSize = theme.getTextSize(text: dateString)
+        let text = theme.format(date: date, for: .dateLabel(index: index))
+        let textFrameSize = theme.getFrameSize(for: .dateLabel(index: index), text: text)
         
         var labelX: CGFloat = 0
         var labelY: CGFloat = 0
-        let maxX = frame.maxX - textSize.width
-        labelX = xPosition - textSize.width / 2.0
+        let maxX = frame.maxX - textFrameSize.width
+        labelX = xPosition - textFrameSize.width / 2.0
         labelY = self.frame.height * theme.upperChartHeightScale
         
         if labelX > maxX {
@@ -339,7 +335,7 @@ open class CandlesticsView: UIView, HSDrawLayerProtocol {
             labelX = frame.minX
         }
         
-        let timeLayer = drawTextLayer(frame: CGRect(x: labelX, y: labelY, width: textSize.width, height: textSize.height),text: dateString, foregroundColor: theme.textColor)
+        let timeLayer = drawTextLayer(frame: CGRect(x: labelX, y: labelY, width: textFrameSize.width, height: textFrameSize.height), text: text, foregroundColor: theme.textColor)
         
         let shaperLayer = CAShapeLayer()
         shaperLayer.addSublayer(lineLayer)

@@ -15,16 +15,14 @@
 		8C077CA01EDA14E0007BCCFC /* StockChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C077C8C1EDA14E0007BCCFC /* StockChartView.swift */; };
 		8C077CA51EDA14E0007BCCFC /* GraphCoordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C077C931EDA14E0007BCCFC /* GraphCoordinate.swift */; };
 		8C077CA61EDA14E0007BCCFC /* Candlestick.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C077C941EDA14E0007BCCFC /* Candlestick.swift */; };
-		8C077CA81EDA14E0007BCCFC /* HSTimeLineCoordModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C077C961EDA14E0007BCCFC /* HSTimeLineCoordModel.swift */; };
-		8C077CA91EDA14E0007BCCFC /* HSTimeLineModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C077C971EDA14E0007BCCFC /* HSTimeLineModel.swift */; };
 		8C077CAA1EDA14E0007BCCFC /* HSStockChartTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C077C991EDA14E0007BCCFC /* HSStockChartTheme.swift */; };
-		8C077CAB1EDA14E0007BCCFC /* TimeLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C077C9B1EDA14E0007BCCFC /* TimeLineView.swift */; };
 		8C077CC31EDA17DD007BCCFC /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C077CC21EDA17DD007BCCFC /* Common.swift */; };
 		8C077CCA1EDA1A09007BCCFC /* HSDrawLayerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C077CC81EDA1A09007BCCFC /* HSDrawLayerProtocol.swift */; };
 		8C84728E1EDB4EB600B64A1D /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C84728D1EDB4EB600B64A1D /* UIColor+Extensions.swift */; };
 		8C8472921EDB52B500B64A1D /* CGFloat+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8472911EDB52B500B64A1D /* CGFloat+Extensions.swift */; };
 		8C8472941EDB546500B64A1D /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8472931EDB546500B64A1D /* Date+Extensions.swift */; };
 		8C8472961EDB54AC00B64A1D /* DateFormatter+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8472951EDB54AC00B64A1D /* DateFormatter+Extensions.swift */; };
+		8C8472C71EDE4B2500B64A1D /* BaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8472C61EDE4B2500B64A1D /* BaseModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,16 +47,14 @@
 		8C077C8C1EDA14E0007BCCFC /* StockChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StockChartView.swift; sourceTree = "<group>"; };
 		8C077C931EDA14E0007BCCFC /* GraphCoordinate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphCoordinate.swift; sourceTree = "<group>"; };
 		8C077C941EDA14E0007BCCFC /* Candlestick.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Candlestick.swift; sourceTree = "<group>"; };
-		8C077C961EDA14E0007BCCFC /* HSTimeLineCoordModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSTimeLineCoordModel.swift; sourceTree = "<group>"; };
-		8C077C971EDA14E0007BCCFC /* HSTimeLineModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSTimeLineModel.swift; sourceTree = "<group>"; };
 		8C077C991EDA14E0007BCCFC /* HSStockChartTheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSStockChartTheme.swift; sourceTree = "<group>"; };
-		8C077C9B1EDA14E0007BCCFC /* TimeLineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeLineView.swift; sourceTree = "<group>"; };
 		8C077CC21EDA17DD007BCCFC /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
 		8C077CC81EDA1A09007BCCFC /* HSDrawLayerProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSDrawLayerProtocol.swift; sourceTree = "<group>"; };
 		8C84728D1EDB4EB600B64A1D /* UIColor+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		8C8472911EDB52B500B64A1D /* CGFloat+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGFloat+Extensions.swift"; sourceTree = "<group>"; };
 		8C8472931EDB546500B64A1D /* Date+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		8C8472951EDB54AC00B64A1D /* DateFormatter+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Extensions.swift"; sourceTree = "<group>"; };
+		8C8472C61EDE4B2500B64A1D /* BaseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,10 +99,9 @@
 			children = (
 				8C077CC41EDA1829007BCCFC /* Extensions */,
 				8C077CC11EDA17DD007BCCFC /* Common */,
-				8C077C891EDA14E0007BCCFC /* KLine */,
-				8C077C921EDA14E0007BCCFC /* StockModel */,
+				8C077C891EDA14E0007BCCFC /* Candlesticks */,
+				8C077C921EDA14E0007BCCFC /* Models */,
 				8C077C981EDA14E0007BCCFC /* Theme */,
-				8C077C9A1EDA14E0007BCCFC /* TimeLine */,
 				8C077C2F1EDA13E4007BCCFC /* HSStockChart.h */,
 				8C077C301EDA13E4007BCCFC /* Info.plist */,
 			);
@@ -122,24 +117,25 @@
 			path = HSStockChartTests;
 			sourceTree = "<group>";
 		};
-		8C077C891EDA14E0007BCCFC /* KLine */ = {
+		8C077C891EDA14E0007BCCFC /* Candlesticks */ = {
 			isa = PBXGroup;
 			children = (
 				8C077C8A1EDA14E0007BCCFC /* CandlesticksView.swift */,
 				8C077C8B1EDA14E0007BCCFC /* AxisView.swift */,
 				8C077C8C1EDA14E0007BCCFC /* StockChartView.swift */,
 			);
+			name = Candlesticks;
 			path = KLine;
 			sourceTree = "<group>";
 		};
-		8C077C921EDA14E0007BCCFC /* StockModel */ = {
+		8C077C921EDA14E0007BCCFC /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				8C8472C61EDE4B2500B64A1D /* BaseModel.swift */,
 				8C077C931EDA14E0007BCCFC /* GraphCoordinate.swift */,
 				8C077C941EDA14E0007BCCFC /* Candlestick.swift */,
-				8C077C961EDA14E0007BCCFC /* HSTimeLineCoordModel.swift */,
-				8C077C971EDA14E0007BCCFC /* HSTimeLineModel.swift */,
 			);
+			name = Models;
 			path = StockModel;
 			sourceTree = "<group>";
 		};
@@ -149,14 +145,6 @@
 				8C077C991EDA14E0007BCCFC /* HSStockChartTheme.swift */,
 			);
 			path = Theme;
-			sourceTree = "<group>";
-		};
-		8C077C9A1EDA14E0007BCCFC /* TimeLine */ = {
-			isa = PBXGroup;
-			children = (
-				8C077C9B1EDA14E0007BCCFC /* TimeLineView.swift */,
-			);
-			path = TimeLine;
 			sourceTree = "<group>";
 		};
 		8C077CC11EDA17DD007BCCFC /* Common */ = {
@@ -294,9 +282,8 @@
 			files = (
 				8C077CA51EDA14E0007BCCFC /* GraphCoordinate.swift in Sources */,
 				8C077CA61EDA14E0007BCCFC /* Candlestick.swift in Sources */,
-				8C077CA81EDA14E0007BCCFC /* HSTimeLineCoordModel.swift in Sources */,
 				8C077CAA1EDA14E0007BCCFC /* HSStockChartTheme.swift in Sources */,
-				8C077CAB1EDA14E0007BCCFC /* TimeLineView.swift in Sources */,
+				8C8472C71EDE4B2500B64A1D /* BaseModel.swift in Sources */,
 				8C077C9F1EDA14E0007BCCFC /* AxisView.swift in Sources */,
 				8C8472961EDB54AC00B64A1D /* DateFormatter+Extensions.swift in Sources */,
 				8C8472941EDB546500B64A1D /* Date+Extensions.swift in Sources */,
@@ -306,7 +293,6 @@
 				8C84728E1EDB4EB600B64A1D /* UIColor+Extensions.swift in Sources */,
 				8C077CCA1EDA1A09007BCCFC /* HSDrawLayerProtocol.swift in Sources */,
 				8C8472921EDB52B500B64A1D /* CGFloat+Extensions.swift in Sources */,
-				8C077CA91EDA14E0007BCCFC /* HSTimeLineModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

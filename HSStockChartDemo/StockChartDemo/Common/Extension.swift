@@ -49,38 +49,3 @@ extension StockInfo {
         return model
     }
 }
-
-extension HSTimeLineModel {
-    class func getTimeLineModelArray(_ json: JSON) -> [HSTimeLineModel] {
-        var modelArray = [HSTimeLineModel]()
-        for (_, jsonData): (String, JSON) in json["chartlist"] {
-            let model = HSTimeLineModel()
-            model.time = jsonData["time"].stringValue.toDate(withFormat: "EEE MMM d HH:mm:ss z yyyy")!
-            model.avgPirce = CGFloat(jsonData["avg_price"].doubleValue)
-            model.price = CGFloat(jsonData["current"].doubleValue)
-            model.volume = CGFloat(jsonData["volume"].doubleValue)
-            model.days = (json["days"].arrayObject as? [String]) ?? [""]
-            modelArray.append(model)
-        }
-        return modelArray
-    }
-    
-    class func getTimeLineModelArray(_ json: JSON, type: HSChartType, stockInfo: StockInfo) -> [HSTimeLineModel] {
-        var modelArray = [HSTimeLineModel]()
-        let toComparePrice = CGFloat(json["chartlist"][0]["current"].doubleValue)
-        
-        for (_, jsonData): (String, JSON) in json["chartlist"] {
-            let model = HSTimeLineModel()
-            model.time = jsonData["time"].stringValue.toDate(withFormat: "EEE MMM d HH:mm:ss z yyyy")!
-            model.avgPirce = CGFloat(jsonData["avg_price"].doubleValue)
-            model.price = CGFloat(jsonData["current"].doubleValue)
-            model.volume = CGFloat(jsonData["volume"].doubleValue)
-            model.rate = (model.price - toComparePrice) / toComparePrice
-            model.preClosePrice = stockInfo.preClosePrice
-            model.days = (json["days"].arrayObject as? [String]) ?? [""]
-            modelArray.append(model)
-        }
-        
-        return modelArray
-    }
-}

@@ -17,15 +17,14 @@ open class StockChartView: UIView {
     private var candlesticsView: CandlesticsView!
     private var axisView: AxisView!
     
-    private var type: ChartType!
-    private var theme = HSStockChartTheme()
-    
     private var widthOfKLineView: CGFloat = 0
     private var enableKVO: Bool = true
     private var lineViewWidth: CGFloat = 0.0
     
     fileprivate var data: [Candlestick] = []
     fileprivate var allData: [Candlestick] = []
+    
+    var theme = ChartTheme()
     
     private var upperChartHeight: CGFloat {
         return theme.upperChartHeightScale * self.frame.height
@@ -35,11 +34,10 @@ open class StockChartView: UIView {
         return upperChartHeight + theme.xAxisHeight
     }
     
-    public init(frame: CGRect, data: [Candlestick], type: ChartType) {
+    public init(frame: CGRect, data: [Candlestick]) {
         super.init(frame: frame)
         self.allData = data
         backgroundColor = UIColor.white
-        
         drawFrameLayer()
         
         scrollView = UIScrollView(frame: bounds)
@@ -50,7 +48,6 @@ open class StockChartView: UIView {
         addSubview(scrollView)
         
         candlesticsView = CandlesticsView()
-        candlesticsView.type = type
         scrollView.addSubview(candlesticsView)
         
         axisView = AxisView(frame: bounds)
@@ -176,7 +173,7 @@ open class StockChartView: UIView {
             let highLightVolume = candlesticsView.positionModels[index].volumeStartPoint.y
             let highLightClose = candlesticsView.positionModels[index].closeY
             
-            axisView.drawCrossLine(pricePoint: CGPoint(x: centerX, y: highLightClose), volumePoint: CGPoint(x: centerX, y: highLightVolume), model: entity)
+            axisView.drawCrossLine(pricePoint: CGPoint(x: centerX, y: highLightClose), volumePoint: CGPoint(x: centerX, y: highLightVolume), model: entity, index: index)
             
             let lastData = selectedIndex > 0 ? candlesticsView.data[selectedIndex - 1] : candlesticsView.data[0]
             let userInfo: [AnyHashable: Any]? = ["preClose" : lastData.close, "kLineEntity" : candlesticsView.data[selectedIndex]]

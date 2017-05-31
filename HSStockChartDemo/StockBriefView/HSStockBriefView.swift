@@ -45,23 +45,23 @@ class HSStockBriefView: UIView {
         return view
     }
     
-    func configureView(_ timeLineEntity: HSTimeLineModel) {
-        
-        var labelColor: UIColor
-        if timeLineEntity.rate < 0 {
-            labelColor = UIColor(hexString: "#1DBF60")!
-        } else if timeLineEntity.rate > 0 {
-            labelColor = UIColor.red
-        } else {
-            labelColor = UIColor.gray
-        }
-        priceLabel.textColor = labelColor
-        ratioLabel.textColor = labelColor
-        
-        priceLabel.text = timeLineEntity.price.toString(withFormat: ".8")
-        ratioLabel.text = (timeLineEntity.rate * 100).toPercentString(withFormat: ".2")
-        timeLabel.text = timeLineEntity.time.toString(withFormat: "HH:mm")
-        volumeLabel.text = timeLineEntity.volume.toString(withFormat: ".2")
-    }
+//    func configureView(_ timeLineEntity: HSTimeLineModel) {
+//        
+//        var labelColor: UIColor
+//        if timeLineEntity.rate < 0 {
+//            labelColor = UIColor(hexString: "#1DBF60")!
+//        } else if timeLineEntity.rate > 0 {
+//            labelColor = UIColor.red
+//        } else {
+//            labelColor = UIColor.gray
+//        }
+//        priceLabel.textColor = labelColor
+//        ratioLabel.textColor = labelColor
+//        
+//        priceLabel.text = timeLineEntity.price.toString(withFormat: ".8")
+//        ratioLabel.text = (timeLineEntity.rate * 100).toPercentString(withFormat: ".2")
+//        timeLabel.text = timeLineEntity.time.toString(withFormat: "HH:mm")
+//        volumeLabel.text = timeLineEntity.volume.toString(withFormat: ".2")
+//    }
 
 }

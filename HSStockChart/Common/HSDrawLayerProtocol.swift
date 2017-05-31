@@ -10,28 +10,19 @@ import Foundation
 import UIKit
 
 public protocol HSDrawLayerProtocol {
-    var theme: HSStockChartTheme { get }
+    var theme: ChartTheme { get }
     
-    func drawLine(lineWidth: CGFloat, startPoint: CGPoint, endPoint: CGPoint, strokeColor: UIColor, fillColor: UIColor, isDash: Bool, isAnimate: Bool) -> CAShapeLayer
+    func drawLine(lineWidth: CGFloat, startPoint: CGPoint, endPoint: CGPoint, strokeColor: UIColor, fillColor: UIColor, isDash: Bool, isAnimated: Bool) -> CAShapeLayer
     
     func drawTextLayer(frame: CGRect, text: String, foregroundColor: UIColor, backgroundColor: UIColor, fontSize: CGFloat) -> CATextLayer
-        
-    func getCrossLineLayer(frame: CGRect, pricePoint: CGPoint, volumePoint: CGPoint, model: AnyObject?) -> CAShapeLayer
 }
 
 extension HSDrawLayerProtocol {
-    
-    public var theme: HSStockChartTheme {
-        return HSStockChartTheme()
+    public var theme: ChartTheme {
+        return ChartTheme()
     }
     
-    public func drawLine(lineWidth: CGFloat,
-                  startPoint: CGPoint,
-                  endPoint: CGPoint,
-                  strokeColor: UIColor,
-                  fillColor: UIColor,
-                  isDash: Bool = false,
-                  isAnimate: Bool = false) -> CAShapeLayer {
+    public func drawLine(lineWidth: CGFloat, startPoint: CGPoint, endPoint: CGPoint, strokeColor: UIColor, fillColor: UIColor, isDash: Bool = false, isAnimated: Bool = false) -> CAShapeLayer {
         
         let linePath = UIBezierPath()
         linePath.move(to: startPoint)
@@ -47,7 +38,7 @@ extension HSDrawLayerProtocol {
             lineLayer.lineDashPattern = [3, 3]
         }
         
-        if isAnimate {
+        if isAnimated {
             let path = CABasicAnimation(keyPath: "strokeEnd")
             path.duration = 1.0
             path.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
@@ -75,122 +66,20 @@ extension HSDrawLayerProtocol {
     }
     
     
-    /// 获取纵轴的标签图层
-    func getYAxisMarkLayer(frame: CGRect, text: String, y: CGFloat, isLeft: Bool) -> CATextLayer {
-        let textSize = theme.getTextSize(text: text)
-        let yAxisLabelEdgeInset: CGFloat = 5
-        var labelX: CGFloat = 0
+    func getYAxisMarkLayer(frame: CGRect, text: String, y: CGFloat, isLeft: Bool, element: ChartTheme.Element) -> CATextLayer {
+        let size = theme.getFrameSize(for: element, text: text)
+        let edgeInsets: CGFloat = 5.0
+        var positionX: CGFloat = edgeInsets
+        let positionY: CGFloat = y - size.height / 2
         
-        if isLeft {
-            labelX = yAxisLabelEdgeInset
-        } else {
-            labelX = frame.width - textSize.width - yAxisLabelEdgeInset
+        if !isLeft {
+            positionX = frame.width - size.width - edgeInsets
         }
         
-        let labelY: CGFloat = y - textSize.height / 2.0
-        let yMarkLayer = drawTextLayer(frame: CGRect(x: labelX, y: labelY, width: textSize.width, height: textSize.height), text: text, foregroundColor: theme.textColor)
+        let origin = CGPoint(x: positionX, y: positionY)
+        let frame = CGRect(origin: origin, size: size)
+        let yMarkLayer = drawTextLayer(frame: frame, text: text, foregroundColor: theme.textColor)
         
         return yMarkLayer
-    }
-    
-    /// 获取长按显示的十字线及其标签图层
-    public func getCrossLineLayer(frame: CGRect, pricePoint: CGPoint, volumePoint: CGPoint, model: AnyObject?) -> CAShapeLayer {
-        let highlightLayer = CAShapeLayer()
-        
-        let corssLineLayer = CAShapeLayer()
-        var volMarkLayer = CATextLayer()
-        var yAxisMarkLayer = CATextLayer()
-        var bottomMarkLayer = CATextLayer()
-        var bottomMarkerString = ""
-        var yAxisMarkString = ""
-        var volumeMarkerString = ""
-        
-        guard let model = model else { return highlightLayer }
-        
-        if let entity = model as? Candlestick {
-            yAxisMarkString = entity.close.toString(withFormat: ".2")
-            bottomMarkerString = entity.date?.toString(withFormat: "MM-dd") ?? ""
-            volumeMarkerString = entity.volume.toString(withFormat: ".2")
-            
-        } else if let entity = model as? HSTimeLineModel {
-            yAxisMarkString = entity.price.toString(withFormat: ".2")
-            bottomMarkerString = entity.time.toString(withFormat: "HH:mm")!
-            volumeMarkerString = entity.volume.toString(withFormat: ".2")
-            
-        } else {
-            return highlightLayer
-        }
-        
-        let linePath = UIBezierPath()
-        // 竖线
-        linePath.move(to: CGPoint(x: pricePoint.x, y: 0))
-        linePath.addLine(to: CGPoint(x: pricePoint.x, y: frame.height))
-        
-        // 横线
-        linePath.move(to: CGPoint(x: frame.minX, y: pricePoint.y))
-        linePath.addLine(to: CGPoint(x: frame.maxX, y: pricePoint.y))
-        
-        // 标记交易量的横线
-        linePath.move(to: CGPoint(x: frame.minX, y: volumePoint.y))
-        linePath.addLine(to: CGPoint(x: frame.maxX, y: volumePoint.y))
-        
-        corssLineLayer.lineWidth = theme.lineWidth
-        corssLineLayer.strokeColor = theme.crossLineColor.cgColor
-        corssLineLayer.fillColor = theme.crossLineColor.cgColor
-        corssLineLayer.path = linePath.cgPath
-        
-        // 标记标签大小
-        let yAxisMarkSize = theme.getTextSize(text: yAxisMarkString)
-        let volMarkSize = theme.getTextSize(text: volumeMarkerString)
-        let bottomMarkSize = theme.getTextSize(text: bottomMarkerString)
-        
-        var labelX: CGFloat = 0
-        var labelY: CGFloat = 0
-        
-        // 纵坐标标签
-        if pricePoint.x > frame.width / 2 {
-            labelX = frame.minX
-        } else {
-            labelX = frame.maxX - yAxisMarkSize.width
-        }
-        
-        labelY = pricePoint.y - yAxisMarkSize.height / 2.0
-        yAxisMarkLayer = drawTextLayer(frame: CGRect(x: labelX, y: labelY, width: yAxisMarkSize.width, height: yAxisMarkSize.height),
-                                       text: yAxisMarkString,
-                                       foregroundColor: UIColor.white,
-                                       backgroundColor: theme.textColor)
-        
-        // 底部时间标签
-        let maxX = frame.maxX - bottomMarkSize.width
-        labelX = pricePoint.x - bottomMarkSize.width / 2.0
-        labelY = frame.height * theme.upperChartHeightScale
-        
-        if labelX > maxX {
-            labelX = frame.maxX - bottomMarkSize.width
-        } else if labelX < frame.minX {
-            labelX = frame.minX
-        }
-        
-        bottomMarkLayer = drawTextLayer(frame: CGRect(x: labelX, y: labelY, width: bottomMarkSize.width, height: bottomMarkSize.height), text: bottomMarkerString, foregroundColor: UIColor.white, backgroundColor: theme.textColor)
-        
-        // 交易量右标签
-        if pricePoint.x > frame.width / 2 {
-            labelX = frame.minX
-        } else {
-            labelX = frame.maxX - volMarkSize.width
-        }
-        
-        let maxY = frame.maxY - volMarkSize.height
-        labelY = volumePoint.y - volMarkSize.height / 2.0
-        labelY = labelY > maxY ? maxY : labelY
-        
-        volMarkLayer = drawTextLayer(frame: CGRect(x: labelX, y: labelY, width: volMarkSize.width, height: volMarkSize.height), text: volumeMarkerString, foregroundColor: UIColor.white, backgroundColor: theme.textColor)
-        
-        highlightLayer.addSublayer(corssLineLayer)
-        highlightLayer.addSublayer(yAxisMarkLayer)
-        highlightLayer.addSublayer(bottomMarkLayer)
-        highlightLayer.addSublayer(volMarkLayer)
-        
-        return highlightLayer
     }
 }
