@@ -17,7 +17,7 @@
 		8C077CA61EDA14E0007BCCFC /* Candlestick.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C077C941EDA14E0007BCCFC /* Candlestick.swift */; };
 		8C077CAA1EDA14E0007BCCFC /* HSStockChartTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C077C991EDA14E0007BCCFC /* HSStockChartTheme.swift */; };
 		8C077CC31EDA17DD007BCCFC /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C077CC21EDA17DD007BCCFC /* Common.swift */; };
-		8C077CCA1EDA1A09007BCCFC /* HSDrawLayerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C077CC81EDA1A09007BCCFC /* HSDrawLayerProtocol.swift */; };
+		8C077CCA1EDA1A09007BCCFC /* DrawLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C077CC81EDA1A09007BCCFC /* DrawLayer.swift */; };
 		8C84728E1EDB4EB600B64A1D /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C84728D1EDB4EB600B64A1D /* UIColor+Extensions.swift */; };
 		8C8472921EDB52B500B64A1D /* CGFloat+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8472911EDB52B500B64A1D /* CGFloat+Extensions.swift */; };
 		8C8472941EDB546500B64A1D /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8472931EDB546500B64A1D /* Date+Extensions.swift */; };
@@ -49,7 +49,7 @@
 		8C077C941EDA14E0007BCCFC /* Candlestick.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Candlestick.swift; sourceTree = "<group>"; };
 		8C077C991EDA14E0007BCCFC /* HSStockChartTheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSStockChartTheme.swift; sourceTree = "<group>"; };
 		8C077CC21EDA17DD007BCCFC /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
-		8C077CC81EDA1A09007BCCFC /* HSDrawLayerProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSDrawLayerProtocol.swift; sourceTree = "<group>"; };
+		8C077CC81EDA1A09007BCCFC /* DrawLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawLayer.swift; sourceTree = "<group>"; };
 		8C84728D1EDB4EB600B64A1D /* UIColor+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		8C8472911EDB52B500B64A1D /* CGFloat+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGFloat+Extensions.swift"; sourceTree = "<group>"; };
 		8C8472931EDB546500B64A1D /* Date+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
@@ -150,7 +150,7 @@
 		8C077CC11EDA17DD007BCCFC /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				8C077CC81EDA1A09007BCCFC /* HSDrawLayerProtocol.swift */,
+				8C077CC81EDA1A09007BCCFC /* DrawLayer.swift */,
 				8C077CC21EDA17DD007BCCFC /* Common.swift */,
 			);
 			path = Common;
@@ -291,7 +291,7 @@
 				8C077C9E1EDA14E0007BCCFC /* CandlesticksView.swift in Sources */,
 				8C077CC31EDA17DD007BCCFC /* Common.swift in Sources */,
 				8C84728E1EDB4EB600B64A1D /* UIColor+Extensions.swift in Sources */,
-				8C077CCA1EDA1A09007BCCFC /* HSDrawLayerProtocol.swift in Sources */,
+				8C077CCA1EDA1A09007BCCFC /* DrawLayer.swift in Sources */,
 				8C8472921EDB52B500B64A1D /* CGFloat+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
