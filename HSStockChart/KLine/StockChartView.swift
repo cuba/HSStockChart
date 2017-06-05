@@ -21,8 +21,8 @@ open class StockChartView: UIView {
     private var enableKVO: Bool = true
     private var lineViewWidth: CGFloat = 0.0
     
-    fileprivate var data: [Candlestick] = []
-    fileprivate var allData: [Candlestick] = []
+    fileprivate var data = GraphData()
+    fileprivate var allData = GraphData()
     
     private var upperChartHeight: CGFloat {
         return theme.upperChartHeightScale * self.frame.height
@@ -34,7 +34,7 @@ open class StockChartView: UIView {
     
     public var theme = ChartTheme()
     
-    public init(frame: CGRect, data: [Candlestick]) {
+    public init(frame: CGRect, data: GraphData) {
         super.init(frame: frame)
         self.allData = data
         backgroundColor = UIColor.white
@@ -56,12 +56,12 @@ open class StockChartView: UIView {
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPressGestureAction(_:)))
         candlesticsView.addGestureRecognizer(longPressGesture)
         
-        let tmpdata = Array(allData[allData.count-70..<allData.count])
-        self.configureView(data: tmpdata)
+        //let tmpdata = Array(allData[allData.count-70..<allData.count])
+        //self.configureView(data: tmpdata)
         self.configureView(data: data)
     }
     
-    public convenience init(frame: CGRect, data: [Candlestick], theme: ChartTheme) {
+    public convenience init(frame: CGRect, data: GraphData, theme: ChartTheme) {
         self.init(frame: frame, data: data)
         self.theme = theme
     }
@@ -80,14 +80,14 @@ open class StockChartView: UIView {
             candlesticsView.renderWidth = scrollView.frame.width
             candlesticsView.drawKLineView()
             
-            axisView.configureAxis(max: candlesticsView.maxPrice, min: candlesticsView.minPrice, maxVol: candlesticsView.maxVolume)
+            axisView.configureAxis(max: candlesticsView.graphBounds.price.max, min: candlesticsView.graphBounds.price.min, maxVol: candlesticsView.graphBounds.volume.max)
         }
     }
     
-    func configureView(data: [Candlestick]) {
+    func configureView(data: GraphData) {
         self.data = data
         candlesticsView.data = data
-        let count: CGFloat = CGFloat(data.count)
+        let count: CGFloat = CGFloat(data.candlesticks.count)
         
         lineViewWidth = count * theme.candleWidth + (count + 1) * theme.candleGap
         if lineViewWidth < self.frame.width {
@@ -114,7 +114,7 @@ open class StockChartView: UIView {
     }
     
     func updateKlineViewWidth() {
-        let count: CGFloat = CGFloat(candlesticsView.data.count)
+        let count: CGFloat = CGFloat(candlesticsView.data.candlesticks.count)
         // 总长度
         lineViewWidth = count * theme.candleWidth + (count + 1) * theme.candleGap
         if lineViewWidth < self.frame.width {
@@ -167,21 +167,21 @@ open class StockChartView: UIView {
     func handleLongPressGestureAction(_ recognizer: UILongPressGestureRecognizer) {
         if recognizer.state == .began || recognizer.state == .changed {
             let point = recognizer.location(in: candlesticsView)
-            let selectedIndex = Int(point.x / (theme.candleWidth + theme.candleGap))
+            let selectedIndex = max(0, Int(point.x / (theme.candleWidth + theme.candleGap)))
             guard selectedIndex < candlesticsView.data.count else { return }
-            let index = selectedIndex - candlesticsView.startIndex
+            let index = selectedIndex - candlesticsView.visibleStartIndex
             guard index < candlesticsView.positionModels.count else { return }
             
-            let entity = candlesticsView.data[selectedIndex]
-            let left = candlesticsView.startX + CGFloat(selectedIndex - candlesticsView.startIndex) * (self.theme.candleWidth + theme.candleGap) - scrollView.contentOffset.x
+            let entity = candlesticsView.data.candlesticks[selectedIndex]
+            let left = max(0, candlesticsView.contentOffsetX) + CGFloat(selectedIndex - candlesticsView.visibleStartIndex) * (self.theme.candleWidth + theme.candleGap) - scrollView.contentOffset.x
             let centerX = left + theme.candleWidth / 2.0
             let highLightVolume = candlesticsView.positionModels[index].volumeStartPoint.y
             let highLightClose = candlesticsView.positionModels[index].closeY
             
             axisView.drawCrossLine(pricePoint: CGPoint(x: centerX, y: highLightClose), volumePoint: CGPoint(x: centerX, y: highLightVolume), model: entity, index: index)
             
-            let lastData = selectedIndex > 0 ? candlesticsView.data[selectedIndex - 1] : candlesticsView.data[0]
-            let userInfo: [AnyHashable: Any]? = ["preClose" : lastData.close, "kLineEntity" : candlesticsView.data[selectedIndex]]
+            let lastData = candlesticsView.data.candlesticks[max(0, selectedIndex - 1)]
+            let userInfo: [AnyHashable: Any]? = ["preClose" : lastData.close, "kLineEntity" : candlesticsView.data.candlesticks[selectedIndex]]
             
             NotificationCenter.default.post(name: Notification.Name(rawValue: ChartLongPress), object: self, userInfo: userInfo)
         }

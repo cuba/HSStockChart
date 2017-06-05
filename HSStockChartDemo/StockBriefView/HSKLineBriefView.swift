@@ -52,13 +52,13 @@ class HSKLineBriefView: UIView {
         let riseColor = UIColor.red
         let downColor = UIColor(hexString: "#1DBF60")
 
-        if kLineModel.rate > 0 {
-            close.textColor = riseColor
-            ratio.textColor = riseColor
-        } else {
-            close.textColor = downColor
-            ratio.textColor = downColor
-        }
+//        if kLineModel.rate > 0 {
+//            close.textColor = riseColor
+//            ratio.textColor = riseColor
+//        } else {
+//            close.textColor = downColor
+//            ratio.textColor = downColor
+//        }
         
         if preClose < kLineModel.open {
             open.textColor = riseColor
@@ -83,7 +83,7 @@ class HSKLineBriefView: UIView {
         high.text = kLineModel.high.toString(withFormat: ".8")
         low.text = kLineModel.low.toString(withFormat: ".8")
         volume.text = kLineModel.volume.toString(withFormat: ".2")
-        ratio.text = kLineModel.rate.toString(withFormat: ".2") + "%"
+        //ratio.text = kLineModel.rate.toString(withFormat: ".2") + "%"
         time.text = kLineModel.date.toString(withFormat: "yyyy-MM-dd")
     }
 
