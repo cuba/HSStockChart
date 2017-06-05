@@ -39,11 +39,6 @@ open class ChartTheme  {
     public var candleMaxWidth: CGFloat = 30
     public var candleMinWidth: CGFloat = 2
     
-    public var ma5Color = UIColor(hex: 0xe8de85, alpha: 1)
-    public var ma10Color = UIColor(hex: 0x6fa8bb, alpha: 1)
-    public var ma20Color = UIColor(hex: 0xdf8fc6, alpha: 1)
-    
-    
     public var borderColor = UIColor(hexString: "#e4e4e4")!
     public var crossLineColor = UIColor(hexString: "#546679")!
     public var textColor = UIColor(hexString: "#8695a6")!
@@ -70,6 +65,10 @@ open class ChartTheme  {
     
     public func format(value: CGFloat, for element: Element) -> String {
         return String(format: "%.4f", value)
+    }
+    
+    public func lineColor(forKey key: String) -> UIColor {
+        return UIColor(hex: 0xe8de85, alpha: 1)
     }
     
     public init() { }

@@ -170,13 +170,13 @@ open class StockChartView: UIView {
             let selectedIndex = max(0, Int(point.x / (theme.candleWidth + theme.candleGap)))
             guard selectedIndex < candlesticsView.data.count else { return }
             let index = selectedIndex - candlesticsView.visibleStartIndex
-            guard index < candlesticsView.positionModels.count else { return }
+            guard index < candlesticsView.graphCoordinates.candleCoordinates.count else { return }
             
             let entity = candlesticsView.data.candlesticks[selectedIndex]
             let left = max(0, candlesticsView.contentOffsetX) + CGFloat(selectedIndex - candlesticsView.visibleStartIndex) * (self.theme.candleWidth + theme.candleGap) - scrollView.contentOffset.x
             let centerX = left + theme.candleWidth / 2.0
-            let highLightVolume = candlesticsView.positionModels[index].volumeStartPoint.y
-            let highLightClose = candlesticsView.positionModels[index].closeY
+            let highLightVolume = candlesticsView.graphCoordinates.candleCoordinates[index].volumeStartPoint.y
+            let highLightClose = candlesticsView.graphCoordinates.candleCoordinates[index].closeY
             
             axisView.drawCrossLine(pricePoint: CGPoint(x: centerX, y: highLightClose), volumePoint: CGPoint(x: centerX, y: highLightVolume), model: entity, index: index)
             

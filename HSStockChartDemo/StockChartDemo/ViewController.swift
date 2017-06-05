@@ -174,8 +174,7 @@ extension ViewController: SegmentMenuDelegate {
 
 extension ViewController {
     func getChart(for type: HSChartType, with frame: CGRect) -> UIView {
-        let candlesticks = Candlestick.getKLineModelArray(getJsonDataFromFile(type.filename))
-        let data = GraphData(candlesticks: candlesticks, lines: [])
+        let data = Candlestick.getKLineModelArray(getJsonDataFromFile(type.filename))
         let stockChartView = StockChartView(frame: frame, data: data)
         return stockChartView
     }

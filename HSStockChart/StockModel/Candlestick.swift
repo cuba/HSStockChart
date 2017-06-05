@@ -10,19 +10,19 @@ import UIKit
 
 open class GraphData {
     open var candlesticks: [Candlestick]
-    open var lines: [(key: String, values: [CGFloat])]
+    open var lines: [String: [CGFloat]]
     
     var count: Int {
         return candlesticks.count
     }
     
-    public init(candlesticks: [Candlestick], lines: [(key: String, values: [CGFloat])]) {
+    public init(candlesticks: [Candlestick], lines: [String: [CGFloat]]) {
         self.candlesticks = candlesticks
         self.lines = lines
     }
     
     convenience init() {
-        self.init(candlesticks: [], lines: [])
+        self.init(candlesticks: [], lines: [:])
     }
 }
 

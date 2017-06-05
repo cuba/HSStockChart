@@ -8,25 +8,17 @@
 
 import UIKit
 
-typealias LineCoordinate = (key: String, point: CGPoint)
-
-class GraphCoordinate {
-    var openPoint: CGPoint = .zero
-    var closePoint: CGPoint = .zero
-    var highPoint: CGPoint = .zero
-    var lowPoint: CGPoint = .zero
+class GraphCoordinates {
+    var candleCoordinates: [CandleCoordinate] = []
+    var lineCoordinates: [String: [CGPoint]] = [:]
     
-    var volumeStartPoint: CGPoint = .zero
-    var volumeEndPoint: CGPoint = .zero
-    
-    var candleFillColor: UIColor = UIColor.black
-    var candleRect: CGRect = CGRect.zero
-    
-    var lineCoordinates: [LineCoordinate] = []
-    
-    var closeY: CGFloat = 0
-    
-    var isDrawAxis: Bool = false
+    func addLineCoordinate(key: String, value: CGPoint) {
+        if lineCoordinates[key] == nil {
+            lineCoordinates[key] = [value]
+        } else {
+            lineCoordinates[key]?.append(value)
+        }
+    }
 }
 
 class CandleCoordinate {

@@ -46,8 +46,8 @@ public struct GraphBounds {
 open class CandlesticsView: UIView, DrawLayer {
     public var theme = ChartTheme()
     
-    private(set) var positionModels: [GraphCoordinate] = []
-    private var klineModels: GraphData = GraphData()
+    private(set) var graphCoordinates: GraphCoordinates = GraphCoordinates()
+    private var visibleGraphData: GraphData = GraphData()
     private var kLineViewTotalWidth: CGFloat = 0
     private var showContentWidth: CGFloat = 0
     
@@ -117,9 +117,9 @@ open class CandlesticsView: UIView, DrawLayer {
 
         clearLayer()
         drawXAxisTimeMarkLayer()
-        drawCandleChartLayer(coordinates: positionModels)
-        drawVolumeLayer(coordinates: positionModels)
-        drawLineLayers(coordinates: positionModels)
+        drawCandleChartLayer(coordinates: graphCoordinates.candleCoordinates)
+        drawVolumeLayer(coordinates: graphCoordinates.candleCoordinates)
+        drawLineLayers(coordinates: graphCoordinates.lineCoordinates)
     }
     
     fileprivate func calculateBounds() -> GraphBounds {
@@ -142,9 +142,9 @@ open class CandlesticsView: UIView, DrawLayer {
             maxVolume = max(maxVolume, entity.volume)
             minVolume = min(minVolume, entity.volume)
             
-            for line in data.lines {
-                guard index < line.values.count else { break }
-                let value = line.values[index]
+            for (_, values) in data.lines {
+                guard index < values.count else { break }
+                let value = values[index]
                 maxPrice = max(maxPrice, value)
                 minPrice = min(minPrice, value)
             }
@@ -158,8 +158,8 @@ open class CandlesticsView: UIView, DrawLayer {
     }
     
     fileprivate func convertToPositionModel(data: GraphData) {
-        self.positionModels.removeAll()
-        self.klineModels = GraphData()
+        self.visibleGraphData = GraphData()
+        let graphCoordinates = GraphCoordinates()
         
         let bounds = self.graphBounds
         let axisGap = numberOfCandles / 10
@@ -186,11 +186,6 @@ open class CandlesticsView: UIView, DrawLayer {
             let openPointY = (bounds.price.max - candlestick.open) * priceUnit + minY
             let closePointY = (bounds.price.max - candlestick.close) * priceUnit + minY
             var fillCandleColor = UIColor.black
-            
-            // Volume
-            let volume = candlestick.volume * volumeUnit
-            let volumeStartPoint = CGPoint(x: xPosition, y: self.frame.height - volume)
-            let volumeEndPoint = CGPoint(x: xPosition, y: self.frame.height)
             let height = max(abs(openPointY - closePointY), theme.candleMinHeight)
             let candleRect = CGRect(x: leftPosition, y: min(closePointY, openPointY), width: theme.candleWidth, height: height)
             
@@ -206,23 +201,37 @@ open class CandlesticsView: UIView, DrawLayer {
                 }
             }
             
-            let positionModel = GraphCoordinate()
-            positionModel.highPoint = highPoint
-            positionModel.lowPoint = lowPoint
-            positionModel.closeY = closePointY
-            positionModel.volumeStartPoint = volumeStartPoint
-            positionModel.volumeEndPoint = volumeEndPoint
-            positionModel.candleFillColor = fillCandleColor
-            positionModel.candleRect = candleRect
-            positionModel.isDrawAxis = index % axisGap == 0
+            // Volume
+            let volume = candlestick.volume * volumeUnit
+            let volumeStartPoint = CGPoint(x: xPosition, y: self.frame.height - volume)
+            let volumeEndPoint = CGPoint(x: xPosition, y: self.frame.height)
             
-            self.positionModels.append(positionModel)
+            let candleCoordinate = CandleCoordinate()
+            candleCoordinate.highPoint = highPoint
+            candleCoordinate.lowPoint = lowPoint
+            candleCoordinate.closeY = closePointY
+            candleCoordinate.volumeStartPoint = volumeStartPoint
+            candleCoordinate.volumeEndPoint = volumeEndPoint
+            candleCoordinate.candleFillColor = fillCandleColor
+            candleCoordinate.candleRect = candleRect
+            candleCoordinate.isDrawAxis = index % axisGap == 0
+            
+            // Lines
+            for (key, values) in data.lines {
+                guard index < values.count else { break }
+                let value = values[index]
+                let point = CGPoint(x: xPosition, y: (bounds.price.max - value) * priceUnit + minY)
+                graphCoordinates.addLineCoordinate(key: key, value: point)
+            }
+            
+            graphCoordinates.candleCoordinates.append(candleCoordinate)
             candlesticks.append(candlestick)
-            self.klineModels = GraphData(candlesticks: candlesticks, lines: [])
+            self.visibleGraphData = GraphData(candlesticks: candlesticks, lines: [:])
+            self.graphCoordinates = graphCoordinates
         }
     }
     
-    func drawCandleChartLayer(coordinates: [GraphCoordinate]) {
+    func drawCandleChartLayer(coordinates: [CandleCoordinate]) {
         candleChartLayer.sublayers?.removeAll()
         
         for coordinate in coordinates {
@@ -233,7 +242,7 @@ open class CandlesticsView: UIView, DrawLayer {
         self.layer.addSublayer(candleChartLayer)
     }
     
-    func drawVolumeLayer(coordinates: [GraphCoordinate]) {
+    func drawVolumeLayer(coordinates: [CandleCoordinate]) {
         volumeLayer.sublayers?.removeAll()
         
         for model in coordinates {
@@ -244,8 +253,15 @@ open class CandlesticsView: UIView, DrawLayer {
         self.layer.addSublayer(volumeLayer)
     }
     
-    func drawLineLayers(coordinates: [GraphCoordinate]) {
+    func drawLineLayers(coordinates: [String: [CGPoint]]) {
         lineLayers.forEach({ $0.sublayers?.removeAll() })
+        
+        for (key, values) in coordinates {
+            let color = theme.lineColor(forKey: key)
+            let lineLayer = createLineLayer(for: values, color: color.cgColor)
+            self.layer.addSublayer(lineLayer)
+            lineLayers.append(lineLayer)
+        }
     }
     
     private func createLineLayer(for coordinates: [CGPoint], color: CGColor) -> CAShapeLayer {
@@ -269,8 +285,8 @@ open class CandlesticsView: UIView, DrawLayer {
         var lastDate: Date?
         xAxisTimeMarkLayer.sublayers?.removeAll()
         
-        for (index, position) in positionModels.enumerated() {
-            let date = klineModels.candlesticks[index].date
+        for (index, position) in graphCoordinates.candleCoordinates.enumerated() {
+            let date = visibleGraphData.candlesticks[index].date
             
             if lastDate == nil {
                 lastDate = date
@@ -290,9 +306,10 @@ open class CandlesticsView: UIView, DrawLayer {
         candleChartLayer.removeFromSuperlayer()
         volumeLayer.removeFromSuperlayer()
         xAxisTimeMarkLayer.removeFromSuperlayer()
+        lineLayers.forEach({ $0.removeFromSuperlayer() })
     }
     
-    fileprivate func getCandleLayer(model: GraphCoordinate) -> CAShapeLayer {
+    fileprivate func getCandleLayer(model: CandleCoordinate) -> CAShapeLayer {
         let linePath = UIBezierPath(rect: model.candleRect)
         linePath.move(to: model.lowPoint)
         linePath.addLine(to: model.highPoint)
