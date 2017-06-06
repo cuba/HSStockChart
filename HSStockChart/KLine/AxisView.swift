@@ -26,6 +26,7 @@ open class AxisView: UIView, DrawLayer {
     }
     
     public var theme: ChartTheme = ChartTheme()
+    public var dataSource: CandlesticksViewDataSource = DefaultCandlesticksViewDataSource()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -48,34 +49,34 @@ open class AxisView: UIView, DrawLayer {
     }
     
     open func configureAxis(max: CGFloat, min: CGFloat, maxVol: CGFloat) {
-        let maxPriceStr = theme.format(value: max, for: .priceLabel)
-        let minPriceStr = theme.format(value: min, for: .priceLabel)
-        let midPriceStr = theme.format(value: (max + min) / 2, for: .priceLabel)
-        let maxVolStr = theme.format(value: maxVol, for: .volumeLabel)
+        let maxPriceStr = dataSource.format(price: max, for: .axis)
+        let minPriceStr = dataSource.format(price: min, for: .axis)
+        let midPriceStr = dataSource.format(price: (max + min) / 2, for: .axis)
+        let maxVolStr = dataSource.format(volume: maxVol, for: .axis)
         maxPriceLabelLayer.string = maxPriceStr
         minPriceLabelLayer.string = minPriceStr
         midPriceLabelLayer.string = midPriceStr
         maxVolumeLabelLayer.string = maxVolStr
         
         // We need to update the frames
-        maxPriceLabelLayer.frame = createFrame(for: maxPriceStr, inFrame: frame, y: theme.viewMinYGap, isLeft: false, element: .priceLabel)
-        minPriceLabelLayer.frame = createFrame(for: minPriceStr, inFrame: frame, y: upperChartHeight / 2, isLeft: false, element: .priceLabel)
-        midPriceLabelLayer.frame = createFrame(for: midPriceStr, inFrame: frame, y: upperChartHeight - theme.viewMinYGap, isLeft: false, element: .priceLabel)
-        maxVolumeLabelLayer.frame = createFrame(for: maxVolStr, inFrame: frame, y: lowerChartTop + theme.volumeGap, isLeft: false, element: .priceLabel)
+        maxPriceLabelLayer.frame = createFrame(for: maxPriceStr, inFrame: frame, y: theme.viewMinYGap, isLeft: false)
+        minPriceLabelLayer.frame = createFrame(for: minPriceStr, inFrame: frame, y: upperChartHeight / 2, isLeft: false)
+        midPriceLabelLayer.frame = createFrame(for: midPriceStr, inFrame: frame, y: upperChartHeight - theme.viewMinYGap, isLeft: false)
+        maxVolumeLabelLayer.frame = createFrame(for: maxVolStr, inFrame: frame, y: lowerChartTop + theme.volumeGap, isLeft: false)
     }
     
     public func drawMarkLayers() {
         // Title Labels
-        priceLabelLayer = getYAxisMarkLayer(frame: frame, text: theme.priceLabel, y: theme.viewMinYGap, isLeft: true, element: .titleLabel)
-        volumeLabelLayer = getYAxisMarkLayer(frame: frame, text: theme.volumeLabel, y: lowerChartTop + theme.volumeGap, isLeft: true, element: .titleLabel)
+        priceLabelLayer = getYAxisMarkLayer(frame: frame, text: theme.priceLabel, y: theme.viewMinYGap, isLeft: true)
+        volumeLabelLayer = getYAxisMarkLayer(frame: frame, text: theme.volumeLabel, y: lowerChartTop + theme.volumeGap, isLeft: true)
         
         // Price Labels
-        maxPriceLabelLayer = getYAxisMarkLayer(frame: frame, text: "0.00", y: theme.viewMinYGap, isLeft: false, element: .priceLabel)
-        midPriceLabelLayer = getYAxisMarkLayer(frame: frame, text: "0.00", y: upperChartHeight / 2, isLeft: false, element: .priceLabel)
-        minPriceLabelLayer = getYAxisMarkLayer(frame: frame, text: "0.00", y: upperChartHeight - theme.viewMinYGap, isLeft: false, element: .priceLabel)
+        maxPriceLabelLayer = getYAxisMarkLayer(frame: frame, text: "0.00", y: theme.viewMinYGap, isLeft: false)
+        midPriceLabelLayer = getYAxisMarkLayer(frame: frame, text: "0.00", y: upperChartHeight / 2, isLeft: false)
+        minPriceLabelLayer = getYAxisMarkLayer(frame: frame, text: "0.00", y: upperChartHeight - theme.viewMinYGap, isLeft: false)
         
         // Volume Labels
-        maxVolumeLabelLayer = getYAxisMarkLayer(frame: frame, text: "0.00", y: lowerChartTop + theme.volumeGap, isLeft: false, element: .volumeLabel)
+        maxVolumeLabelLayer = getYAxisMarkLayer(frame: frame, text: "0.00", y: lowerChartTop + theme.volumeGap, isLeft: false)
         
         self.layer.addSublayer(priceLabelLayer)
         self.layer.addSublayer(volumeLabelLayer)
@@ -98,9 +99,9 @@ open class AxisView: UIView, DrawLayer {
     func getCrossLineLayer(frame: CGRect, pricePoint: CGPoint, volumePoint: CGPoint, model: Model, index: Int) -> CAShapeLayer {
         let highlightLayer = CAShapeLayer()
         
-        let priceString = theme.format(value: model.price, for: .priceLabel)
-        let dateString = theme.format(date: model.date, for: .dateLabel(index: index))
-        let volumeString = theme.format(value: model.volume, for: .volumeLabel)
+        let priceString = dataSource.format(price: model.price, for: .axis)
+        let dateString = dataSource.format(date: model.date, for: .axis)
+        let volumeString = dataSource.format(price: model.volume, for: .axis)
         
         highlightLayer.addSublayer(createCrosshairs(for: frame, pricePoint: pricePoint, volumePoint: volumePoint))
         highlightLayer.addSublayer(createPriceTextLayer(for: frame, pricePoint: pricePoint, priceString: priceString, index: index))
@@ -134,7 +135,7 @@ open class AxisView: UIView, DrawLayer {
     }
     
     func createPriceTextLayer(for frame: CGRect, pricePoint: CGPoint, priceString: String, index: Int) -> CATextLayer {
-        let priceMarkSize = theme.getFrameSize(for: .priceLabel, text: priceString)
+        let priceMarkSize = getFrameSize(for: priceString)
         var labelX: CGFloat = frame.minX
         let labelY: CGFloat = pricePoint.y - priceMarkSize.height / 2.0
         
@@ -151,7 +152,7 @@ open class AxisView: UIView, DrawLayer {
     }
     
     func createVolumeTextLayer(for frame: CGRect, volumePoint: CGPoint, volumeString: String, index: Int) -> CATextLayer {
-        let volMarkSize = theme.getFrameSize(for: .volumeLabel, text: volumeString)
+        let volMarkSize = getFrameSize(for: volumeString)
         let maxY = frame.maxY - volMarkSize.height
         var labelX = frame.minX
         var labelY = volumePoint.y - volMarkSize.height / 2.0
@@ -166,7 +167,7 @@ open class AxisView: UIView, DrawLayer {
     }
     
     func createDateTextLayer(for frame: CGRect, pricePoint: CGPoint, dateString: String, index: Int) -> CATextLayer {
-        let bottomMarkSize = theme.getFrameSize(for: .dateLabel(index: index), text: dateString)
+        let bottomMarkSize = getFrameSize(for: dateString)
         
         // Date Label
         let maxX = frame.maxX - bottomMarkSize.width
@@ -180,5 +181,25 @@ open class AxisView: UIView, DrawLayer {
         }
         
         return drawTextLayer(frame: CGRect(x: labelX, y: labelY, width: bottomMarkSize.width, height: bottomMarkSize.height), text: dateString, foregroundColor: UIColor.white, backgroundColor: theme.textColor)
+    }
+    
+    private func getYAxisMarkLayer(frame: CGRect, text: String, y: CGFloat, isLeft: Bool) -> CATextLayer {
+        let frame = createFrame(for: text, inFrame: frame, y: y, isLeft: isLeft)
+        let yMarkLayer = drawTextLayer(frame: frame, text: text, foregroundColor: theme.textColor)
+        
+        return yMarkLayer
+    }
+    
+    func createFrame(for text: String, inFrame frame: CGRect, y: CGFloat, isLeft: Bool) -> CGRect {
+        let size = getFrameSize(for: text)
+        var positionX: CGFloat = theme.labelEdgeInsets
+        let positionY: CGFloat = y - size.height / 2
+        
+        if !isLeft {
+            positionX = frame.width - size.width - theme.labelEdgeInsets
+        }
+        
+        let origin = CGPoint(x: positionX, y: positionY)
+        return CGRect(origin: origin, size: size)
     }
 }

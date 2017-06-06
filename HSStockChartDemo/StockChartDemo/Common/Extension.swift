@@ -32,9 +32,9 @@ extension Candlestick {
             candlestick.volume = CGFloat(jsonData["volume"].doubleValue)
             
             lines["ma5"]?.append(CGFloat(jsonData["ma5"].doubleValue))
-            lines["ma10"]?.append(CGFloat(jsonData["ma10"].doubleValue))
-            lines["ma20"]?.append(CGFloat(jsonData["ma20"].doubleValue))
-            lines["ma30"]?.append(CGFloat(jsonData["ma30"].doubleValue))
+//            lines["ma10"]?.append(CGFloat(jsonData["ma10"].doubleValue))
+//            lines["ma20"]?.append(CGFloat(jsonData["ma20"].doubleValue))
+//            lines["ma30"]?.append(CGFloat(jsonData["ma30"].doubleValue))
             
             candlesticks.append(candlestick)
         }

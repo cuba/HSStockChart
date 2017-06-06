@@ -10,19 +10,6 @@ import Foundation
 import UIKit
 
 open class ChartTheme  {
-    public static var defaultDateFormatter: DateFormatter = {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "HH:mm"
-        return dateFormatter
-    }()
-    
-    public enum Element {
-        case dateLabel(index: Int)
-        case priceLabel
-        case volumeLabel
-        case titleLabel
-    }
-    
     public var labelEdgeInsets: CGFloat = 5.0
     public var upperChartHeightScale: CGFloat = 0.7
     
@@ -51,25 +38,12 @@ open class ChartTheme  {
     public var priceLabel = "Label.Price".localized
     public var volumeLabel = "Label.Volume".localized
     
-    public func getFrameSize(for element: Element, text: String) -> CGSize {
+    public init() { }
+    
+    public func getFrameSize(for text: String) -> CGSize {
         let size = text.size(attributes: [NSFontAttributeName: baseFont])
         let width = ceil(size.width) + 5
         let height = ceil(size.height)
         return CGSize(width: width, height: height)
     }
-    
-    public func format(date: Date, for element: Element) -> String {
-        let dateFormatter = ChartTheme.defaultDateFormatter
-        return dateFormatter.string(from: date)
-    }
-    
-    public func format(value: CGFloat, for element: Element) -> String {
-        return String(format: "%.4f", value)
-    }
-    
-    public func lineColor(forKey key: String) -> UIColor {
-        return UIColor(hex: 0xe8de85, alpha: 1)
-    }
-    
-    public init() { }
 }

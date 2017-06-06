@@ -8,6 +8,11 @@
 
 import UIKit
 
+public enum Element {
+    case axis
+    case overlay
+}
+
 public enum ChartType {
     case timeLine
     case candlesticks
@@ -43,8 +48,17 @@ public struct GraphBounds {
     }
 }
 
+public protocol CandlesticksViewDataSource {
+    func format(date: Date, for: Element) -> String
+    func format(price: CGFloat, for: Element) -> String
+    func format(volume: CGFloat, for: Element) -> String
+    func lineColor(forKey key: String) -> UIColor
+}
+
+
 open class CandlesticsView: UIView, DrawLayer {
     public var theme = ChartTheme()
+    public var dataSource: CandlesticksViewDataSource = DefaultCandlesticksViewDataSource()
     
     private(set) var graphCoordinates: GraphCoordinates = GraphCoordinates()
     private var kLineViewTotalWidth: CGFloat = 0
@@ -59,7 +73,7 @@ open class CandlesticsView: UIView, DrawLayer {
     // Layers
     private var candleChartLayer = CAShapeLayer()
     private var volumeLayer = CAShapeLayer()
-    private var lineLayers: [CAShapeLayer] = []
+    private var linesLayer = CAShapeLayer()
     private var xAxisTimeMarkLayer = CAShapeLayer()
     
     // Bounds
@@ -123,7 +137,7 @@ open class CandlesticsView: UIView, DrawLayer {
         drawXAxisTimeMarkLayer()
         drawCandleChartLayer(coordinates: graphCoordinates.candleCoordinates)
         drawVolumeLayer(coordinates: graphCoordinates.candleCoordinates)
-        drawLineLayers(coordinates: graphCoordinates.lineCoordinates)
+        drawLinesLayer(coordinates: graphCoordinates.lineCoordinates)
     }
     
     fileprivate func calculateBounds() -> GraphBounds {
@@ -163,7 +177,7 @@ open class CandlesticsView: UIView, DrawLayer {
     
     fileprivate func convertToPositionModel(data: GraphData) {
         let bounds = self.graphBounds
-        let axisGap = numberOfCandles / 10
+        let axisGap = numberOfCandles / 3
         let gap = theme.viewMinYGap
         let minY = gap
         let startX = max(0, contentOffsetX)
@@ -175,8 +189,6 @@ open class CandlesticsView: UIView, DrawLayer {
             priceUnit = (upperChartHeight - 2 * minY) / bounds.price.difference
             volumeUnit = (lowerChartHeight - theme.volumeGap) / bounds.volume.max
         }
-        
-        var candlesticks: [Candlestick] = []
         
         for index in visibleRange {
             // Price
@@ -229,7 +241,6 @@ open class CandlesticsView: UIView, DrawLayer {
             }
             
             graphCoordinates.candleCoordinates.append(candleCoordinate)
-            candlesticks.append(candlestick)
         }
     }
     
@@ -255,15 +266,16 @@ open class CandlesticsView: UIView, DrawLayer {
         self.layer.addSublayer(volumeLayer)
     }
     
-    func drawLineLayers(coordinates: [String: [CGPoint]]) {
-        lineLayers.forEach({ $0.sublayers?.removeAll() })
+    func drawLinesLayer(coordinates: [String: [CGPoint]]) {
+        linesLayer.sublayers?.removeAll()
         
         for (key, values) in coordinates {
-            let color = theme.lineColor(forKey: key)
+            let color = dataSource.lineColor(forKey: key)
             let lineLayer = createLineLayer(for: values, color: color.cgColor)
-            self.layer.addSublayer(lineLayer)
-            lineLayers.append(lineLayer)
+            linesLayer.addSublayer(lineLayer)
         }
+        
+        self.layer.addSublayer(linesLayer)
     }
     
     private func createLineLayer(for coordinates: [CGPoint], color: CGColor) -> CAShapeLayer {
@@ -305,10 +317,14 @@ open class CandlesticsView: UIView, DrawLayer {
     }
     
     func clearLayer() {
+        candleChartLayer.sublayers?.removeAll()
         candleChartLayer.removeFromSuperlayer()
+        volumeLayer.sublayers?.removeAll()
         volumeLayer.removeFromSuperlayer()
+        xAxisTimeMarkLayer.sublayers?.removeAll()
         xAxisTimeMarkLayer.removeFromSuperlayer()
-        lineLayers.forEach({ $0.removeFromSuperlayer() })
+        linesLayer.sublayers?.removeAll()
+        linesLayer.removeFromSuperlayer()
     }
     
     fileprivate func getCandleLayer(model: CandleCoordinate) -> CAShapeLayer {
@@ -336,8 +352,8 @@ open class CandlesticsView: UIView, DrawLayer {
         lineLayer.strokeColor = theme.borderColor.cgColor
         lineLayer.fillColor = UIColor.clear.cgColor
         
-        let text = theme.format(date: date, for: .dateLabel(index: index))
-        let textFrameSize = theme.getFrameSize(for: .dateLabel(index: index), text: text)
+        let text = dataSource.format(date: date, for: .axis)
+        let textFrameSize = getFrameSize(for: text)
         
         var labelX: CGFloat = 0
         var labelY: CGFloat = 0
@@ -358,5 +374,30 @@ open class CandlesticsView: UIView, DrawLayer {
         shaperLayer.addSublayer(timeLayer)
         
         return shaperLayer
+    }
+}
+
+class DefaultCandlesticksViewDataSource: CandlesticksViewDataSource {
+    public var defaultDateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short
+        dateFormatter.timeStyle = .short
+        return dateFormatter
+    }()
+    
+    public func format(date: Date, for element: Element) -> String {
+        return defaultDateFormatter.string(from: date)
+    }
+    
+    public func format(price: CGFloat, for element: Element) -> String {
+        return String(format: "%.8f", price)
+    }
+    
+    public func format(volume: CGFloat, for element: Element) -> String {
+        return String(format: "%.2f", volume)
+    }
+    
+    public func lineColor(forKey key: String) -> UIColor {
+        return UIColor(hex: 0xe8de85, alpha: 1)
     }
 }

@@ -10,11 +10,14 @@ import Foundation
 import UIKit
 
 public protocol DrawLayer {
+    var dataSource: CandlesticksViewDataSource { get }
     var theme: ChartTheme { get }
     
     func drawLine(lineWidth: CGFloat, startPoint: CGPoint, endPoint: CGPoint, strokeColor: UIColor, fillColor: UIColor, isDash: Bool, isAnimated: Bool) -> CAShapeLayer
     
     func drawTextLayer(frame: CGRect, text: String, foregroundColor: UIColor, backgroundColor: UIColor, fontSize: CGFloat) -> CATextLayer
+    
+    func getFrameSize(for text: String) -> CGSize
 }
 
 extension DrawLayer {
@@ -65,24 +68,9 @@ extension DrawLayer {
         return textLayer
     }
     
-    
-    func getYAxisMarkLayer(frame: CGRect, text: String, y: CGFloat, isLeft: Bool, element: ChartTheme.Element) -> CATextLayer {
-        let frame = createFrame(for: text, inFrame: frame, y: y, isLeft: isLeft, element: element)
-        let yMarkLayer = drawTextLayer(frame: frame, text: text, foregroundColor: theme.textColor)
-        
-        return yMarkLayer
-    }
-    
-    func createFrame(for text: String, inFrame frame: CGRect, y: CGFloat, isLeft: Bool, element: ChartTheme.Element) -> CGRect {
-        let size = theme.getFrameSize(for: element, text: text)
-        var positionX: CGFloat = theme.labelEdgeInsets
-        let positionY: CGFloat = y - size.height / 2
-        
-        if !isLeft {
-            positionX = frame.width - size.width - theme.labelEdgeInsets
-        }
-        
-        let origin = CGPoint(x: positionX, y: positionY)
-        return CGRect(origin: origin, size: size)
+    public func getFrameSize(for text: String) -> CGSize {
+        let font = theme.baseFont
+        let attributes = [NSFontAttributeName: font]
+        return text.size(attributes: attributes)
     }
 }
