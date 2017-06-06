@@ -12,7 +12,7 @@ open class GraphData {
     open var candlesticks: [Candlestick]
     open var lines: [String: [CGFloat]]
     
-    var count: Int {
+    public var count: Int {
         return candlesticks.count
     }
     

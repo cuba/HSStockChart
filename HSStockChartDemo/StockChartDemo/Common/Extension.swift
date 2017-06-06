@@ -20,9 +20,6 @@ extension Candlestick {
             "ma10": [],
             "ma20": [],
             "ma30": [],
-            "diff": [],
-            "dea": [],
-            "macd": []
         ]
         
         for (_, jsonData): (String, JSON) in json["chartlist"] {
@@ -34,15 +31,10 @@ extension Candlestick {
             candlestick.low = CGFloat(jsonData["low"].doubleValue)
             candlestick.volume = CGFloat(jsonData["volume"].doubleValue)
             
-            
             lines["ma5"]?.append(CGFloat(jsonData["ma5"].doubleValue))
             lines["ma10"]?.append(CGFloat(jsonData["ma10"].doubleValue))
             lines["ma20"]?.append(CGFloat(jsonData["ma20"].doubleValue))
             lines["ma30"]?.append(CGFloat(jsonData["ma30"].doubleValue))
-            //lines["diff"]?.append(CGFloat(jsonData["dif"].doubleValue))
-            //lines["dea"]?.append(CGFloat(jsonData["dea"].doubleValue))
-            lines["macd"]?.append(CGFloat(jsonData["macd"].doubleValue))
-            //lines["rate"]?.append(CGFloat(jsonData["percent"].doubleValue))
             
             candlesticks.append(candlestick)
         }

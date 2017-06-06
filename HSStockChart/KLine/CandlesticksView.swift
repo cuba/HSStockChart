@@ -47,7 +47,6 @@ open class CandlesticsView: UIView, DrawLayer {
     public var theme = ChartTheme()
     
     private(set) var graphCoordinates: GraphCoordinates = GraphCoordinates()
-    private var visibleGraphData: GraphData = GraphData()
     private var kLineViewTotalWidth: CGFloat = 0
     private var showContentWidth: CGFloat = 0
     
@@ -93,10 +92,15 @@ open class CandlesticsView: UIView, DrawLayer {
         return visibleStartIndex...visibleEndIndex
     }
     
+    private var visibleCandlesticks: [Candlestick] {
+        let range = visibleRange
+        let visibleCandlesticks = data.candlesticks[range]
+        return Array(visibleCandlesticks)
+    }
+    
     private var numberOfCandles: Int {
         return Int((renderWidth - theme.candleWidth) / ( theme.candleWidth + theme.candleGap))
     }
-    
     
     // MARK: - Initialize
     
@@ -158,14 +162,14 @@ open class CandlesticsView: UIView, DrawLayer {
     }
     
     fileprivate func convertToPositionModel(data: GraphData) {
-        self.visibleGraphData = GraphData()
-        let graphCoordinates = GraphCoordinates()
-        
         let bounds = self.graphBounds
         let axisGap = numberOfCandles / 10
         let gap = theme.viewMinYGap
         let minY = gap
         let startX = max(0, contentOffsetX)
+        
+        graphCoordinates.candleCoordinates.removeAll()
+        graphCoordinates.lineCoordinates.removeAll()
         
         if bounds.price.difference > 0, bounds.volume.max > 0 {
             priceUnit = (upperChartHeight - 2 * minY) / bounds.price.difference
@@ -226,8 +230,6 @@ open class CandlesticsView: UIView, DrawLayer {
             
             graphCoordinates.candleCoordinates.append(candleCoordinate)
             candlesticks.append(candlestick)
-            self.visibleGraphData = GraphData(candlesticks: candlesticks, lines: [:])
-            self.graphCoordinates = graphCoordinates
         }
     }
     
@@ -286,7 +288,7 @@ open class CandlesticsView: UIView, DrawLayer {
         xAxisTimeMarkLayer.sublayers?.removeAll()
         
         for (index, position) in graphCoordinates.candleCoordinates.enumerated() {
-            let date = visibleGraphData.candlesticks[index].date
+            let date = visibleCandlesticks[index].date
             
             if lastDate == nil {
                 lastDate = date
