@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import HSStockChart
+import StockChart
 import SwiftyJSON
 
 public enum HSChartType: Int {

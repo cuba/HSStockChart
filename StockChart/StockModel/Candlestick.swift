@@ -26,18 +26,13 @@ open class GraphData {
     }
 }
 
-open class Candlestick: Model {
-    // Protocol Values
+open class Candlestick {
     public var date: Date = Date()
     public var open: CGFloat = 0
     public var close: CGFloat = 0
     public var high: CGFloat = 0
     public var low: CGFloat = 0
     public var volume: CGFloat = 0
-    
-    public var price: CGFloat {
-        return close
-    }
     
     public init(date: Date) {
         self.date = date

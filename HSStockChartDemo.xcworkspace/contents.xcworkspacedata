@@ -2,10 +2,10 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:HSStockChart.xcodeproj">
+      location = "group:/Users/jacob.sikorski/Developer/StockChart/StockChart.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:HSStockChartDemo.xcodeproj">
+      location = "group:/Users/jacob.sikorski/Developer/StockChart/Example.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">

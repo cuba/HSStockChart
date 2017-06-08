@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8C077CB51EDA1545007BCCFC /* HSStockChart.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C077CB21EDA1537007BCCFC /* HSStockChart.framework */; };
-		8C077CB61EDA1545007BCCFC /* HSStockChart.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8C077CB21EDA1537007BCCFC /* HSStockChart.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8C077CD01EDA1C39007BCCFC /* HSKLineBriefView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C077CCC1EDA1C39007BCCFC /* HSKLineBriefView.swift */; };
 		8C077CD11EDA1C39007BCCFC /* HSKLineBriefView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C077CCD1EDA1C39007BCCFC /* HSKLineBriefView.xib */; };
 		8C077CD21EDA1C39007BCCFC /* HSStockBriefView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C077CCE1EDA1C39007BCCFC /* HSStockBriefView.swift */; };
@@ -40,26 +38,19 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		8C077CB11EDA1537007BCCFC /* PBXContainerItemProxy */ = {
+		DA3A66EE1EE9A56E001CAF68 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 8C077CAC1EDA1537007BCCFC /* HSStockChart.xcodeproj */;
+			containerPortal = DA3A66E91EE9A56E001CAF68 /* StockChart.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 8C077C2C1EDA13E4007BCCFC;
-			remoteInfo = HSStockChart;
+			remoteInfo = StockChart;
 		};
-		8C077CB31EDA1537007BCCFC /* PBXContainerItemProxy */ = {
+		DA3A66F01EE9A56E001CAF68 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 8C077CAC1EDA1537007BCCFC /* HSStockChart.xcodeproj */;
+			containerPortal = DA3A66E91EE9A56E001CAF68 /* StockChart.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 8C077C351EDA13E5007BCCFC;
-			remoteInfo = HSStockChartTests;
-		};
-		8C077CB71EDA1545007BCCFC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8C077CAC1EDA1537007BCCFC /* HSStockChart.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 8C077C2B1EDA13E4007BCCFC;
-			remoteInfo = HSStockChart;
+			remoteInfo = StockChartTests;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -70,7 +61,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				8C077CB61EDA1545007BCCFC /* HSStockChart.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -78,7 +68,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		8C077CAC1EDA1537007BCCFC /* HSStockChart.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = HSStockChart.xcodeproj; sourceTree = "<group>"; };
 		8C077CCC1EDA1C39007BCCFC /* HSKLineBriefView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSKLineBriefView.swift; sourceTree = "<group>"; };
 		8C077CCD1EDA1C39007BCCFC /* HSKLineBriefView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HSKLineBriefView.xib; sourceTree = "<group>"; };
 		8C077CCE1EDA1C39007BCCFC /* HSStockBriefView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSStockBriefView.swift; sourceTree = "<group>"; };
@@ -107,10 +96,11 @@
 		C0A982FF1D7FB5EF003C3B4C /* kLineForMonth.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = kLineForMonth.json; sourceTree = "<group>"; };
 		C0A983001D7FB5EF003C3B4C /* kLineForWeek.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = kLineForWeek.json; sourceTree = "<group>"; };
 		C0A983041D7FB6A2003C3B4C /* FiveTrade.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FiveTrade.json; sourceTree = "<group>"; };
-		C0D065731D61C17A00AC5AAF /* HSStockChartDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HSStockChartDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C0D065731D61C17A00AC5AAF /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0FAA64D1D7D68D900F15200 /* timeLineForDay.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = timeLineForDay.json; sourceTree = "<group>"; };
 		C0FAA6511D7D736800F15200 /* SZ300033.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SZ300033.json; sourceTree = "<group>"; };
 		D969CF6DAE6EF7311BBD930D /* Pods-HSStockChartDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HSStockChartDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HSStockChartDemo/Pods-HSStockChartDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		DA3A66E91EE9A56E001CAF68 /* StockChart.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = StockChart.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,7 +109,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C38E89D3CEC76FC32FFDE2D7 /* Pods_HSStockChartDemo.framework in Frameworks */,
-				8C077CB51EDA1545007BCCFC /* HSStockChart.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -141,15 +130,6 @@
 				91CC8D58DAF1D622DA5BF254 /* Pods-HSStockChartDemo.release.xcconfig */,
 			);
 			name = Pods;
-			sourceTree = "<group>";
-		};
-		8C077CAD1EDA1537007BCCFC /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				8C077CB21EDA1537007BCCFC /* HSStockChart.framework */,
-				8C077CB41EDA1537007BCCFC /* HSStockChartTests.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		8C077CCB1EDA1C39007BCCFC /* StockBriefView */ = {
@@ -183,7 +163,7 @@
 			name = "Supporting Fiels";
 			sourceTree = "<group>";
 		};
-		C03E9AA91D6ECDB900D93016 /* HSStockChartDemo */ = {
+		C03E9AA91D6ECDB900D93016 /* Example */ = {
 			isa = PBXGroup;
 			children = (
 				8C84728A1EDB4C6D00B64A1D /* Models */,
@@ -197,7 +177,7 @@
 				C03E9AB31D6ECDB900D93016 /* SampleData */,
 				8C84728C1EDB4C7500B64A1D /* Supporting Fiels */,
 			);
-			path = HSStockChartDemo;
+			path = Example;
 			sourceTree = "<group>";
 		};
 		C03E9AB31D6ECDB900D93016 /* SampleData */ = {
@@ -231,8 +211,8 @@
 		C0D0656A1D61C17A00AC5AAF = {
 			isa = PBXGroup;
 			children = (
-				8C077CAC1EDA1537007BCCFC /* HSStockChart.xcodeproj */,
-				C03E9AA91D6ECDB900D93016 /* HSStockChartDemo */,
+				DA3A66E91EE9A56E001CAF68 /* StockChart.xcodeproj */,
+				C03E9AA91D6ECDB900D93016 /* Example */,
 				C0D065741D61C17A00AC5AAF /* Products */,
 				6B26B4A8F4D22DD7D16D41DF /* Pods */,
 				15E286114257ED8F46EC389B /* Frameworks */,
@@ -242,7 +222,16 @@
 		C0D065741D61C17A00AC5AAF /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C0D065731D61C17A00AC5AAF /* HSStockChartDemo.app */,
+				C0D065731D61C17A00AC5AAF /* Example.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		DA3A66EA1EE9A56E001CAF68 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DA3A66EF1EE9A56E001CAF68 /* StockChart.framework */,
+				DA3A66F11EE9A56E001CAF68 /* StockChartTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -250,9 +239,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		C0D065721D61C17A00AC5AAF /* HSStockChartDemo */ = {
+		C0D065721D61C17A00AC5AAF /* Example */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C0D065851D61C17A00AC5AAF /* Build configuration list for PBXNativeTarget "HSStockChartDemo" */;
+			buildConfigurationList = C0D065851D61C17A00AC5AAF /* Build configuration list for PBXNativeTarget "Example" */;
 			buildPhases = (
 				8F97D56C18CB7DA8A3B29D03 /* [CP] Check Pods Manifest.lock */,
 				C0D0656F1D61C17A00AC5AAF /* Sources */,
@@ -265,11 +254,10 @@
 			buildRules = (
 			);
 			dependencies = (
-				8C077CB81EDA1545007BCCFC /* PBXTargetDependency */,
 			);
-			name = HSStockChartDemo;
+			name = Example;
 			productName = MyStockChartDemo;
-			productReference = C0D065731D61C17A00AC5AAF /* HSStockChartDemo.app */;
+			productReference = C0D065731D61C17A00AC5AAF /* Example.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -290,7 +278,7 @@
 					};
 				};
 			};
-			buildConfigurationList = C0D0656E1D61C17A00AC5AAF /* Build configuration list for PBXProject "HSStockChartDemo" */;
+			buildConfigurationList = C0D0656E1D61C17A00AC5AAF /* Build configuration list for PBXProject "Example" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -303,30 +291,30 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 8C077CAD1EDA1537007BCCFC /* Products */;
-					ProjectRef = 8C077CAC1EDA1537007BCCFC /* HSStockChart.xcodeproj */;
+					ProductGroup = DA3A66EA1EE9A56E001CAF68 /* Products */;
+					ProjectRef = DA3A66E91EE9A56E001CAF68 /* StockChart.xcodeproj */;
 				},
 			);
 			projectRoot = "";
 			targets = (
-				C0D065721D61C17A00AC5AAF /* HSStockChartDemo */,
+				C0D065721D61C17A00AC5AAF /* Example */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		8C077CB21EDA1537007BCCFC /* HSStockChart.framework */ = {
+		DA3A66EF1EE9A56E001CAF68 /* StockChart.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
-			path = HSStockChart.framework;
-			remoteRef = 8C077CB11EDA1537007BCCFC /* PBXContainerItemProxy */;
+			path = StockChart.framework;
+			remoteRef = DA3A66EE1EE9A56E001CAF68 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8C077CB41EDA1537007BCCFC /* HSStockChartTests.xctest */ = {
+		DA3A66F11EE9A56E001CAF68 /* StockChartTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = HSStockChartTests.xctest;
-			remoteRef = 8C077CB31EDA1537007BCCFC /* PBXContainerItemProxy */;
+			path = StockChartTests.xctest;
+			remoteRef = DA3A66F01EE9A56E001CAF68 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -425,14 +413,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		8C077CB81EDA1545007BCCFC /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = HSStockChart;
-			targetProxy = 8C077CB71EDA1545007BCCFC /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		C03E9AAC1D6ECDB900D93016 /* LaunchScreen.storyboard */ = {
@@ -557,12 +537,12 @@
 				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 5P99QDD6WR;
-				INFOPLIST_FILE = "$(SRCROOT)/HSStockChartDemo/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Example/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.jacobsikorski.HSStockChartDemo;
-				PRODUCT_NAME = HSStockChartDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jacobsikorski.StockChartExample;
+				PRODUCT_NAME = Example;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 			};
@@ -576,12 +556,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 5P99QDD6WR;
-				INFOPLIST_FILE = "$(SRCROOT)/HSStockChartDemo/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Example/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.jacobsikorski.HSStockChartDemo;
-				PRODUCT_NAME = HSStockChartDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jacobsikorski.StockChartExample;
+				PRODUCT_NAME = Example;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 			};
@@ -590,7 +570,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C0D0656E1D61C17A00AC5AAF /* Build configuration list for PBXProject "HSStockChartDemo" */ = {
+		C0D0656E1D61C17A00AC5AAF /* Build configuration list for PBXProject "Example" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C0D065831D61C17A00AC5AAF /* Debug */,
@@ -599,7 +579,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C0D065851D61C17A00AC5AAF /* Build configuration list for PBXNativeTarget "HSStockChartDemo" */ = {
+		C0D065851D61C17A00AC5AAF /* Build configuration list for PBXNativeTarget "Example" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C0D065861D61C17A00AC5AAF /* Debug */,

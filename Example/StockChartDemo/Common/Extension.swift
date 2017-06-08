@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-import HSStockChart
+import StockChart
 import SwiftyJSON
 
 extension Candlestick {

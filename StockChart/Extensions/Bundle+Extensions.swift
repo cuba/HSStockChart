@@ -10,6 +10,6 @@ import Foundation
 
 extension Bundle {
     open static var stockChart: Bundle {
-        return Bundle(identifier: "com.jacobsikorski.HSStockChart")!
+        return Bundle(identifier: "com.jacobsikorski.StockChart")!
     }
 }
