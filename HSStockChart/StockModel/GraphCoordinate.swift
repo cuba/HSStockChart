@@ -10,30 +10,33 @@ import UIKit
 
 class GraphCoordinates {
     var candleCoordinates: [CandleCoordinate] = []
-    var lineCoordinates: [String: [CGPoint]] = [:]
-    
-    func addLineCoordinate(key: String, value: CGPoint) {
-        if lineCoordinates[key] == nil {
-            lineCoordinates[key] = [value]
-        } else {
-            lineCoordinates[key]?.append(value)
-        }
-    }
+    var lines: [String: LineCoordinates] = [:]
 }
 
-class CandleCoordinate {
+struct CandleCoordinate {
     var openPoint: CGPoint = .zero
     var closePoint: CGPoint = .zero
     var highPoint: CGPoint = .zero
     var lowPoint: CGPoint = .zero
     
-    var volumeStartPoint: CGPoint = .zero
-    var volumeEndPoint: CGPoint = .zero
-    
-    var candleFillColor: UIColor = UIColor.black
-    var candleRect: CGRect = CGRect.zero
-    
-    var closeY: CGFloat = 0
+    var frame: CGRect = CGRect.zero
+    var fillColor: CGColor = UIColor.black.cgColor
     
     var isDrawAxis: Bool = false
+}
+
+struct VolumeCoordinate {
+    var highPoint: CGPoint = .zero
+    var lowPoint: CGPoint = .zero
+    var fillColor: CGColor = UIColor.black.cgColor
+}
+
+struct LineCoordinates {
+    var points: [CGPoint] = []
+    var color: CGColor
+    
+    init(points: [CGPoint], color: CGColor) {
+        self.points = points
+        self.color = color
+    }
 }

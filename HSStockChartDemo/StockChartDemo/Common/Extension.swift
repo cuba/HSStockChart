@@ -19,7 +19,7 @@ extension Candlestick {
             "ma5": [],
             "ma10": [],
             "ma20": [],
-            "ma30": [],
+//            "ma30": [],
         ]
         
         for (_, jsonData): (String, JSON) in json["chartlist"] {
@@ -32,8 +32,8 @@ extension Candlestick {
             candlestick.volume = CGFloat(jsonData["volume"].doubleValue)
             
             lines["ma5"]?.append(CGFloat(jsonData["ma5"].doubleValue))
-//            lines["ma10"]?.append(CGFloat(jsonData["ma10"].doubleValue))
-//            lines["ma20"]?.append(CGFloat(jsonData["ma20"].doubleValue))
+            lines["ma10"]?.append(CGFloat(jsonData["ma10"].doubleValue))
+            lines["ma20"]?.append(CGFloat(jsonData["ma20"].doubleValue))
 //            lines["ma30"]?.append(CGFloat(jsonData["ma30"].doubleValue))
             
             candlesticks.append(candlestick)
