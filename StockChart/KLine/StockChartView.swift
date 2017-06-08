@@ -137,22 +137,32 @@ open class StockChartView: UIView {
     
     override open func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == #keyPath(UIScrollView.contentOffset) && enableKVO {
-            let contentOffsetX = scrollView.contentOffset.x
-            
-            let minimumScrollViewOffset = max(0, contentOffsetX)
-            let leftCandleCount = Int(minimumScrollViewOffset / (theme.candleWidth + theme.candleGap))
-            let visibleStartIndex = min(leftCandleCount, data.candlesticks.count)
-            let numberOfCandles = self.numberOfCandles()
-            let visibleCandles = self.visibleCandles
-            let visibleEndIndex = max(visibleStartIndex, min(visibleStartIndex + visibleCandles, numberOfCandles - 1))
-            let visibleRange = visibleStartIndex...visibleEndIndex
+            let visibleRange = createVisibleRange()
             guard visibleRange != self.visibleRange else { return }
             self.visibleRange = visibleRange
-            reloadData()
+            layoutCandlesticks()
         }
     }
     
+    private func createVisibleRange() -> CountableClosedRange<Int> {
+        let contentOffsetX = scrollView.contentOffset.x
+        
+        let minimumScrollViewOffset = max(0, contentOffsetX)
+        let leftCandleCount = Int(minimumScrollViewOffset / (theme.candleWidth + theme.candleGap))
+        let visibleStartIndex = min(leftCandleCount, data.candlesticks.count)
+        let numberOfCandles = self.numberOfCandles()
+        let visibleCandles = self.visibleCandles
+        let visibleEndIndex = max(visibleStartIndex, min(visibleStartIndex + visibleCandles, numberOfCandles - 1))
+        let visibleRange = visibleStartIndex...visibleEndIndex
+        return visibleRange
+    }
+    
     public func reloadData() {
+        self.visibleRange = self.createVisibleRange()
+        layoutCandlesticks()
+    }
+    
+    private func layoutCandlesticks() {
         guard let dataSource = self.dataSource else { return }
         let graphBounds = dataSource.bounds(inVisibleRange: visibleRange, maximumVisibleCandles: visibleCandles)
         candlesticsView.graphBounds = graphBounds
