@@ -201,7 +201,41 @@ extension ViewController: StockChartViewDataSource {
         default:
             return UIColor(hex: 0xe8de85, alpha: 1).cgColor
         }
+    }
+    
+    func bounds(inVisibleRange visibleRange: CountableClosedRange<Int>, maximumVisibleCandles: Int) -> GraphBounds {
+        guard let graphData = self.graphData else { return GraphBounds() }
+        let buffer = maximumVisibleCandles / 2
+        let startIndex = max(0, visibleRange.lowerBound - buffer)
+        let endIndex = min(graphData.count - 1, visibleRange.upperBound + buffer)
         
+        var maxPrice = CGFloat.leastNormalMagnitude
+        var minPrice = CGFloat.greatestFiniteMagnitude
+        var maxVolume = CGFloat.leastNormalMagnitude
+        var minVolume = CGFloat.greatestFiniteMagnitude
+        let range = startIndex...endIndex
+        
+        for index in range {
+            let entity = graphData.candlesticks[index]
+            maxPrice = max(maxPrice, entity.high)
+            minPrice = min(minPrice, entity.low)
+            
+            maxVolume = max(maxVolume, entity.volume)
+            minVolume = min(minVolume, entity.volume)
+            
+            for (_, values) in graphData.lines {
+                guard index < values.count else { break }
+                let value = values[index]
+                maxPrice = max(maxPrice, value)
+                minPrice = min(minPrice, value)
+            }
+        }
+        
+        return GraphBounds(
+            price: Bounds(min: minPrice, max: maxPrice),
+            volume: Bounds(min: minVolume, max: maxVolume),
+            range: range
+        )
     }
 }
 

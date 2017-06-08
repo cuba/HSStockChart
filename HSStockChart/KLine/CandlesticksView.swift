@@ -19,31 +19,31 @@ public enum ChartType {
 }
 
 public struct Bounds {
-    var min: CGFloat
-    var max: CGFloat
+    public var min: CGFloat
+    public var max: CGFloat
     
     var difference: CGFloat {
         return max - min
     }
     
-    init(min: CGFloat, max: CGFloat) {
+    public init(min: CGFloat, max: CGFloat) {
         self.min = min
         self.max = max
     }
 }
 
 public struct GraphBounds {
-    var price: Bounds
-    var volume: Bounds
-    var range: CountableClosedRange<Int>
+    public var price: Bounds
+    public var volume: Bounds
+    public var range: CountableClosedRange<Int>
     
-    init(price: Bounds, volume: Bounds, range: CountableClosedRange<Int>) {
+    public init(price: Bounds, volume: Bounds, range: CountableClosedRange<Int>) {
         self.price = price
         self.volume = volume
         self.range = range
     }
     
-    init() {
+    public init() {
         self.init(price: Bounds(min: 0, max: 0), volume: Bounds(min: 0, max: 0), range: 0...0)
     }
 }

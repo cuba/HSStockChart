@@ -19,6 +19,7 @@ public protocol StockChartViewDataSource {
     func format(price: CGFloat, forElement: Element) -> String
     func format(date: Date, forElement: Element) -> String
     func lineColor(forKey key: String) -> CGColor
+    func bounds(inVisibleRange: CountableClosedRange<Int>, maximumVisibleCandles: Int) -> GraphBounds
 }
 
 open class StockChartView: UIView {
@@ -153,7 +154,7 @@ open class StockChartView: UIView {
     
     public func reloadData() {
         guard let dataSource = self.dataSource else { return }
-        let graphBounds = calculateBounds()
+        let graphBounds = dataSource.bounds(inVisibleRange: visibleRange, maximumVisibleCandles: visibleCandles)
         candlesticsView.graphBounds = graphBounds
         candlesticsView.visibleRange = visibleRange
         
@@ -170,42 +171,6 @@ open class StockChartView: UIView {
         axisView.configureAxis(maxPrice: maxPriceString, minPrice: minPriceString, midPrice: midPriceString, maxVolume: maxVolumeString)
         
         candlesticsView.reloadData()
-    }
-    
-    fileprivate func calculateBounds() -> GraphBounds {
-        let visibleRange = self.visibleRange
-        
-        let buffer = visibleCandles / 2
-        let startIndex = max(0, visibleRange.lowerBound - buffer)
-        let endIndex = min(data.count - 1, visibleRange.upperBound + buffer)
-        
-        var maxPrice = CGFloat.leastNormalMagnitude
-        var minPrice = CGFloat.greatestFiniteMagnitude
-        var maxVolume = CGFloat.leastNormalMagnitude
-        var minVolume = CGFloat.greatestFiniteMagnitude
-        let range = startIndex...endIndex
-        
-        for index in range {
-            let entity = data.candlesticks[index]
-            maxPrice = max(maxPrice, entity.high)
-            minPrice = min(minPrice, entity.low)
-            
-            maxVolume = max(maxVolume, entity.volume)
-            minVolume = min(minVolume, entity.volume)
-            
-            for (_, values) in data.lines {
-                guard index < values.count else { break }
-                let value = values[index]
-                maxPrice = max(maxPrice, value)
-                minPrice = min(minPrice, value)
-            }
-        }
-        
-        return GraphBounds(
-            price: Bounds(min: minPrice, max: maxPrice),
-            volume: Bounds(min: minVolume, max: maxVolume),
-            range: range
-        )
     }
     
     public func configureView(data: GraphData) {
