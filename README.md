@@ -30,7 +30,7 @@ Original code by [Hanson Zhang](https://github.com/zyphs21/HSStockChart)
 
 ### Carthage
 
-[Carthage](https://github.com/cuba/NetworkKit) is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks.
+[Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks.
 
 You can install Carthage with [Homebrew](http://brew.sh/) using the following command:
 
@@ -39,16 +39,16 @@ $ brew update
 $ brew install carthage
 ```
 
-To integrate NetworkKit into your Xcode project using Carthage, specify it in your `Cartfile`:
+To integrate StockChart into your Xcode project using Carthage, specify it in your `Cartfile`:
 
 ```ogdl
-github "cuba/NetworkKit" ~> 1.0
+github "cuba/StockChart" ~> 1.1
 ```
 
-Run `carthage update` to build the framework and drag the built `NetworkKit.framework` into your Xcode project.
+Run `carthage update` to build the framework and drag the built `StockChart.framework` into your Xcode project.
 
 ## Usage
-See the included example [ViewController](https://github.com/cuba/HSStockChart/blob/master/HSStockChartDemo/StockChartDemo/ViewController.swift)
+See the included example [ViewController](https://github.com/cuba/StockChart/blob/master/HSStockChartDemo/StockChartDemo/ViewController.swift)
 
 ## Credits
 Original code by [Hanson Zhang](https://github.com/zyphs21/HSStockChart).  
@@ -58,4 +58,4 @@ The original code was heavily modified by Jacob Sikorski
 
 ## License
 
-Released under the MIT license. [See LICENSE](https://github.com/cuba/HSStockChart/blob/master/LICENSE) for details
+Released under the MIT license. [See LICENSE](https://github.com/cuba/StockChart/blob/master/LICENSE) for details
