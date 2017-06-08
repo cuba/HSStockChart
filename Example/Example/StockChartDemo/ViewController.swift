@@ -164,12 +164,13 @@ extension ViewController: SegmentMenuDelegate {
 extension ViewController {
     func getChart(for type: HSChartType, with frame: CGRect) -> UIView {
         let data = Candlestick.getKLineModelArray(getJsonDataFromFile(type.filename))
+        graphData = data
+        
         let stockChartView = StockChartView(frame: frame)
         stockChartView.configureView(data: data)
         stockChartView.dataSource = self
         stockChartView.delegate = self
         stockChartView.reloadData()
-        graphData = data
         return stockChartView
     }
     
