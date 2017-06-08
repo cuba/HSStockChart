@@ -21,7 +21,7 @@ open class GraphData {
         self.lines = lines
     }
     
-    convenience init() {
+    public convenience init() {
         self.init(candlesticks: [], lines: [:])
     }
 }
