@@ -12,27 +12,34 @@ import HSStockChart
 import SwiftyJSON
 
 extension Candlestick {
-    class func getKLineModelArray(_ json: JSON) -> [Candlestick] {
-        var models = [Candlestick]()
+    class func getKLineModelArray(_ json: JSON) -> GraphData {
+        var candlesticks: [Candlestick] = []
+        
+        var lines: [String: [CGFloat]] = [
+            "ma5": [],
+            "ma10": [],
+            "ma20": [],
+//            "ma30": [],
+        ]
+        
         for (_, jsonData): (String, JSON) in json["chartlist"] {
-            let model = Candlestick()
-            model.date = jsonData["time"].stringValue.toDate(withFormat: "EEE MMM d HH:mm:ss z yyyy")!
-            model.open = CGFloat(jsonData["open"].doubleValue)
-            model.close = CGFloat(jsonData["close"].doubleValue)
-            model.high = CGFloat(jsonData["high"].doubleValue)
-            model.low = CGFloat(jsonData["low"].doubleValue)
-            model.volume = CGFloat(jsonData["volume"].doubleValue)
-            model.ma5 = CGFloat(jsonData["ma5"].doubleValue)
-            model.ma10 = CGFloat(jsonData["ma10"].doubleValue)
-            model.ma20 = CGFloat(jsonData["ma20"].doubleValue)
-            model.ma30 = CGFloat(jsonData["ma30"].doubleValue)
-            model.diff = CGFloat(jsonData["dif"].doubleValue)
-            model.dea = CGFloat(jsonData["dea"].doubleValue)
-            model.macd = CGFloat(jsonData["macd"].doubleValue)
-            model.rate = CGFloat(jsonData["percent"].doubleValue)
-            models.append(model)
+            let candlestick = Candlestick()
+            candlestick.date = jsonData["time"].stringValue.toDate(withFormat: "EEE MMM d HH:mm:ss z yyyy")!
+            candlestick.open = CGFloat(jsonData["open"].doubleValue)
+            candlestick.close = CGFloat(jsonData["close"].doubleValue)
+            candlestick.high = CGFloat(jsonData["high"].doubleValue)
+            candlestick.low = CGFloat(jsonData["low"].doubleValue)
+            candlestick.volume = CGFloat(jsonData["volume"].doubleValue)
+            
+            lines["ma5"]?.append(CGFloat(jsonData["ma5"].doubleValue))
+            lines["ma10"]?.append(CGFloat(jsonData["ma10"].doubleValue))
+            lines["ma20"]?.append(CGFloat(jsonData["ma20"].doubleValue))
+//            lines["ma30"]?.append(CGFloat(jsonData["ma30"].doubleValue))
+            
+            candlesticks.append(candlestick)
         }
-        return models
+        
+        return GraphData(candlesticks: candlesticks, lines: lines)
     }
     
     class func getKLineModelArray() {

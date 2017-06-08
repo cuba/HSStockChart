@@ -8,6 +8,24 @@
 
 import UIKit
 
+open class GraphData {
+    open var candlesticks: [Candlestick]
+    open var lines: [String: [CGFloat]]
+    
+    public var count: Int {
+        return candlesticks.count
+    }
+    
+    public init(candlesticks: [Candlestick], lines: [String: [CGFloat]]) {
+        self.candlesticks = candlesticks
+        self.lines = lines
+    }
+    
+    convenience init() {
+        self.init(candlesticks: [], lines: [:])
+    }
+}
+
 open class Candlestick: Model {
     // Protocol Values
     public var date: Date = Date()
@@ -16,14 +34,6 @@ open class Candlestick: Model {
     public var high: CGFloat = 0
     public var low: CGFloat = 0
     public var volume: CGFloat = 0
-    public var ma5: CGFloat = 0
-    public var ma10: CGFloat = 0
-    public var ma20: CGFloat = 0
-    public var ma30: CGFloat = 0
-    public var diff: CGFloat = 0
-    public var dea: CGFloat = 0
-    public var macd: CGFloat = 0
-    public var rate: CGFloat = 0
     
     public var price: CGFloat {
         return close

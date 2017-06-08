@@ -12,9 +12,11 @@ import UIKit
 public protocol DrawLayer {
     var theme: ChartTheme { get }
     
-    func drawLine(lineWidth: CGFloat, startPoint: CGPoint, endPoint: CGPoint, strokeColor: UIColor, fillColor: UIColor, isDash: Bool, isAnimated: Bool) -> CAShapeLayer
+    func drawLine(lineWidth: CGFloat, startPoint: CGPoint, endPoint: CGPoint, strokeColor: CGColor, fillColor: CGColor, isDash: Bool, isAnimated: Bool) -> CAShapeLayer
     
-    func drawTextLayer(frame: CGRect, text: String, foregroundColor: UIColor, backgroundColor: UIColor, fontSize: CGFloat) -> CATextLayer
+    func drawTextLayer(frame: CGRect, text: String, foregroundColor: CGColor, backgroundColor: CGColor, fontSize: CGFloat) -> CATextLayer
+    
+    func getFrameSize(for text: String) -> CGSize
 }
 
 extension DrawLayer {
@@ -22,7 +24,7 @@ extension DrawLayer {
         return ChartTheme()
     }
     
-    public func drawLine(lineWidth: CGFloat, startPoint: CGPoint, endPoint: CGPoint, strokeColor: UIColor, fillColor: UIColor, isDash: Bool = false, isAnimated: Bool = false) -> CAShapeLayer {
+    public func drawLine(lineWidth: CGFloat, startPoint: CGPoint, endPoint: CGPoint, strokeColor: CGColor, fillColor: CGColor, isDash: Bool = false, isAnimated: Bool = false) -> CAShapeLayer {
         
         let linePath = UIBezierPath()
         linePath.move(to: startPoint)
@@ -31,8 +33,8 @@ extension DrawLayer {
         let lineLayer = CAShapeLayer()
         lineLayer.path = linePath.cgPath
         lineLayer.lineWidth = lineWidth
-        lineLayer.strokeColor = strokeColor.cgColor
-        lineLayer.fillColor = fillColor.cgColor
+        lineLayer.strokeColor = strokeColor
+        lineLayer.fillColor = fillColor
         
         if isDash {
             lineLayer.lineDashPattern = [3, 3]
@@ -51,38 +53,23 @@ extension DrawLayer {
         return lineLayer
     }
     
-    public func drawTextLayer(frame: CGRect, text: String, foregroundColor: UIColor, backgroundColor: UIColor = UIColor.clear, fontSize: CGFloat = 10) -> CATextLayer {
+    public func drawTextLayer(frame: CGRect, text: String, foregroundColor: CGColor, backgroundColor: CGColor = UIColor.clear.cgColor, fontSize: CGFloat = 10) -> CATextLayer {
         
         let textLayer = CATextLayer()
         textLayer.frame = frame
         textLayer.string = text
         textLayer.fontSize = fontSize
-        textLayer.foregroundColor = foregroundColor.cgColor
-        textLayer.backgroundColor = backgroundColor.cgColor
+        textLayer.foregroundColor = foregroundColor
+        textLayer.backgroundColor = backgroundColor
         textLayer.alignmentMode = kCAAlignmentCenter
         textLayer.contentsScale = UIScreen.main.scale
         
         return textLayer
     }
     
-    
-    func getYAxisMarkLayer(frame: CGRect, text: String, y: CGFloat, isLeft: Bool, element: ChartTheme.Element) -> CATextLayer {
-        let frame = createFrame(for: text, inFrame: frame, y: y, isLeft: isLeft, element: element)
-        let yMarkLayer = drawTextLayer(frame: frame, text: text, foregroundColor: theme.textColor)
-        
-        return yMarkLayer
-    }
-    
-    func createFrame(for text: String, inFrame frame: CGRect, y: CGFloat, isLeft: Bool, element: ChartTheme.Element) -> CGRect {
-        let size = theme.getFrameSize(for: element, text: text)
-        var positionX: CGFloat = theme.labelEdgeInsets
-        let positionY: CGFloat = y - size.height / 2
-        
-        if !isLeft {
-            positionX = frame.width - size.width - theme.labelEdgeInsets
-        }
-        
-        let origin = CGPoint(x: positionX, y: positionY)
-        return CGRect(origin: origin, size: size)
+    public func getFrameSize(for text: String) -> CGSize {
+        let font = theme.baseFont
+        let attributes = [NSFontAttributeName: font]
+        return text.size(attributes: attributes)
     }
 }

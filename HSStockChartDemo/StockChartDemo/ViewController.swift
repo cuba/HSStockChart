@@ -33,10 +33,18 @@ public enum HSChartType: Int {
 }
 
 class ViewController: UIViewController {
+    fileprivate var defaultDateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short
+        dateFormatter.timeStyle = .short
+        return dateFormatter
+    }()
+    
     var containerView: UIView!
     var segmentMenu: SegmentMenu!
     var lineBriefView: HSKLineBriefView!
     var currentChartView: UIView?
+    var graphData: GraphData?
     
     var chartTypes: [HSChartType] = [.kLineForDay, .kLineForWeek, .kLineForMonth]
     
@@ -49,7 +57,6 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        addNotificationsObservers()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -93,24 +100,6 @@ class ViewController: UIViewController {
         containerView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0).isActive = true
         containerView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0).isActive = true
         containerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
-    }
-    
-    func addNotificationsObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(showLongPressView), name: NSNotification.Name(rawValue: ChartLongPress), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(hideLongPressView), name: NSNotification.Name(rawValue: ChartLongPressDismiss), object: nil)
-    }
-    
-    // 长按分时线图，显示摘要信息
-    func showLongPressView(_ notification: Notification) {
-        let dataDictionary = (notification as NSNotification).userInfo as! [String: AnyObject]
-        let preClose = dataDictionary["preClose"] as! CGFloat
-        let klineModel = dataDictionary["kLineEntity"] as! Candlestick
-        lineBriefView?.configureView(preClose, kLineModel: klineModel)
-        lineBriefView?.isHidden = false
-    }
-
-    func hideLongPressView(_ notification: Notification) {
-        lineBriefView?.isHidden = true
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -175,7 +164,12 @@ extension ViewController: SegmentMenuDelegate {
 extension ViewController {
     func getChart(for type: HSChartType, with frame: CGRect) -> UIView {
         let data = Candlestick.getKLineModelArray(getJsonDataFromFile(type.filename))
-        let stockChartView = StockChartView(frame: frame, data: data)
+        let stockChartView = StockChartView(frame: frame)
+        stockChartView.configureView(data: data)
+        stockChartView.dataSource = self
+        stockChartView.delegate = self
+        stockChartView.reloadData()
+        graphData = data
         return stockChartView
     }
     
@@ -184,6 +178,48 @@ extension ViewController {
         let content = try! String(contentsOfFile: pathForResource!, encoding: String.Encoding.utf8)
         let jsonContent = content.data(using: String.Encoding.utf8)!
         return JSON(data: jsonContent)
+    }
+}
+
+extension ViewController: StockChartViewDataSource {
+    func format(volume: CGFloat, forElement: Element) -> String {
+        return String(format: "%.0f", volume)
+    }
+    
+    func format(price: CGFloat, forElement: Element) -> String {
+        return String(format: "%.3f", price)
+    }
+    
+    func format(date: Date, forElement: Element) -> String {
+        return defaultDateFormatter.string(from: date)
+    }
+    
+    func lineColor(forKey key: String) -> CGColor {
+        switch key {
+        case "ma5":
+            return UIColor(hex: 0xe8de85, alpha: 1).cgColor
+        default:
+            return UIColor(hex: 0xe8de85, alpha: 1).cgColor
+        }
+        
+    }
+}
+
+extension ViewController: StockChartViewDelegate {
+    func performedLongPressGesture(atIndex index: Int) {
+        guard let candlestick = graphData?.candlesticks[index] else { return }
+        lineBriefView?.configureView(candlestick: candlestick)
+        lineBriefView?.isHidden = false
+    }
+    
+    func releasedLongPressGesture() {
+        lineBriefView?.isHidden = true
+    }
+    
+    func performedTap(atIndex index: Int) {
+        guard let candlestick = graphData?.candlesticks[index] else { return }
+        lineBriefView?.configureView(candlestick: candlestick)
+        lineBriefView?.isHidden = false
     }
 }
 

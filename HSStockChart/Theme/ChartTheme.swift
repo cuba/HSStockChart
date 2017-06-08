@@ -10,19 +10,6 @@ import Foundation
 import UIKit
 
 open class ChartTheme  {
-    public static var defaultDateFormatter: DateFormatter = {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "HH:mm"
-        return dateFormatter
-    }()
-    
-    public enum Element {
-        case dateLabel(index: Int)
-        case priceLabel
-        case volumeLabel
-        case titleLabel
-    }
-    
     public var labelEdgeInsets: CGFloat = 5.0
     public var upperChartHeightScale: CGFloat = 0.7
     
@@ -39,11 +26,6 @@ open class ChartTheme  {
     public var candleMaxWidth: CGFloat = 30
     public var candleMinWidth: CGFloat = 2
     
-    public var ma5Color = UIColor(hex: 0xe8de85, alpha: 1)
-    public var ma10Color = UIColor(hex: 0x6fa8bb, alpha: 1)
-    public var ma20Color = UIColor(hex: 0xdf8fc6, alpha: 1)
-    
-    
     public var borderColor = UIColor(hexString: "#e4e4e4")!
     public var crossLineColor = UIColor(hexString: "#546679")!
     public var textColor = UIColor(hexString: "#8695a6")!
@@ -56,21 +38,12 @@ open class ChartTheme  {
     public var priceLabel = "Label.Price".localized
     public var volumeLabel = "Label.Volume".localized
     
-    public func getFrameSize(for element: Element, text: String) -> CGSize {
+    public init() { }
+    
+    public func getFrameSize(for text: String) -> CGSize {
         let size = text.size(attributes: [NSFontAttributeName: baseFont])
         let width = ceil(size.width) + 5
         let height = ceil(size.height)
         return CGSize(width: width, height: height)
     }
-    
-    public func format(date: Date, for element: Element) -> String {
-        let dateFormatter = ChartTheme.defaultDateFormatter
-        return dateFormatter.string(from: date)
-    }
-    
-    public func format(value: CGFloat, for element: Element) -> String {
-        return String(format: "%.4f", value)
-    }
-    
-    public init() { }
 }

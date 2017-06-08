@@ -48,43 +48,43 @@ class HSKLineBriefView: UIView {
         return view
     }
     
-    func configureView(_ preClose: CGFloat, kLineModel: Candlestick) {
+    func configureView(candlestick: Candlestick) {
         let riseColor = UIColor.red
         let downColor = UIColor(hexString: "#1DBF60")
 
-        if kLineModel.rate > 0 {
-            close.textColor = riseColor
-            ratio.textColor = riseColor
-        } else {
-            close.textColor = downColor
-            ratio.textColor = downColor
-        }
+//        if kLineModel.rate > 0 {
+//            close.textColor = riseColor
+//            ratio.textColor = riseColor
+//        } else {
+//            close.textColor = downColor
+//            ratio.textColor = downColor
+//        }
         
-        if preClose < kLineModel.open {
+        if candlestick.open > candlestick.close {
             open.textColor = riseColor
         } else {
             open.textColor = downColor
         }
         
-        if preClose < kLineModel.high {
+        if candlestick.open < candlestick.high {
             high.textColor = riseColor
         } else {
             high.textColor = downColor
         }
         
-        if preClose < kLineModel.low {
+        if candlestick.open < candlestick.low {
             low.textColor = riseColor
         } else {
             low.textColor = downColor
         }
         
-        open.text = kLineModel.open.toString(withFormat: ".8")
-        close.text = kLineModel.close.toString(withFormat: ".8")
-        high.text = kLineModel.high.toString(withFormat: ".8")
-        low.text = kLineModel.low.toString(withFormat: ".8")
-        volume.text = kLineModel.volume.toString(withFormat: ".2")
-        ratio.text = kLineModel.rate.toString(withFormat: ".2") + "%"
-        time.text = kLineModel.date.toString(withFormat: "yyyy-MM-dd")
+        open.text = candlestick.open.toString(withFormat: ".8")
+        close.text = candlestick.close.toString(withFormat: ".8")
+        high.text = candlestick.high.toString(withFormat: ".8")
+        low.text = candlestick.low.toString(withFormat: ".8")
+        volume.text = candlestick.volume.toString(withFormat: ".2")
+        //ratio.text = candlestick.rate.toString(withFormat: ".2") + "%"
+        time.text = candlestick.date.toString(withFormat: "yyyy-MM-dd")
     }
 
 }
