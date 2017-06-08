@@ -43,8 +43,8 @@ class ViewController: UIViewController {
     var containerView: UIView!
     var segmentMenu: SegmentMenu!
     var lineBriefView: HSKLineBriefView!
-    var currentChartView: UIView?
-    var graphData: GraphData?
+    var currentChartView: StockChartView?
+    var graphData = GraphData()
     
     var chartTypes: [HSChartType] = [.kLineForDay, .kLineForWeek, .kLineForMonth]
     
@@ -162,12 +162,10 @@ extension ViewController: SegmentMenuDelegate {
 }
 
 extension ViewController {
-    func getChart(for type: HSChartType, with frame: CGRect) -> UIView {
-        let data = Candlestick.getKLineModelArray(getJsonDataFromFile(type.filename))
-        graphData = data
-        
+    func getChart(for type: HSChartType, with frame: CGRect) -> StockChartView {
+        graphData = Candlestick.getKLineModelArray(getJsonDataFromFile(type.filename))
         let stockChartView = StockChartView(frame: frame)
-        stockChartView.configureView(data: data)
+        stockChartView.configureView(data: graphData)
         stockChartView.dataSource = self
         stockChartView.delegate = self
         stockChartView.reloadData()
@@ -205,7 +203,6 @@ extension ViewController: StockChartViewDataSource {
     }
     
     func bounds(inVisibleRange visibleRange: CountableClosedRange<Int>, maximumVisibleCandles: Int) -> GraphBounds {
-        guard let graphData = self.graphData else { return GraphBounds() }
         let buffer = maximumVisibleCandles / 2
         let startIndex = max(0, visibleRange.lowerBound - buffer)
         let endIndex = max(startIndex, min(graphData.count - 1, visibleRange.upperBound + buffer))
@@ -242,19 +239,30 @@ extension ViewController: StockChartViewDataSource {
 
 extension ViewController: StockChartViewDelegate {
     func performedLongPressGesture(atIndex index: Int) {
-        guard let candlestick = graphData?.candlesticks[index] else { return }
-        lineBriefView?.configureView(candlestick: candlestick)
-        lineBriefView?.isHidden = false
+        currentChartView?.showDetails(forCandleAtIndex: index)
     }
     
     func releasedLongPressGesture() {
-        lineBriefView?.isHidden = true
+        currentChartView?.hideDetails()
     }
     
     func performedTap(atIndex index: Int) {
-        guard let candlestick = graphData?.candlesticks[index] else { return }
+        if lineBriefView?.isHidden ?? false {
+            currentChartView?.showDetails(forCandleAtIndex: index)
+        } else {
+            currentChartView?.hideDetails()
+        }
+    }
+    
+    
+    func showedDetails(atIndex index: Int){
+        let candlestick = graphData.candlesticks[index]
         lineBriefView?.configureView(candlestick: candlestick)
         lineBriefView?.isHidden = false
+    }
+    
+    func hidDetails() {
+        lineBriefView?.isHidden = true
     }
 }
 

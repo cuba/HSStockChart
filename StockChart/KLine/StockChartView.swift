@@ -12,6 +12,8 @@ public protocol StockChartViewDelegate {
     func performedLongPressGesture(atIndex index: Int)
     func releasedLongPressGesture()
     func performedTap(atIndex index: Int)
+    func showedDetails(atIndex index: Int)
+    func hidDetails()
 }
 
 public protocol StockChartViewDataSource {
@@ -141,6 +143,10 @@ open class StockChartView: UIView {
             guard visibleRange != self.visibleRange else { return }
             self.visibleRange = visibleRange
             layoutCandlesticks()
+            
+            if axisView.showingCrossView {
+                self.hideDetails()
+            }
         }
     }
     
@@ -267,9 +273,11 @@ open class StockChartView: UIView {
         let dateString = dataSource.format(date: candlestick.date, forElement: .overlay)
         
         axisView.drawCrossLine(pricePoint: pricePoint, volumePoint: volumePoint, priceString: priceString, dateString: dateString, volumeString: volumeString, index: index)
+        delegate?.showedDetails(atIndex: index)
     }
     
     public func hideDetails() {
+        delegate?.hidDetails()
         axisView.removeCrossLine()
     }
     
@@ -283,12 +291,10 @@ open class StockChartView: UIView {
         if recognizer.state == .began || recognizer.state == .changed {
             let point = recognizer.location(in: candlesticsView)
             let candleIndex = min(data.count, max(0, Int(point.x / (theme.candleWidth + theme.candleGap))))
-            showDetails(forCandleAtIndex: candleIndex)
             delegate?.performedLongPressGesture(atIndex: candleIndex)
         }
         
         if recognizer.state == .ended {
-            hideDetails()
             delegate?.releasedLongPressGesture()
         }
     }

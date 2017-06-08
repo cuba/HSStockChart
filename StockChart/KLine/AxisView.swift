@@ -17,6 +17,7 @@ open class AxisView: UIView, DrawLayer {
     private var maxVolumeLabelLayer = CATextLayer()
     private var crossLineLayer = CAShapeLayer()
     private var timeMarkLayer = CAShapeLayer()
+    private(set) var showingCrossView = false
     
     // Bounds
     private(set) var graphBounds = GraphBounds()
@@ -110,10 +111,12 @@ open class AxisView: UIView, DrawLayer {
         crossLineLayer.removeFromSuperlayer()
         crossLineLayer = getCrossLineLayer(frame: frame, pricePoint: pricePoint, volumePoint: volumePoint, priceString: priceString, dateString: dateString, volumeString: volumeString, index: index)
         self.layer.addSublayer(crossLineLayer)
+        showingCrossView = true
     }
     
     func removeCrossLine() {
         self.crossLineLayer.removeFromSuperlayer()
+        showingCrossView = false
     }
     
     func getCrossLineLayer(frame: CGRect, pricePoint: CGPoint, volumePoint: CGPoint, priceString: String, dateString: String, volumeString: String, index: Int) -> CAShapeLayer {
