@@ -42,7 +42,7 @@ $ brew install carthage
 To integrate StockChart into your Xcode project using Carthage, specify it in your `Cartfile`:
 
 ```ogdl
-github "cuba/StockChart" ~> 1.1
+github "cuba/StockChart" ~> 1.2
 ```
 
 Run `carthage update` to build the framework and drag the built `StockChart.framework` into your Xcode project.
