@@ -20,11 +20,9 @@ open class ChartTheme  {
     public var viewMinYGap: CGFloat = 15
     public var volumeGap: CGFloat = 1
     
-    public var candleWidth: CGFloat = 5
+    public var candleWidth: CGFloat = 3
     public var candleGap: CGFloat = 2
     public var candleMinHeight: CGFloat = 0.5
-    public var candleMaxWidth: CGFloat = 30
-    public var candleMinWidth: CGFloat = 2
     
     public var borderColor = UIColor(hexString: "#e4e4e4")!
     public var crossLineColor = UIColor(hexString: "#546679")!
@@ -39,11 +37,4 @@ open class ChartTheme  {
     public var volumeLabel = "Label.Volume".localized
     
     public init() { }
-    
-    public func getFrameSize(for text: String) -> CGSize {
-        let size = text.size(attributes: [NSFontAttributeName: baseFont])
-        let width = ceil(size.width) + 5
-        let height = ceil(size.height)
-        return CGSize(width: width, height: height)
-    }
 }

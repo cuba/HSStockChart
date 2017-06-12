@@ -90,7 +90,12 @@ open class StockChartView: UIView {
         return leftPosition + theme.candleWidth / 2.0
     }
     
-    public var theme = ChartTheme()
+    public var theme = ChartTheme() {
+        didSet {
+            candlesticsView?.theme = theme
+        }
+    }
+    
     public var dataSource: StockChartViewDataSource?
     public var delegate: StockChartViewDelegate?
     
@@ -117,6 +122,7 @@ open class StockChartView: UIView {
         // Setup candlesticks view
         candlesticsView = CandlesticsView(frame: frame)
         candlesticsView.dataSource = self
+        candlesticsView.theme = theme
         scrollView.addSubview(candlesticsView)
         
         axisView = AxisView(frame: bounds, theme: theme)
