@@ -1,30 +1,12 @@
 //
 //  Candlestick.swift
-//  HSStockChartDemo
+//  StockChartExample
 //
 //  Created by Hanson on 16/8/29.
 //  Copyright © 2016年 hanson. All rights reserved.
 //
 
 import UIKit
-
-open class GraphData {
-    open var candlesticks: [Candlestick]
-    open var lines: [String: [CGFloat]]
-    
-    public var count: Int {
-        return candlesticks.count
-    }
-    
-    public init(candlesticks: [Candlestick], lines: [String: [CGFloat]]) {
-        self.candlesticks = candlesticks
-        self.lines = lines
-    }
-    
-    public convenience init() {
-        self.init(candlesticks: [], lines: [:])
-    }
-}
 
 open class Candlestick {
     public var date: Date = Date()
@@ -34,11 +16,13 @@ open class Candlestick {
     public var low: CGFloat = 0
     public var volume: CGFloat = 0
     
-    public init(date: Date) {
-        self.date = date
-    }
+    public init() {}
+}
+
+open class Line {
+    public var values: [CGFloat] = []
     
-    public init() {
-        
+    public init(values: [CGFloat]) {
+        self.values = values
     }
 }

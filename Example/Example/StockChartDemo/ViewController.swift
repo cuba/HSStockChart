@@ -11,23 +11,23 @@ import StockChart
 import SwiftyJSON
 
 public enum HSChartType: Int {
-    case kLineForDay
-    case kLineForWeek
-    case kLineForMonth
+    case lineForDay
+    case lineForWeek
+    case lineForMonth
     
     var title: String {
         switch self {
-        case .kLineForDay:          return "Day"
-        case .kLineForWeek:         return "Week"
-        case .kLineForMonth:        return "Month"
+        case .lineForDay:          return "Day"
+        case .lineForWeek:         return "Week"
+        case .lineForMonth:        return "Month"
         }
     }
     
     var filename: String {
         switch self {
-        case .kLineForDay:          return "kLineForDay"
-        case .kLineForWeek:         return "kLineForWeek"
-        case .kLineForMonth:        return "kLineForMonth"
+        case .lineForDay:          return "lineForDay"
+        case .lineForWeek:         return "lineForWeek"
+        case .lineForMonth:        return "lineForMonth"
         }
     }
 }
@@ -43,10 +43,10 @@ class ViewController: UIViewController {
     var containerView: UIView!
     var segmentMenu: SegmentMenu!
     var lineBriefView: HSKLineBriefView!
-    var currentChartView: StockChartView?
+    var chartView: StockChartView!
     var graphData = GraphData()
     
-    var chartTypes: [HSChartType] = [.kLineForDay, .kLineForWeek, .kLineForMonth]
+    var chartTypes: [HSChartType] = [.lineForDay, .lineForWeek, .lineForMonth]
     
     var menuTitles: [String] {
         return self.chartTypes.map { $0.title }
@@ -100,12 +100,22 @@ class ViewController: UIViewController {
         containerView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0).isActive = true
         containerView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0).isActive = true
         containerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
+        
+        chartView = StockChartView()
+        chartView.dataSource = self
+        chartView.delegate = self
+        self.view.addSubview(chartView)
+        chartView.translatesAutoresizingMaskIntoConstraints = false
+        
+        chartView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 0).isActive = true
+        chartView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 0).isActive = true
+        chartView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: 0).isActive = true
+        chartView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 0).isActive = true
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         coordinator.animate(alongsideTransition: { coordinator in
             self.segmentMenu.updateIndicatorFrame()
-            self.removeCurrentChart()
         }, completion: { coordinator in
             self.setChart(at: self.segmentMenu.currentIndex)
         })
@@ -121,29 +131,9 @@ extension ViewController: SegmentMenuDelegate {
     }
     
     func setChart(at index: Int) {
-        currentChartView?.removeFromSuperview()
         let type = self.chartTypes[index]
-        let chartView = getChart(for: type, with: containerView.bounds)
-        currentChartView = chartView
-        chartView.alpha = 0
-        
-        fadeIn(view: chartView, duration: 0.5)
-        
-        if chartView.superview == nil {
-            self.view.addSubview(chartView)
-            chartView.translatesAutoresizingMaskIntoConstraints = false
-            
-            chartView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 0).isActive = true
-            chartView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 0).isActive = true
-            chartView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: 0).isActive = true
-            chartView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 0).isActive = true
-        }
-    }
-    
-    func removeCurrentChart() {
-        if let view = currentChartView {
-            fadeOut(view: view, duration: 0.5)
-        }
+        graphData = Candlestick.getKLineModelArray(getJsonDataFromFile(type.filename))
+        chartView.reloadData()
     }
     
     func fadeOut(view: UIView, duration: CGFloat) {
@@ -162,15 +152,6 @@ extension ViewController: SegmentMenuDelegate {
 }
 
 extension ViewController {
-    func getChart(for type: HSChartType, with frame: CGRect) -> StockChartView {
-        graphData = Candlestick.getKLineModelArray(getJsonDataFromFile(type.filename))
-        let stockChartView = StockChartView(frame: frame)
-        stockChartView.configureView(data: graphData)
-        stockChartView.dataSource = self
-        stockChartView.delegate = self
-        stockChartView.reloadData()
-        return stockChartView
-    }
     
     func getJsonDataFromFile(_ fileName: String) -> JSON {
         let pathForResource = Bundle.main.path(forResource: fileName, ofType: "json")
@@ -181,6 +162,24 @@ extension ViewController {
 }
 
 extension ViewController: StockChartViewDataSource {
+    
+    func numberOfCandlesticks() -> Int {
+        return graphData.candlesticks.count
+    }
+    
+    func numberOfLines() -> Int {
+        return graphData.lines.count
+    }
+    
+    func candlestick(atIndex index: Int) -> Candlestick {
+        return graphData.candlesticks[index]
+    }
+    
+    func line(atIndex index: Int) -> Line {
+        let line = graphData.lines[index]
+        return Line(values: line.values)
+    }
+    
     func format(volume: CGFloat, forElement: Element) -> String {
         return String(format: "%.0f", volume)
     }
@@ -193,9 +192,9 @@ extension ViewController: StockChartViewDataSource {
         return defaultDateFormatter.string(from: date)
     }
     
-    func lineColor(forKey key: String) -> CGColor {
-        switch key {
-        case "ma5":
+    func color(forLineAtIndex index: Int) -> CGColor {
+        switch index {
+        case 0:
             return UIColor(hex: 0xe8de85, alpha: 1).cgColor
         default:
             return UIColor(hex: 0xe8de85, alpha: 1).cgColor
@@ -229,8 +228,11 @@ extension ViewController: StockChartViewDataSource {
             }
         }
         
+        minVolume = (minVolume / 100000).rounded() * 100000
+        maxVolume = (maxVolume / 100000).rounded() * 100000
+        
         return GraphBounds(
-            price: Bounds(min: minPrice, max: maxPrice),
+            price: Bounds(min: minPrice.rounded(), max: maxPrice.rounded()),
             volume: Bounds(min: minVolume, max: maxVolume),
             range: range
         )
@@ -239,18 +241,18 @@ extension ViewController: StockChartViewDataSource {
 
 extension ViewController: StockChartViewDelegate {
     func performedLongPressGesture(atIndex index: Int) {
-        currentChartView?.showDetails(forCandleAtIndex: index)
+        chartView.showDetails(forCandleAtIndex: index)
     }
     
     func releasedLongPressGesture() {
-        currentChartView?.hideDetails()
+        chartView.hideDetails()
     }
     
     func performedTap(atIndex index: Int) {
         if lineBriefView?.isHidden ?? false {
-            currentChartView?.showDetails(forCandleAtIndex: index)
+            chartView.showDetails(forCandleAtIndex: index)
         } else {
-            currentChartView?.hideDetails()
+            chartView.hideDetails()
         }
     }
     

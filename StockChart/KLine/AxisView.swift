@@ -21,6 +21,10 @@ open class AxisView: UIView, DrawLayer {
     
     // Bounds
     private(set) var graphBounds = GraphBounds()
+    private(set) var maxPrice = ""
+    private(set) var minPrice = ""
+    private(set) var midPrice = ""
+    private(set) var maxVolume = ""
     
     private var upperChartHeight: CGFloat {
         return theme.upperChartHeightScale * self.frame.height
@@ -46,6 +50,15 @@ open class AxisView: UIView, DrawLayer {
         fatalError("init(coder:) has not been implemented")
     }
     
+    open override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        if !showingCrossView {
+            clearMarkLayers()
+            drawMarkLayers()
+        }
+    }
+    
     override open func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         let view = super.hitTest(point, with: event)
         guard view != self else { return nil }
@@ -53,12 +66,19 @@ open class AxisView: UIView, DrawLayer {
     }
     
     open func configureAxis(maxPrice: String, minPrice: String, midPrice: String, maxVolume: String) {
+        self.maxPrice = maxPrice
+        self.minPrice = minPrice
+        self.midPrice = midPrice
+        self.maxVolume = maxVolume
+        updateFrames()
+    }
+    
+    private func updateFrames() {
         maxPriceLabelLayer.string = maxPrice
         minPriceLabelLayer.string = minPrice
         midPriceLabelLayer.string = midPrice
         maxVolumeLabelLayer.string = maxVolume
         
-        // We need to update the frames
         maxPriceLabelLayer.frame = createFrame(for: maxPrice, inFrame: frame, y: theme.viewMinYGap, isLeft: false)
         minPriceLabelLayer.frame = createFrame(for: minPrice, inFrame: frame, y: upperChartHeight / 2, isLeft: false)
         midPriceLabelLayer.frame = createFrame(for: midPrice, inFrame: frame, y: upperChartHeight - theme.viewMinYGap, isLeft: false)
@@ -86,18 +106,23 @@ open class AxisView: UIView, DrawLayer {
 //        self.layer.addSublayer(timeMarkLayer)
 //    }
     
+    
+    private func clearMarkLayers() {
+        self.layer.sublayers?.removeAll()
+    }
+    
     public func drawMarkLayers() {
         // Title Labels
         priceLabelLayer = getYAxisMarkLayer(frame: frame, text: theme.priceLabel, y: theme.viewMinYGap, isLeft: true)
         volumeLabelLayer = getYAxisMarkLayer(frame: frame, text: theme.volumeLabel, y: lowerChartTop + theme.volumeGap, isLeft: true)
         
         // Price Labels
-        maxPriceLabelLayer = getYAxisMarkLayer(frame: frame, text: "0.00", y: theme.viewMinYGap, isLeft: false)
-        midPriceLabelLayer = getYAxisMarkLayer(frame: frame, text: "0.00", y: upperChartHeight / 2, isLeft: false)
-        minPriceLabelLayer = getYAxisMarkLayer(frame: frame, text: "0.00", y: upperChartHeight - theme.viewMinYGap, isLeft: false)
+        maxPriceLabelLayer = getYAxisMarkLayer(frame: frame, text: maxPrice, y: theme.viewMinYGap, isLeft: false)
+        midPriceLabelLayer = getYAxisMarkLayer(frame: frame, text: midPrice, y: upperChartHeight / 2, isLeft: false)
+        minPriceLabelLayer = getYAxisMarkLayer(frame: frame, text: minPrice, y: upperChartHeight - theme.viewMinYGap, isLeft: false)
         
         // Volume Labels
-        maxVolumeLabelLayer = getYAxisMarkLayer(frame: frame, text: "0.00", y: lowerChartTop + theme.volumeGap, isLeft: false)
+        maxVolumeLabelLayer = getYAxisMarkLayer(frame: frame, text: maxVolume, y: lowerChartTop + theme.volumeGap, isLeft: false)
         
         self.layer.addSublayer(priceLabelLayer)
         self.layer.addSublayer(volumeLabelLayer)

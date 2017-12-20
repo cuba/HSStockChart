@@ -11,6 +11,24 @@ import UIKit
 import StockChart
 import SwiftyJSON
 
+struct GraphData {
+    var candlesticks: [Candlestick]
+    var lines: [(key: String, values: [CGFloat])]
+    
+    var count: Int {
+        return candlesticks.count
+    }
+    
+    init(candlesticks: [Candlestick], lines: [(key: String, values: [CGFloat])]) {
+        self.candlesticks = candlesticks
+        self.lines = lines
+    }
+    
+    init() {
+        self.init(candlesticks: [], lines: [])
+    }
+}
+
 extension Candlestick {
     class func getKLineModelArray(_ json: JSON) -> GraphData {
         var candlesticks: [Candlestick] = []
@@ -19,7 +37,7 @@ extension Candlestick {
             "ma5": [],
             "ma10": [],
             "ma20": [],
-//            "ma30": [],
+            // "ma30": []
         ]
         
         for (_, jsonData): (String, JSON) in json["chartlist"] {
@@ -34,12 +52,12 @@ extension Candlestick {
             lines["ma5"]?.append(CGFloat(jsonData["ma5"].doubleValue))
             lines["ma10"]?.append(CGFloat(jsonData["ma10"].doubleValue))
             lines["ma20"]?.append(CGFloat(jsonData["ma20"].doubleValue))
-//            lines["ma30"]?.append(CGFloat(jsonData["ma30"].doubleValue))
+            // lines["ma30"]?.append(CGFloat(jsonData["ma30"].doubleValue))
             
             candlesticks.append(candlestick)
         }
         
-        return GraphData(candlesticks: candlesticks, lines: lines)
+        return GraphData(candlesticks: candlesticks, lines: lines.map({ (key: $0, values: $1) }))
     }
     
     class func getKLineModelArray() {

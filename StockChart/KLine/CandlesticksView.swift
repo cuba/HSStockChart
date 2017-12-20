@@ -123,6 +123,7 @@ class CandlesticsView: UIView, DrawLayer {
     
     func drawCandleChartLayer() {
         guard let dataSource = self.dataSource else { return }
+        guard dataSource.numberOfCandles() > 0 else { return }
         candleChartLayer.sublayers?.removeAll()
         
         for index in visibleRange {
@@ -136,6 +137,7 @@ class CandlesticsView: UIView, DrawLayer {
     
     private func drawVolumeLayer() {
         guard let dataSource = self.dataSource else { return }
+        guard dataSource.numberOfCandles() > 0 else { return }
         volumeLayer.sublayers?.removeAll()
         
         for index in visibleRange {
@@ -149,6 +151,7 @@ class CandlesticsView: UIView, DrawLayer {
     
     private func drawLinesLayer() {
         guard let dataSource = self.dataSource else { return }
+        guard dataSource.numberOfLines() > 0 else { return }
         linesLayer.sublayers?.removeAll()
         
         let numberOfLines = dataSource.numberOfLines()
