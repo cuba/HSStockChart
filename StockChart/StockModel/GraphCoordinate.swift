@@ -1,6 +1,6 @@
 //
 //  GraphCoordinate.swift
-//  HSStockChartDemo
+//  StockChartExample
 //
 //  Created by Hanson on 2017/1/20.
 //  Copyright © 2017年 hanson. All rights reserved.

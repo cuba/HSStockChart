@@ -1,6 +1,6 @@
 //
 //  DrawLayer.swift
-//  HSStockChartDemo
+//  StockChartExample
 //
 //  Created by Hanson on 2017/2/28.
 //  Copyright © 2017年 hanson. All rights reserved.
@@ -69,7 +69,7 @@ extension DrawLayer {
     
     public func getFrameSize(for text: String) -> CGSize {
         let font = theme.baseFont
-        let attributes = [NSFontAttributeName: font]
-        return text.size(attributes: attributes)
+        let attributes = [NSAttributedStringKey.font: font]
+        return text.size(withAttributes: attributes)
     }
 }
