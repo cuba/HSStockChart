@@ -113,7 +113,6 @@ open class StockChartView: UIView {
             candlesticsView.frame = bounds
             scrollView.frame = bounds
             axisView.frame = bounds
-            //candlesticsView.reloadData()
             drawFrameLayer()
         }
     }

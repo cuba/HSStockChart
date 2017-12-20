@@ -52,7 +52,6 @@ class ViewController: UIViewController {
         return self.chartTypes.map { $0.title }
     }
     
-    
     // MARK: - Life Circle
     
     override func viewDidLoad() {

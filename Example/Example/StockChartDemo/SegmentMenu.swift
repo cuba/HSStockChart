@@ -117,7 +117,6 @@ class SegmentMenu: UIView {
     func updateIndicatorFrame() {
         if let button = selectedButton {
             self.bottomIndicator.frame = self.indicatorFrame(for: button)
-            print(self.bottomIndicator.frame)
         }
     }
     
