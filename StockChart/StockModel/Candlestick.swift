@@ -8,7 +8,7 @@
 
 import UIKit
 
-open class Candlestick {
+public struct Candlestick {
     public var date: Date = Date()
     public var open: CGFloat = 0
     public var close: CGFloat = 0
@@ -19,7 +19,7 @@ open class Candlestick {
     public init() {}
 }
 
-open class Line {
+public struct Line {
     public var values: [CGFloat] = []
     
     public init(values: [CGFloat]) {

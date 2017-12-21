@@ -30,7 +30,7 @@ struct GraphData {
 }
 
 extension Candlestick {
-    class func getKLineModelArray(_ json: JSON) -> GraphData {
+    static func getKLineModelArray(_ json: JSON) -> GraphData {
         var candlesticks: [Candlestick] = []
         
         var lines: [String: [CGFloat]] = [
@@ -41,7 +41,7 @@ extension Candlestick {
         ]
         
         for (_, jsonData): (String, JSON) in json["chartlist"] {
-            let candlestick = Candlestick()
+            var candlestick = Candlestick()
             candlestick.date = jsonData["time"].stringValue.toDate(withFormat: "EEE MMM d HH:mm:ss z yyyy")!
             candlestick.open = CGFloat(jsonData["open"].doubleValue)
             candlestick.close = CGFloat(jsonData["close"].doubleValue)
@@ -60,7 +60,7 @@ extension Candlestick {
         return GraphData(candlesticks: candlesticks, lines: lines.map({ (key: $0, values: $1) }))
     }
     
-    class func getKLineModelArray() {
+    public func getKLineModelArray() {
         
     }
 }

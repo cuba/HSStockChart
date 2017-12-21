@@ -36,6 +36,7 @@
 		DAE2CBCA1FEB470D00A3AF88 /* lineForDay.json in Resources */ = {isa = PBXBuildFile; fileRef = DAE2CBC71FEB470C00A3AF88 /* lineForDay.json */; };
 		DAE2CBCB1FEB470D00A3AF88 /* lineForMonth.json in Resources */ = {isa = PBXBuildFile; fileRef = DAE2CBC81FEB470D00A3AF88 /* lineForMonth.json */; };
 		DAE2CBCC1FEB470D00A3AF88 /* lineForWeek.json in Resources */ = {isa = PBXBuildFile; fileRef = DAE2CBC91FEB470D00A3AF88 /* lineForWeek.json */; };
+		DAE2CBD21FEB5D8600A3AF88 /* UIScrollView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE2CBD11FEB5D8600A3AF88 /* UIScrollView+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -108,6 +109,7 @@
 		DAE2CBC71FEB470C00A3AF88 /* lineForDay.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = lineForDay.json; sourceTree = "<group>"; };
 		DAE2CBC81FEB470D00A3AF88 /* lineForMonth.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = lineForMonth.json; sourceTree = "<group>"; };
 		DAE2CBC91FEB470D00A3AF88 /* lineForWeek.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = lineForWeek.json; sourceTree = "<group>"; };
+		DAE2CBD11FEB5D8600A3AF88 /* UIScrollView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UIScrollView+Extensions.swift"; path = "../../../../StockChart/Extensions/UIScrollView+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -202,6 +204,7 @@
 				8C84729F1EDB57A700B64A1D /* DateFormatter+Extensions.swift */,
 				8C8472991EDB556B00B64A1D /* UIColor+Extensions.swift */,
 				8C8472A31EDB589500B64A1D /* CGFloat+Extensions.swift */,
+				DAE2CBD11FEB5D8600A3AF88 /* UIScrollView+Extensions.swift */,
 			);
 			name = Extensions;
 			path = StockChartDemo/Common;
@@ -374,6 +377,7 @@
 				C03E9AD21D6ECDB900D93016 /* AppDelegate.swift in Sources */,
 				8C8472A01EDB57A700B64A1D /* DateFormatter+Extensions.swift in Sources */,
 				8C077CD21EDA1C39007BCCFC /* HSStockBriefView.swift in Sources */,
+				DAE2CBD21FEB5D8600A3AF88 /* UIScrollView+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

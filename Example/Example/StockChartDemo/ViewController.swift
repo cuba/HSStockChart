@@ -45,6 +45,7 @@ class ViewController: UIViewController {
     var lineBriefView: HSKLineBriefView!
     var chartView: StockChartView!
     var graphData = GraphData()
+    var timer: Timer?
     
     var chartTypes: [HSChartType] = [.lineForDay, .lineForWeek, .lineForMonth]
     
@@ -62,6 +63,9 @@ class ViewController: UIViewController {
         super.viewDidAppear(animated)
         segmentMenu.selectButton(at: 0, animated: false)
         setChart(at: segmentMenu.currentIndex)
+        
+        // Start Timer
+        self.timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(addRandomGraphEntry), userInfo: nil, repeats: true)
     }
     
     // MARK: -
@@ -118,6 +122,33 @@ class ViewController: UIViewController {
         }, completion: { coordinator in
             self.setChart(at: self.segmentMenu.currentIndex)
         })
+    }
+    
+    @objc func addRandomGraphEntry() {
+        let lastEntry = graphData.candlesticks.last ?? Candlestick()
+        let isIncrease = arc4random_uniform(2) > 0
+        
+        let delta = arc4random_uniform(5)
+        let highDelta = arc4random_uniform(5)
+        let lowDelta = arc4random_uniform(5)
+        
+        var newEntry = Candlestick()
+        newEntry.open = lastEntry.close
+        
+        if isIncrease {
+            newEntry.close = newEntry.open + CGFloat(delta)
+            newEntry.high = newEntry.close + CGFloat(highDelta)
+            newEntry.low = newEntry.open - CGFloat(lowDelta)
+        } else {
+            newEntry.close = newEntry.open - CGFloat(delta)
+            newEntry.high = newEntry.open + CGFloat(highDelta)
+            newEntry.low = newEntry.close - CGFloat(lowDelta)
+        }
+        
+        print("Add entry: \(newEntry.close)")
+        
+        graphData.candlesticks.append(newEntry)
+        chartView.didInsertData()
     }
 }
 
@@ -209,7 +240,11 @@ extension ViewController: StockChartViewDataSource {
         var minPrice = CGFloat.greatestFiniteMagnitude
         var maxVolume = CGFloat.leastNormalMagnitude
         var minVolume = CGFloat.greatestFiniteMagnitude
-        let range = startIndex..<endIndex
+        let range = startIndex...endIndex
+        
+        guard startIndex < endIndex else {
+            return GraphBounds()
+        }
         
         for index in range {
             let entity = graphData.candlesticks[index]
@@ -226,9 +261,6 @@ extension ViewController: StockChartViewDataSource {
                 minPrice = min(minPrice, value)
             }
         }
-        
-        minVolume = (minVolume / 100000).rounded() * 100000
-        maxVolume = (maxVolume / 100000).rounded() * 100000
         
         return GraphBounds(
             price: Bounds(min: minPrice.rounded(), max: maxPrice.rounded()),

@@ -70,18 +70,19 @@ open class AxisView: UIView, DrawLayer {
         self.minPrice = minPrice
         self.midPrice = midPrice
         self.maxVolume = maxVolume
-        updateFrames()
-    }
-    
-    private func updateFrames() {
+        
         maxPriceLabelLayer.string = maxPrice
         minPriceLabelLayer.string = minPrice
         midPriceLabelLayer.string = midPrice
         maxVolumeLabelLayer.string = maxVolume
         
+        updateFrames()
+    }
+    
+    private func updateFrames() {
         maxPriceLabelLayer.frame = createFrame(for: maxPrice, inFrame: frame, y: theme.viewMinYGap, isLeft: false)
-        minPriceLabelLayer.frame = createFrame(for: minPrice, inFrame: frame, y: upperChartHeight / 2, isLeft: false)
-        midPriceLabelLayer.frame = createFrame(for: midPrice, inFrame: frame, y: upperChartHeight - theme.viewMinYGap, isLeft: false)
+        midPriceLabelLayer.frame = createFrame(for: midPrice, inFrame: frame, y: upperChartHeight / 2, isLeft: false)
+        minPriceLabelLayer.frame = createFrame(for: minPrice, inFrame: frame, y: upperChartHeight - theme.viewMinYGap, isLeft: false)
         maxVolumeLabelLayer.frame = createFrame(for: maxVolume, inFrame: frame, y: lowerChartTop + theme.volumeGap, isLeft: false)
     }
     
