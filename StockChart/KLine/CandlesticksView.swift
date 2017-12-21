@@ -32,19 +32,29 @@ public struct Bounds {
     }
 }
 
+extension Bounds: Equatable {
+    public static func ==(lhs: Bounds, rhs: Bounds) -> Bool {
+        return lhs.min == rhs.min && lhs.max == rhs.max
+    }
+}
+
 public struct GraphBounds {
     public var price: Bounds
     public var volume: Bounds
-    public var range: CountableClosedRange<Int>
     
-    public init(price: Bounds, volume: Bounds, range: CountableClosedRange<Int>) {
+    public init(price: Bounds, volume: Bounds) {
         self.price = price
         self.volume = volume
-        self.range = range
     }
     
     public init() {
-        self.init(price: Bounds(min: 0, max: 0), volume: Bounds(min: 0, max: 0), range: 0...0)
+        self.init(price: Bounds(min: 0, max: 0), volume: Bounds(min: 0, max: 0))
+    }
+}
+
+extension GraphBounds: Equatable {
+    public static func ==(lhs: GraphBounds, rhs: GraphBounds) -> Bool {
+        return lhs.price == rhs.price && lhs.volume == rhs.volume
     }
 }
 
@@ -98,7 +108,7 @@ class CandlesticsView: UIView, DrawLayer {
     
     var theme = ChartTheme()
     var dataSource: CandlesticksViewDataSource?
-    var visibleRange: CountableClosedRange<Int> = 0...0
+    var visibleRange: CandlestickRange = 0..<0
     var graphBounds = GraphBounds()
     
     // MARK: - Initialize
@@ -114,14 +124,25 @@ class CandlesticsView: UIView, DrawLayer {
     
     // MARK: - Drawing Function
     
-    func reloadData() {
+    func updateFrame(fromParentFrame frame: CGRect) {
+        // Get frame
+        let numberOfCandles = dataSource?.numberOfCandles() ?? 0
+        let candlesWidth = self.candleXPosition(forIndex: max(0, numberOfCandles - 1))
+        let origin = frame.origin
+        let size = CGSize(width: max(frame.width, candlesWidth), height: frame.height)
+        let frame = CGRect(origin: origin, size: size)
+        self.frame = frame
+        drawLayers()
+    }
+    
+    func drawLayers() {
         clearLayer()
         drawCandleChartLayer()
         drawVolumeLayer()
         drawLinesLayer()
     }
     
-    func drawCandleChartLayer() {
+    private func drawCandleChartLayer() {
         guard let dataSource = self.dataSource else { return }
         guard dataSource.numberOfCandles() > 0 else { return }
         candleChartLayer.sublayers?.removeAll()
@@ -288,7 +309,7 @@ class CandlesticsView: UIView, DrawLayer {
     }
     
     func candleXPosition(forIndex index: Int) -> CGFloat {
-        return CGFloat(index) * (theme.candleWidth + theme.candleGap)
+        return CGFloat(index) * theme.widthOfCandleWithGap
     }
     
     func lineXPosition(forIndex index: Int) -> CGFloat {

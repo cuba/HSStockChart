@@ -8,6 +8,8 @@
 
 import UIKit
 
+public typealias CandlestickRange = CountableRange<Int>
+
 public protocol StockChartViewDelegate {
     func performedLongPressGesture(atIndex index: Int)
     func releasedLongPressGesture()
@@ -27,7 +29,7 @@ public protocol StockChartViewDataSource {
     func format(date: Date, forElement: Element) -> String
     func color(forLineAtIndex index: Int) -> CGColor
     
-    func bounds(inVisibleRange: CountableClosedRange<Int>, maximumVisibleCandles: Int) -> GraphBounds
+    func bounds(inVisibleRange CandlestickRange: CountableRange<Int>, maximumVisibleCandles: Int) -> GraphBounds
 }
 
 open class StockChartView: UIView {
@@ -42,6 +44,7 @@ open class StockChartView: UIView {
     private var enableKVO: Bool = true
     private var lineViewWidth: CGFloat = 0.0
     private var renderRect: CGRect = CGRect.zero
+    private var previousBounds = GraphBounds()
     
     private var upperChartHeight: CGFloat {
         return theme.upperChartHeightScale * self.frame.height
@@ -80,7 +83,7 @@ open class StockChartView: UIView {
         return visibleRange.upperBound
     }
     
-    fileprivate var visibleRange: CountableClosedRange<Int> = 0...0
+    fileprivate var visibleRange: CandlestickRange = 0..<0
     
     private func candleXPosition(forIndex index: Int) -> CGFloat {
         return  max(0, contentOffsetX) + CGFloat(index - visibleStartIndex) * (theme.candleWidth + theme.candleGap)
@@ -110,9 +113,9 @@ open class StockChartView: UIView {
         let bounds = self.bounds
         
         if scrollView.frame != bounds {
-            candlesticsView.frame = bounds
             scrollView.frame = bounds
             axisView.frame = bounds
+            reloadData()
             drawFrameLayer()
         }
     }
@@ -127,7 +130,7 @@ open class StockChartView: UIView {
         addSubview(scrollView)
         
         // Setup candlesticks view
-        candlesticsView = CandlesticsView()
+        candlesticsView = CandlesticsView(frame: frame)
         candlesticsView.dataSource = self
         candlesticsView.theme = theme
         scrollView.addSubview(candlesticsView)
@@ -159,7 +162,10 @@ open class StockChartView: UIView {
             let visibleRange = createVisibleRange()
             guard visibleRange != self.visibleRange else { return }
             self.visibleRange = visibleRange
-            layoutCandlesticks()
+            
+            // If our CandlestickRange changed, we need to redraw the candlesticks
+            updateVisibleRange()
+            candlesticsView.drawLayers()
             
             if axisView.showingCrossView {
                 self.hideDetails()
@@ -167,7 +173,7 @@ open class StockChartView: UIView {
         }
     }
     
-    private func createVisibleRange() -> CountableClosedRange<Int> {
+    private func createVisibleRange() -> CandlestickRange {
         let contentOffsetX = scrollView.contentOffset.x
         
         let minimumScrollViewOffset = max(0, contentOffsetX)
@@ -176,20 +182,31 @@ open class StockChartView: UIView {
         let numberOfCandles = self.numberOfCandles()
         let visibleCandles = self.visibleCandles
         let visibleEndIndex = max(visibleStartIndex, min(visibleStartIndex + visibleCandles, numberOfCandles - 1))
-        let visibleRange = visibleStartIndex...visibleEndIndex
-        return visibleRange
+        let candlestickRange = visibleStartIndex..<visibleEndIndex
+        return candlestickRange
     }
     
     public func reloadData() {
-        self.visibleRange = self.createVisibleRange()
-        layoutCandlesticks()
+        // if the data is reloaded, we need to update the visibleRange
+        // and redraw the candlesticks and update the candlesticks frame
+        updateVisibleRange()
+        updateCandlesticksFrame()
+        candlesticsView.drawLayers()
     }
     
-    private func layoutCandlesticks() {
+    private func updateCandlesticksFrame() {
+        candlesticsView.updateFrame(fromParentFrame: bounds)
+        scrollView.contentSize = candlesticsView.frame.size
+    }
+    
+    private func updateVisibleRange() {
+        self.visibleRange = self.createVisibleRange()
+        candlesticsView.visibleRange = visibleRange
+        
         guard let dataSource = self.dataSource else { return }
         let graphBounds = dataSource.bounds(inVisibleRange: visibleRange, maximumVisibleCandles: visibleCandles)
-        candlesticsView.graphBounds = graphBounds
-        candlesticsView.visibleRange = visibleRange
+        guard self.previousBounds != graphBounds else { return }
+        
         let maxPrice = graphBounds.price.max
         let minPrice = graphBounds.price.min
         let midPrice = (maxPrice - minPrice) / 2
@@ -200,9 +217,9 @@ open class StockChartView: UIView {
         let midPriceString = dataSource.format(price: midPrice, forElement: .axis)
         let maxVolumeString = dataSource.format(volume: maxVolume, forElement: .axis)
         
+        candlesticsView.graphBounds = graphBounds
+        print("max: \(maxPriceString), mid: \(midPriceString), min: \(minPriceString)")
         axisView.configureAxis(maxPrice: maxPriceString, minPrice: minPriceString, midPrice: midPriceString, maxVolume: maxVolumeString)
-        
-        candlesticsView.reloadData()
     }
     
     public func configureView() {

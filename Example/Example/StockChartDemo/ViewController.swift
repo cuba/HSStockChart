@@ -200,16 +200,16 @@ extension ViewController: StockChartViewDataSource {
         }
     }
     
-    func bounds(inVisibleRange visibleRange: CountableClosedRange<Int>, maximumVisibleCandles: Int) -> GraphBounds {
+    func bounds(inVisibleRange CandlestickRange: CountableRange<Int>, maximumVisibleCandles: Int) -> GraphBounds {
         let buffer = maximumVisibleCandles / 2
-        let startIndex = max(0, visibleRange.lowerBound - buffer)
-        let endIndex = max(startIndex, min(graphData.count - 1, visibleRange.upperBound + buffer))
+        let startIndex = max(0, CandlestickRange.lowerBound - buffer)
+        let endIndex = max(startIndex, min(graphData.count - 1, CandlestickRange.upperBound + buffer))
         
         var maxPrice = CGFloat.leastNormalMagnitude
         var minPrice = CGFloat.greatestFiniteMagnitude
         var maxVolume = CGFloat.leastNormalMagnitude
         var minVolume = CGFloat.greatestFiniteMagnitude
-        let range = startIndex...endIndex
+        let range = startIndex..<endIndex
         
         for index in range {
             let entity = graphData.candlesticks[index]
@@ -232,8 +232,7 @@ extension ViewController: StockChartViewDataSource {
         
         return GraphBounds(
             price: Bounds(min: minPrice.rounded(), max: maxPrice.rounded()),
-            volume: Bounds(min: minVolume, max: maxVolume),
-            range: range
+            volume: Bounds(min: minVolume, max: maxVolume)
         )
     }
 }
