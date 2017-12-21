@@ -304,6 +304,7 @@ open class StockChartView: UIView {
     
     @objc func handleTapGesture(_ recognizer: UILongPressGestureRecognizer) {
         guard let dataSource = self.dataSource else { return }
+        
         let point = recognizer.location(in: candlesticsView)
         let candleIndex = min(dataSource.numberOfCandlesticks(), max(0, Int(point.x / (theme.candleWidth + theme.candleGap))))
         delegate?.performedTap(atIndex: candleIndex)
