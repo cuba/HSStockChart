@@ -18,7 +18,6 @@
 		8C8472A41EDB589500B64A1D /* CGFloat+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8472A31EDB589500B64A1D /* CGFloat+Extensions.swift */; };
 		8C8472A61EDB5E9000B64A1D /* StockInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8472A51EDB5E9000B64A1D /* StockInfo.swift */; };
 		C00FC4111DDAE57700C03D2C /* SegmentMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00FC4101DDAE57700C03D2C /* SegmentMenu.swift */; };
-		C01FB2A31D7E7680000C2D6D /* ChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01FB2A21D7E7680000C2D6D /* ChartViewController.swift */; };
 		C01FB2A71D7E94E6000C2D6D /* timeLineForFiveday.json in Resources */ = {isa = PBXBuildFile; fileRef = C01FB2A61D7E94E6000C2D6D /* timeLineForFiveday.json */; };
 		C03E9AD21D6ECDB900D93016 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03E9AAA1D6ECDB900D93016 /* AppDelegate.swift */; };
 		C03E9AD31D6ECDB900D93016 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C03E9AAB1D6ECDB900D93016 /* Assets.xcassets */; };
@@ -90,7 +89,6 @@
 		8C8472A51EDB5E9000B64A1D /* StockInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StockInfo.swift; sourceTree = "<group>"; };
 		B4D5F8E2FF58BC1092E5C722 /* Pods_HSStockChartDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HSStockChartDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C00FC4101DDAE57700C03D2C /* SegmentMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SegmentMenu.swift; path = StockChartDemo/SegmentMenu.swift; sourceTree = "<group>"; };
-		C01FB2A21D7E7680000C2D6D /* ChartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChartViewController.swift; path = StockChartDemo/ChartViewController.swift; sourceTree = "<group>"; };
 		C01FB2A61D7E94E6000C2D6D /* timeLineForFiveday.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = timeLineForFiveday.json; sourceTree = "<group>"; };
 		C03E9AAA1D6ECDB900D93016 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C03E9AAB1D6ECDB900D93016 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -173,7 +171,6 @@
 				8C077CCB1EDA1C39007BCCFC /* StockBriefView */,
 				C03E9AD01D6ECDB900D93016 /* ViewController.swift */,
 				C00FC4101DDAE57700C03D2C /* SegmentMenu.swift */,
-				C01FB2A21D7E7680000C2D6D /* ChartViewController.swift */,
 				C0A53C751D77C30800F4192B /* StockMarketDataViewController.swift */,
 				C0A53C761D77C30800F4192B /* StockMarketDataViewController.xib */,
 				C03E9AB31D6ECDB900D93016 /* SampleData */,
@@ -367,7 +364,6 @@
 				8C8472A61EDB5E9000B64A1D /* StockInfo.swift in Sources */,
 				8C84729E1EDB570B00B64A1D /* String+Extensions.swift in Sources */,
 				8C8472A41EDB589500B64A1D /* CGFloat+Extensions.swift in Sources */,
-				C01FB2A31D7E7680000C2D6D /* ChartViewController.swift in Sources */,
 				8C84729A1EDB556B00B64A1D /* UIColor+Extensions.swift in Sources */,
 				C00FC4111DDAE57700C03D2C /* SegmentMenu.swift in Sources */,
 				C03E9AEB1D6ECDB900D93016 /* Extension.swift in Sources */,
