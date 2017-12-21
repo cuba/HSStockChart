@@ -28,15 +28,15 @@
 		C03E9AF01D6ECDB900D93016 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03E9AD01D6ECDB900D93016 /* ViewController.swift */; };
 		C0A53C771D77C30800F4192B /* StockMarketDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A53C751D77C30800F4192B /* StockMarketDataViewController.swift */; };
 		C0A53C781D77C30800F4192B /* StockMarketDataViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0A53C761D77C30800F4192B /* StockMarketDataViewController.xib */; };
-		C0A983011D7FB5EF003C3B4C /* lineForDay.json in Resources */ = {isa = PBXBuildFile; fileRef = C0A982FE1D7FB5EF003C3B4C /* lineForDay.json */; };
-		C0A983021D7FB5EF003C3B4C /* lineForMonth.json in Resources */ = {isa = PBXBuildFile; fileRef = C0A982FF1D7FB5EF003C3B4C /* lineForMonth.json */; };
-		C0A983031D7FB5EF003C3B4C /* lineForWeek.json in Resources */ = {isa = PBXBuildFile; fileRef = C0A983001D7FB5EF003C3B4C /* lineForWeek.json */; };
 		C0A983051D7FB6A2003C3B4C /* FiveTrade.json in Resources */ = {isa = PBXBuildFile; fileRef = C0A983041D7FB6A2003C3B4C /* FiveTrade.json */; };
 		C0FAA64E1D7D68D900F15200 /* timeLineForDay.json in Resources */ = {isa = PBXBuildFile; fileRef = C0FAA64D1D7D68D900F15200 /* timeLineForDay.json */; };
 		C0FAA6521D7D736800F15200 /* SZ300033.json in Resources */ = {isa = PBXBuildFile; fileRef = C0FAA6511D7D736800F15200 /* SZ300033.json */; };
 		DA1F68261EE9DC440088DA6D /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAB0A8091EE9DBF000F8287E /* SwiftyJSON.framework */; };
 		DA1F682A1EE9DC640088DA6D /* StockChart.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAB0A8051EE9DB6800F8287E /* StockChart.framework */; };
 		DA1F682B1EE9DC640088DA6D /* StockChart.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DAB0A8051EE9DB6800F8287E /* StockChart.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		DAE2CBC11FEB468D00A3AF88 /* kLineForMonth.json in Resources */ = {isa = PBXBuildFile; fileRef = DAE2CBBD1FEB468C00A3AF88 /* kLineForMonth.json */; };
+		DAE2CBC21FEB468D00A3AF88 /* kLineForWeek.json in Resources */ = {isa = PBXBuildFile; fileRef = DAE2CBBF1FEB468C00A3AF88 /* kLineForWeek.json */; };
+		DAE2CBC31FEB468D00A3AF88 /* kLineForDay.json in Resources */ = {isa = PBXBuildFile; fileRef = DAE2CBC01FEB468C00A3AF88 /* kLineForDay.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -101,15 +101,15 @@
 		C03E9AD01D6ECDB900D93016 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewController.swift; path = StockChartDemo/ViewController.swift; sourceTree = "<group>"; };
 		C0A53C751D77C30800F4192B /* StockMarketDataViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StockMarketDataViewController.swift; path = StockChartDemo/StockMarketDataViewController.swift; sourceTree = "<group>"; };
 		C0A53C761D77C30800F4192B /* StockMarketDataViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = StockMarketDataViewController.xib; path = StockChartDemo/StockMarketDataViewController.xib; sourceTree = "<group>"; };
-		C0A982FE1D7FB5EF003C3B4C /* lineForDay.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = lineForDay.json; sourceTree = "<group>"; };
-		C0A982FF1D7FB5EF003C3B4C /* lineForMonth.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = lineForMonth.json; sourceTree = "<group>"; };
-		C0A983001D7FB5EF003C3B4C /* lineForWeek.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = lineForWeek.json; sourceTree = "<group>"; };
 		C0A983041D7FB6A2003C3B4C /* FiveTrade.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FiveTrade.json; sourceTree = "<group>"; };
 		C0D065731D61C17A00AC5AAF /* StockChartExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StockChartExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0FAA64D1D7D68D900F15200 /* timeLineForDay.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = timeLineForDay.json; sourceTree = "<group>"; };
 		C0FAA6511D7D736800F15200 /* SZ300033.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SZ300033.json; sourceTree = "<group>"; };
 		DAB0A7FF1EE9DB6800F8287E /* StockChart.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = StockChart.xcodeproj; path = ../StockChart.xcodeproj; sourceTree = "<group>"; };
 		DAB0A8091EE9DBF000F8287E /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
+		DAE2CBBD1FEB468C00A3AF88 /* kLineForMonth.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = kLineForMonth.json; sourceTree = "<group>"; };
+		DAE2CBBF1FEB468C00A3AF88 /* kLineForWeek.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = kLineForWeek.json; sourceTree = "<group>"; };
+		DAE2CBC01FEB468C00A3AF88 /* kLineForDay.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = kLineForDay.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -188,9 +188,9 @@
 				C0FAA6511D7D736800F15200 /* SZ300033.json */,
 				C0FAA64D1D7D68D900F15200 /* timeLineForDay.json */,
 				C01FB2A61D7E94E6000C2D6D /* timeLineForFiveday.json */,
-				C0A982FE1D7FB5EF003C3B4C /* lineForDay.json */,
-				C0A983001D7FB5EF003C3B4C /* lineForWeek.json */,
-				C0A982FF1D7FB5EF003C3B4C /* lineForMonth.json */,
+				DAE2CBC01FEB468C00A3AF88 /* kLineForDay.json */,
+				DAE2CBBD1FEB468C00A3AF88 /* kLineForMonth.json */,
+				DAE2CBBF1FEB468C00A3AF88 /* kLineForWeek.json */,
 				C0A983041D7FB6A2003C3B4C /* FiveTrade.json */,
 			);
 			path = SampleData;
@@ -324,19 +324,19 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DAE2CBC31FEB468D00A3AF88 /* kLineForDay.json in Resources */,
 				C0A983051D7FB6A2003C3B4C /* FiveTrade.json in Resources */,
 				C0FAA64E1D7D68D900F15200 /* timeLineForDay.json in Resources */,
 				8C077CD11EDA1C39007BCCFC /* HSKLineBriefView.xib in Resources */,
 				C03E9AD51D6ECDB900D93016 /* Main.storyboard in Resources */,
 				C0FAA6521D7D736800F15200 /* SZ300033.json in Resources */,
 				C03E9AD31D6ECDB900D93016 /* Assets.xcassets in Resources */,
-				C0A983031D7FB5EF003C3B4C /* lineForWeek.json in Resources */,
+				DAE2CBC11FEB468D00A3AF88 /* kLineForMonth.json in Resources */,
 				8C077CD31EDA1C39007BCCFC /* HSStockBriefView.xib in Resources */,
 				C0A53C781D77C30800F4192B /* StockMarketDataViewController.xib in Resources */,
 				C01FB2A71D7E94E6000C2D6D /* timeLineForFiveday.json in Resources */,
-				C0A983021D7FB5EF003C3B4C /* lineForMonth.json in Resources */,
 				C03E9AD41D6ECDB900D93016 /* LaunchScreen.storyboard in Resources */,
-				C0A983011D7FB5EF003C3B4C /* lineForDay.json in Resources */,
+				DAE2CBC21FEB468D00A3AF88 /* kLineForWeek.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

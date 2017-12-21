@@ -287,13 +287,13 @@ open class StockChartView: UIView {
         axisView.removeCrossLine()
     }
     
-    func handleTapGesture(_ recognizer: UILongPressGestureRecognizer) {
+    @objc func handleTapGesture(_ recognizer: UILongPressGestureRecognizer) {
         let point = recognizer.location(in: candlesticsView)
         let candleIndex = min(data.count, max(0, Int(point.x / (theme.candleWidth + theme.candleGap))))
         delegate?.performedTap(atIndex: candleIndex)
     }
     
-    func handleLongPressGestureAction(_ recognizer: UILongPressGestureRecognizer) {
+    @objc func handleLongPressGestureAction(_ recognizer: UILongPressGestureRecognizer) {
         if recognizer.state == .began || recognizer.state == .changed {
             let point = recognizer.location(in: candlesticsView)
             let candleIndex = min(data.count, max(0, Int(point.x / (theme.candleWidth + theme.candleGap))))
