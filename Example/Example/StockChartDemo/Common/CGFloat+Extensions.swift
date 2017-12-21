@@ -1,6 +1,6 @@
 //
 //  CGFloat+Extensions.swift
-//  HSStockChartDemo
+//  StockChartExample
 //
 //  Created by Jacob Sikorski on 2017-05-28.
 //  Copyright © 2017 hanson. All rights reserved.

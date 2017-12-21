@@ -1,6 +1,6 @@
 //
 //  SegmentMenu.swift
-//  HSStockChartDemo
+//  StockChartExample
 //
 //  Created by Hanson on 2016/11/15.
 //  Copyright © 2016年 hanson. All rights reserved.
@@ -88,7 +88,7 @@ class SegmentMenu: UIView {
         }
     }
     
-    func menuButtonDidClick(_ button: UIButton) {
+    @objc func menuButtonDidClick(_ button: UIButton) {
         guard let index = buttons.index(of: button) else { return }
         selectButton(at: index)
     }

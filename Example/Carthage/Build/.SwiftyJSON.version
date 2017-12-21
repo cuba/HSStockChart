@@ -1,0 +1,9 @@
+{
+  "commitish" : "3.1.4",
+  "iOS" : [
+    {
+      "hash" : "c55459029261e9945f11a149f07aa34932b5d51d53f555ac36889d6f6e0288b6",
+      "name" : "SwiftyJSON"
+    }
+  ]
+}

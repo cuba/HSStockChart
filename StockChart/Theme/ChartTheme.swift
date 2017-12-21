@@ -1,6 +1,6 @@
 //
 //  ChartTheme.swift
-//  HSStockChartDemo
+//  StockChartExample
 //
 //  Created by Hanson on 2017/2/28.
 //  Copyright © 2017年 hanson. All rights reserved.

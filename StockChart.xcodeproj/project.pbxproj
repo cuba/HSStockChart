@@ -225,7 +225,7 @@
 					8C077C2B1EDA13E4007BCCFC = {
 						CreatedOnToolsVersion = 8.3.2;
 						DevelopmentTeam = 5P99QDD6WR;
-						LastSwiftMigration = 0830;
+						LastSwiftMigration = 0910;
 						ProvisioningStyle = Automatic;
 					};
 					8C077C341EDA13E5007BCCFC = {
@@ -442,7 +442,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -464,7 +465,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.jacobsikorski.StockChart;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
