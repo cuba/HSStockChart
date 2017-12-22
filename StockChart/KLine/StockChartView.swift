@@ -43,6 +43,7 @@ open class StockChartView: UIView {
     private var widthOfKLineView: CGFloat = 0
     private var enableKVO: Bool = true
     private var lineViewWidth: CGFloat = 0.0
+    private var requiresRefresh = false
     
     private var upperChartHeight: CGFloat {
         return theme.upperChartHeightScale * self.frame.height
@@ -183,17 +184,17 @@ open class StockChartView: UIView {
     }
     
     public func didInsertData() {
-        let isScrolledToEnd = scrollView.isScrolled(to: .right)
-        let showingCrossView = axisView.showingCrossView
-        
-        if !showingCrossView {
-            let _ = updateBounds()
+        guard !axisView.showingCrossView else {
+            requiresRefresh = true
+            return
         }
         
+        let isScrolledToEnd = scrollView.isScrolled(to: .right)
+        let _ = updateBounds()
         let _ = updateVisibleRange()
         updateCandlesticksFrame()
         
-        if isScrolledToEnd && !showingCrossView {
+        if isScrolledToEnd {
             scrollView.scrollTo(direction: .right, animated: true)
         }
     }
@@ -232,6 +233,12 @@ open class StockChartView: UIView {
     public func hideDetails() {
         delegate?.hidDetails()
         axisView.removeCrossLine()
+        
+        if requiresRefresh {
+            didInsertData()
+        }
+        
+        requiresRefresh = false
     }
     
     @objc func handleTapGesture(_ recognizer: UILongPressGestureRecognizer) {
