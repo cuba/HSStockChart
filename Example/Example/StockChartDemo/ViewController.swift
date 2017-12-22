@@ -11,23 +11,23 @@ import StockChart
 import SwiftyJSON
 
 public enum HSChartType: Int {
-    case kLineForDay
-    case kLineForWeek
-    case kLineForMonth
+    case lineForDay
+    case lineForWeek
+    case lineForMonth
     
     var title: String {
         switch self {
-        case .kLineForDay:          return "Day"
-        case .kLineForWeek:         return "Week"
-        case .kLineForMonth:        return "Month"
+        case .lineForDay:          return "Day"
+        case .lineForWeek:         return "Week"
+        case .lineForMonth:        return "Month"
         }
     }
     
     var filename: String {
         switch self {
-        case .kLineForDay:          return "kLineForDay"
-        case .kLineForWeek:         return "kLineForWeek"
-        case .kLineForMonth:        return "kLineForMonth"
+        case .lineForDay:          return "lineForDay"
+        case .lineForWeek:         return "lineForWeek"
+        case .lineForMonth:        return "lineForMonth"
         }
     }
 }
@@ -43,15 +43,15 @@ class ViewController: UIViewController {
     var containerView: UIView!
     var segmentMenu: SegmentMenu!
     var lineBriefView: HSKLineBriefView!
-    var currentChartView: StockChartView?
+    var chartView: StockChartView!
     var graphData = GraphData()
+    var timer: Timer?
     
-    var chartTypes: [HSChartType] = [.kLineForDay, .kLineForWeek, .kLineForMonth]
+    var chartTypes: [HSChartType] = [.lineForDay, .lineForWeek, .lineForMonth]
     
     var menuTitles: [String] {
         return self.chartTypes.map { $0.title }
     }
-    
     
     // MARK: - Life Circle
     
@@ -63,6 +63,9 @@ class ViewController: UIViewController {
         super.viewDidAppear(animated)
         segmentMenu.selectButton(at: 0, animated: false)
         setChart(at: segmentMenu.currentIndex)
+        
+        // Start Timer
+        self.timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(addRandomGraphEntry), userInfo: nil, repeats: true)
     }
     
     // MARK: -
@@ -100,15 +103,52 @@ class ViewController: UIViewController {
         containerView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0).isActive = true
         containerView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0).isActive = true
         containerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
+        
+        chartView = StockChartView()
+        chartView.dataSource = self
+        chartView.delegate = self
+        self.view.addSubview(chartView)
+        chartView.translatesAutoresizingMaskIntoConstraints = false
+        
+        chartView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 0).isActive = true
+        chartView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 0).isActive = true
+        chartView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: 0).isActive = true
+        chartView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 0).isActive = true
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         coordinator.animate(alongsideTransition: { coordinator in
             self.segmentMenu.updateIndicatorFrame()
-            self.removeCurrentChart()
         }, completion: { coordinator in
             self.setChart(at: self.segmentMenu.currentIndex)
         })
+    }
+    
+    @objc func addRandomGraphEntry() {
+        let lastEntry = graphData.candlesticks.last ?? Candlestick()
+        let isIncrease = arc4random_uniform(2) > 0
+        
+        let delta = arc4random_uniform(5)
+        let highDelta = arc4random_uniform(5)
+        let lowDelta = arc4random_uniform(5)
+        
+        var newEntry = Candlestick()
+        newEntry.open = lastEntry.close
+        
+        if isIncrease {
+            newEntry.close = newEntry.open + CGFloat(delta)
+            newEntry.high = newEntry.close + CGFloat(highDelta)
+            newEntry.low = newEntry.open - CGFloat(lowDelta)
+        } else {
+            newEntry.close = newEntry.open - CGFloat(delta)
+            newEntry.high = newEntry.open + CGFloat(highDelta)
+            newEntry.low = newEntry.close - CGFloat(lowDelta)
+        }
+        
+        print("Add entry: \(newEntry.close)")
+        
+        graphData.candlesticks.append(newEntry)
+        chartView.didInsertData()
     }
 }
 
@@ -121,29 +161,9 @@ extension ViewController: SegmentMenuDelegate {
     }
     
     func setChart(at index: Int) {
-        currentChartView?.removeFromSuperview()
         let type = self.chartTypes[index]
-        let chartView = getChart(for: type, with: containerView.bounds)
-        currentChartView = chartView
-        chartView.alpha = 0
-        
-        fadeIn(view: chartView, duration: 0.5)
-        
-        if chartView.superview == nil {
-            self.view.addSubview(chartView)
-            chartView.translatesAutoresizingMaskIntoConstraints = false
-            
-            chartView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 0).isActive = true
-            chartView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 0).isActive = true
-            chartView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: 0).isActive = true
-            chartView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 0).isActive = true
-        }
-    }
-    
-    func removeCurrentChart() {
-        if let view = currentChartView {
-            fadeOut(view: view, duration: 0.5)
-        }
+        graphData = Candlestick.getKLineModelArray(getJsonDataFromFile(type.filename))
+        chartView.reloadData()
     }
     
     func fadeOut(view: UIView, duration: CGFloat) {
@@ -162,15 +182,6 @@ extension ViewController: SegmentMenuDelegate {
 }
 
 extension ViewController {
-    func getChart(for type: HSChartType, with frame: CGRect) -> StockChartView {
-        graphData = Candlestick.getKLineModelArray(getJsonDataFromFile(type.filename))
-        let stockChartView = StockChartView(frame: frame)
-        stockChartView.configureView(data: graphData)
-        stockChartView.dataSource = self
-        stockChartView.delegate = self
-        stockChartView.reloadData()
-        return stockChartView
-    }
     
     func getJsonDataFromFile(_ fileName: String) -> JSON {
         let pathForResource = Bundle.main.path(forResource: fileName, ofType: "json")
@@ -181,6 +192,24 @@ extension ViewController {
 }
 
 extension ViewController: StockChartViewDataSource {
+    
+    func numberOfCandlesticks() -> Int {
+        return graphData.candlesticks.count
+    }
+    
+    func numberOfLines() -> Int {
+        return graphData.lines.count
+    }
+    
+    func candlestick(atIndex index: Int) -> Candlestick {
+        return graphData.candlesticks[index]
+    }
+    
+    func line(atIndex index: Int) -> Line {
+        let line = graphData.lines[index]
+        return Line(values: line.values)
+    }
+    
     func format(volume: CGFloat, forElement: Element) -> String {
         return String(format: "%.0f", volume)
     }
@@ -193,25 +222,29 @@ extension ViewController: StockChartViewDataSource {
         return defaultDateFormatter.string(from: date)
     }
     
-    func lineColor(forKey key: String) -> CGColor {
-        switch key {
-        case "ma5":
+    func color(forLineAtIndex index: Int) -> CGColor {
+        switch index {
+        case 0:
             return UIColor(hex: 0xe8de85, alpha: 1).cgColor
         default:
             return UIColor(hex: 0xe8de85, alpha: 1).cgColor
         }
     }
     
-    func bounds(inVisibleRange visibleRange: CountableClosedRange<Int>, maximumVisibleCandles: Int) -> GraphBounds {
+    func bounds(inVisibleRange CandlestickRange: CountableRange<Int>, maximumVisibleCandles: Int) -> GraphBounds {
         let buffer = maximumVisibleCandles / 2
-        let startIndex = max(0, visibleRange.lowerBound - buffer)
-        let endIndex = max(startIndex, min(graphData.count - 1, visibleRange.upperBound + buffer))
+        let startIndex = max(0, CandlestickRange.lowerBound - buffer)
+        let endIndex = max(startIndex, min(graphData.count - 1, CandlestickRange.upperBound + buffer))
         
         var maxPrice = CGFloat.leastNormalMagnitude
         var minPrice = CGFloat.greatestFiniteMagnitude
         var maxVolume = CGFloat.leastNormalMagnitude
         var minVolume = CGFloat.greatestFiniteMagnitude
         let range = startIndex...endIndex
+        
+        guard startIndex < endIndex else {
+            return GraphBounds()
+        }
         
         for index in range {
             let entity = graphData.candlesticks[index]
@@ -230,27 +263,26 @@ extension ViewController: StockChartViewDataSource {
         }
         
         return GraphBounds(
-            price: Bounds(min: minPrice, max: maxPrice),
-            volume: Bounds(min: minVolume, max: maxVolume),
-            range: range
+            price: Bounds(min: minPrice.rounded(), max: maxPrice.rounded()),
+            volume: Bounds(min: minVolume, max: maxVolume)
         )
     }
 }
 
 extension ViewController: StockChartViewDelegate {
     func performedLongPressGesture(atIndex index: Int) {
-        currentChartView?.showDetails(forCandleAtIndex: index)
+        chartView.showDetails(forCandleAtIndex: index)
     }
     
     func releasedLongPressGesture() {
-        currentChartView?.hideDetails()
+        chartView.hideDetails()
     }
     
     func performedTap(atIndex index: Int) {
         if lineBriefView?.isHidden ?? false {
-            currentChartView?.showDetails(forCandleAtIndex: index)
+            chartView.showDetails(forCandleAtIndex: index)
         } else {
-            currentChartView?.hideDetails()
+            chartView.hideDetails()
         }
     }
     

@@ -24,6 +24,7 @@
 		8C8472CA1EDE63B900B64A1D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8C8472CC1EDE63B900B64A1D /* Localizable.strings */; };
 		8C8472CE1EDE640E00B64A1D /* Bundle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8472CD1EDE640E00B64A1D /* Bundle+Extensions.swift */; };
 		8C8472D01EDE648500B64A1D /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8472CF1EDE648500B64A1D /* String+Extensions.swift */; };
+		DAE2CBD51FEB5F8800A3AF88 /* UIScrollView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE2CBD41FEB5F8800A3AF88 /* UIScrollView+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,7 @@
 		8C8472CB1EDE63B900B64A1D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		8C8472CD1EDE640E00B64A1D /* Bundle+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bundle+Extensions.swift"; sourceTree = "<group>"; };
 		8C8472CF1EDE648500B64A1D /* String+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
+		DAE2CBD41FEB5F8800A3AF88 /* UIScrollView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -158,6 +160,7 @@
 				8C8472911EDB52B500B64A1D /* CGFloat+Extensions.swift */,
 				8C8472931EDB546500B64A1D /* Date+Extensions.swift */,
 				8C8472951EDB54AC00B64A1D /* DateFormatter+Extensions.swift */,
+				DAE2CBD41FEB5F8800A3AF88 /* UIScrollView+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -289,6 +292,7 @@
 				8C077CCA1EDA1A09007BCCFC /* DrawLayer.swift in Sources */,
 				8C8472921EDB52B500B64A1D /* CGFloat+Extensions.swift in Sources */,
 				8C8472CE1EDE640E00B64A1D /* Bundle+Extensions.swift in Sources */,
+				DAE2CBD51FEB5F8800A3AF88 /* UIScrollView+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
