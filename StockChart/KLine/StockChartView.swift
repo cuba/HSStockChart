@@ -43,7 +43,6 @@ open class StockChartView: UIView {
     private var widthOfKLineView: CGFloat = 0
     private var enableKVO: Bool = true
     private var lineViewWidth: CGFloat = 0.0
-    private var renderRect: CGRect = CGRect.zero
     
     private var upperChartHeight: CGFloat {
         return theme.upperChartHeightScale * self.frame.height
@@ -209,110 +208,6 @@ open class StockChartView: UIView {
         scrollView.scrollTo(direction: .right, animated: false)
     }
     
-    private func updateCandlesticksFrame() {
-        candlesticsView.updateFrame(fromParentFrame: bounds)
-        scrollView.contentSize = candlesticsView.frame.size
-    }
-    
-    private func updateBounds() -> Bool {
-        let graphBounds = dataSource?.bounds(inVisibleRange: candlesticsView.visibleRange, maximumVisibleCandles: visibleCandles) ?? GraphBounds()
-        guard candlesticsView.graphBounds != graphBounds else { return false }
-        candlesticsView.graphBounds = graphBounds
-        
-        // Update the axis view
-        guard let dataSource = self.dataSource else { return true }
-        let maxPrice = graphBounds.price.max
-        let minPrice = graphBounds.price.min
-        let midPrice = ((maxPrice - minPrice) / 2) + minPrice
-        let maxVolume = graphBounds.volume.max
-        
-        let maxPriceString = dataSource.format(price: maxPrice, forElement: .axis)
-        let minPriceString = dataSource.format(price: minPrice, forElement: .axis)
-        let midPriceString = dataSource.format(price: midPrice, forElement: .axis)
-        let maxVolumeString = dataSource.format(volume: maxVolume, forElement: .axis)
-        
-        axisView.configureAxis(maxPrice: maxPriceString, minPrice: minPriceString, midPrice: midPriceString, maxVolume: maxVolumeString)
-        
-        return true
-    }
-    
-    private func updateVisibleRange() -> Bool {
-        let previousVisibleRange = candlesticsView.visibleRange
-        candlesticsView.visibleRange = self.createVisibleRange()
-        return previousVisibleRange == candlesticsView.visibleRange
-    }
-    
-    public func configureView() {
-        let count = CGFloat(dataSource?.numberOfCandlesticks() ?? 0)
-        
-        lineViewWidth = max(self.frame.width, count * theme.candleWidth + (count + 1) * theme.candleGap)
-        candlesticsView.frame = CGRect(x: self.frame.origin.x, y: self.frame.origin.y, width: lineViewWidth, height: scrollView.frame.height)
-        
-        var contentOffsetX: CGFloat = 0
-        
-        if scrollView.contentSize.width > 0 {
-            contentOffsetX = lineViewWidth - scrollView.contentSize.width
-        } else {
-            contentOffsetX = candlesticsView.frame.width - scrollView.frame.width
-        }
-        
-        scrollView.contentSize = CGSize(width: lineViewWidth, height: self.frame.height)
-        scrollView.contentOffset = CGPoint(x: contentOffsetX, y: 0)
-    }
-    
-    func updateKlineViewWidth() {
-        let count: CGFloat = CGFloat(dataSource?.numberOfCandlesticks() ?? 0)
-        
-        lineViewWidth = count * theme.candleWidth + (count + 1) * theme.candleGap
-        if lineViewWidth < self.frame.width {
-            lineViewWidth = self.frame.width
-        } else {
-            lineViewWidth = count * theme.candleWidth + (count + 1) * theme.candleGap
-        }
-        
-        candlesticsView.frame = CGRect(x: self.frame.origin.x, y: self.frame.origin.y, width: lineViewWidth, height: scrollView.frame.height)
-        scrollView.contentSize = CGSize(width: lineViewWidth, height: self.frame.height)
-    }
-    
-    func drawFrameLayer() {
-        self.upperFrameLayer?.removeFromSuperlayer()
-        self.volumeFrameLayer?.removeFromSuperlayer()
-        
-        let upperFramePath = UIBezierPath(rect: CGRect(x: 0, y: 0, width: frame.width, height: upperChartHeight))
-        
-        upperFramePath.move(to: CGPoint(x: 0, y: theme.viewMinYGap))
-        upperFramePath.addLine(to: CGPoint(x: frame.maxX, y: theme.viewMinYGap))
-        
-        upperFramePath.move(to: CGPoint(x: 0, y: upperChartHeight - theme.viewMinYGap))
-        upperFramePath.addLine(to: CGPoint(x: frame.maxX, y: upperChartHeight - theme.viewMinYGap))
-        
-        upperFramePath.move(to: CGPoint(x: 0, y: upperChartHeight / 2.0))
-        upperFramePath.addLine(to: CGPoint(x: frame.maxX, y: upperChartHeight / 2.0))
-        
-        let upperFrameLayer = CAShapeLayer()
-        upperFrameLayer.lineWidth = theme.frameWidth
-        upperFrameLayer.strokeColor = theme.borderColor.cgColor
-        upperFrameLayer.fillColor = UIColor.clear.cgColor
-        upperFrameLayer.path = upperFramePath.cgPath
-        
-        let volFramePath = UIBezierPath(rect: CGRect(x: 0, y: upperChartHeight + theme.xAxisHeight, width: frame.width, height: frame.height - upperChartHeight - theme.xAxisHeight))
-        
-        volFramePath.move(to: CGPoint(x: 0, y: upperChartHeight + theme.xAxisHeight + theme.volumeGap))
-        volFramePath.addLine(to: CGPoint(x: frame.maxX, y: upperChartHeight + theme.xAxisHeight + theme.volumeGap))
-        
-        let volumeFrameLayer = CAShapeLayer()
-        volumeFrameLayer.lineWidth = theme.frameWidth
-        volumeFrameLayer.strokeColor = theme.borderColor.cgColor
-        volumeFrameLayer.fillColor = UIColor.clear.cgColor
-        volumeFrameLayer.path = volFramePath.cgPath
-        
-        self.layer.addSublayer(upperFrameLayer)
-        self.layer.addSublayer(volumeFrameLayer)
-        
-        self.upperFrameLayer = upperFrameLayer
-        self.volumeFrameLayer = volumeFrameLayer
-    }
-    
     public func showDetails(forCandleAtIndex index: Int) {
         guard let dataSource = self.dataSource else { return }
         let candlestick = dataSource.candlestick(atIndex: index)
@@ -359,6 +254,78 @@ open class StockChartView: UIView {
         if recognizer.state == .ended {
             delegate?.releasedLongPressGesture()
         }
+    }
+    
+    private func updateCandlesticksFrame() {
+        candlesticsView.updateFrame(fromParentFrame: bounds)
+        scrollView.contentSize = candlesticsView.frame.size
+    }
+    
+    private func updateBounds() -> Bool {
+        let graphBounds = dataSource?.bounds(inVisibleRange: candlesticsView.visibleRange, maximumVisibleCandles: visibleCandles) ?? GraphBounds()
+        guard candlesticsView.graphBounds != graphBounds else { return false }
+        candlesticsView.graphBounds = graphBounds
+        
+        // Update the axis view
+        guard let dataSource = self.dataSource else { return true }
+        let maxPrice = graphBounds.price.max
+        let minPrice = graphBounds.price.min
+        let midPrice = ((maxPrice - minPrice) / 2) + minPrice
+        let maxVolume = graphBounds.volume.max
+        
+        let maxPriceString = dataSource.format(price: maxPrice, forElement: .axis)
+        let minPriceString = dataSource.format(price: minPrice, forElement: .axis)
+        let midPriceString = dataSource.format(price: midPrice, forElement: .axis)
+        let maxVolumeString = dataSource.format(volume: maxVolume, forElement: .axis)
+        
+        axisView.configureAxis(maxPrice: maxPriceString, minPrice: minPriceString, midPrice: midPriceString, maxVolume: maxVolumeString)
+        
+        return true
+    }
+    
+    private func updateVisibleRange() -> Bool {
+        let previousVisibleRange = candlesticsView.visibleRange
+        candlesticsView.visibleRange = self.createVisibleRange()
+        return previousVisibleRange == candlesticsView.visibleRange
+    }
+    
+    private func drawFrameLayer() {
+        self.upperFrameLayer?.removeFromSuperlayer()
+        self.volumeFrameLayer?.removeFromSuperlayer()
+        
+        let upperFramePath = UIBezierPath(rect: CGRect(x: 0, y: 0, width: frame.width, height: upperChartHeight))
+        
+        upperFramePath.move(to: CGPoint(x: 0, y: theme.viewMinYGap))
+        upperFramePath.addLine(to: CGPoint(x: frame.maxX, y: theme.viewMinYGap))
+        
+        upperFramePath.move(to: CGPoint(x: 0, y: upperChartHeight - theme.viewMinYGap))
+        upperFramePath.addLine(to: CGPoint(x: frame.maxX, y: upperChartHeight - theme.viewMinYGap))
+        
+        upperFramePath.move(to: CGPoint(x: 0, y: upperChartHeight / 2.0))
+        upperFramePath.addLine(to: CGPoint(x: frame.maxX, y: upperChartHeight / 2.0))
+        
+        let upperFrameLayer = CAShapeLayer()
+        upperFrameLayer.lineWidth = theme.frameWidth
+        upperFrameLayer.strokeColor = theme.borderColor.cgColor
+        upperFrameLayer.fillColor = UIColor.clear.cgColor
+        upperFrameLayer.path = upperFramePath.cgPath
+        
+        let volFramePath = UIBezierPath(rect: CGRect(x: 0, y: upperChartHeight + theme.xAxisHeight, width: frame.width, height: frame.height - upperChartHeight - theme.xAxisHeight))
+        
+        volFramePath.move(to: CGPoint(x: 0, y: upperChartHeight + theme.xAxisHeight + theme.volumeGap))
+        volFramePath.addLine(to: CGPoint(x: frame.maxX, y: upperChartHeight + theme.xAxisHeight + theme.volumeGap))
+        
+        let volumeFrameLayer = CAShapeLayer()
+        volumeFrameLayer.lineWidth = theme.frameWidth
+        volumeFrameLayer.strokeColor = theme.borderColor.cgColor
+        volumeFrameLayer.fillColor = UIColor.clear.cgColor
+        volumeFrameLayer.path = volFramePath.cgPath
+        
+        self.layer.addSublayer(upperFrameLayer)
+        self.layer.addSublayer(volumeFrameLayer)
+        
+        self.upperFrameLayer = upperFrameLayer
+        self.volumeFrameLayer = volumeFrameLayer
     }
 }
 

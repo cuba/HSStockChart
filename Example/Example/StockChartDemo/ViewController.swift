@@ -131,6 +131,7 @@ class ViewController: UIViewController {
         let delta = arc4random_uniform(5)
         let highDelta = arc4random_uniform(5)
         let lowDelta = arc4random_uniform(5)
+        let volume = arc4random_uniform(9) * 900000
         
         var newEntry = Candlestick()
         newEntry.open = lastEntry.close
@@ -145,6 +146,7 @@ class ViewController: UIViewController {
             newEntry.low = newEntry.close - CGFloat(lowDelta)
         }
         
+        newEntry.volume = CGFloat(volume * delta)
         print("Add entry: \(newEntry.close)")
         
         graphData.candlesticks.append(newEntry)
