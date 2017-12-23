@@ -44,6 +44,7 @@ open class StockChartView: UIView {
     private var enableKVO: Bool = true
     private var lineViewWidth: CGFloat = 0.0
     private var requiresRefresh = false
+    private var numberOfCandlesticks = 0
     
     private var upperChartHeight: CGFloat {
         return theme.upperChartHeightScale * self.frame.height
@@ -117,30 +118,6 @@ open class StockChartView: UIView {
         }
     }
     
-    func setupView() {
-        backgroundColor = UIColor.white
-        
-        scrollView = UIScrollView()
-        scrollView.showsHorizontalScrollIndicator = true
-        scrollView.alwaysBounceHorizontal = true
-        scrollView.addObserver(self, forKeyPath: #keyPath(UIScrollView.contentOffset), options: .new, context: nil)
-        addSubview(scrollView)
-        
-        // Setup candlesticks view
-        candlesticsView = CandlesticsView(frame: frame)
-        candlesticsView.dataSource = self
-        candlesticsView.theme = theme
-        scrollView.addSubview(candlesticsView)
-        
-        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPressGestureAction(_:)))
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture(_:)))
-        candlesticsView.addGestureRecognizer(longPressGesture)
-        candlesticsView.addGestureRecognizer(tapGesture)
-        
-        axisView = AxisView(frame: bounds, theme: theme)
-        addSubview(axisView)
-    }
-    
     public convenience init(frame: CGRect, theme: ChartTheme) {
         self.init(frame: frame)
         self.theme = theme
@@ -157,10 +134,16 @@ open class StockChartView: UIView {
     override open func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == #keyPath(UIScrollView.contentOffset) && enableKVO {
             // If our CandlestickRange changed, we need to redraw the candlesticks
-            let visibleRange = createVisibleRange()
+            let previousVisibleRange = self.candlesticsView.visibleRange
+            updateVisibleRange()
+            let currentVisisbleRange = self.candlesticsView.visibleRange
             
-            guard visibleRange != self.candlesticsView.visibleRange else { return }
-            candlesticsView.visibleRange = visibleRange
+            if currentVisisbleRange.isSubset(of: previousVisibleRange) {
+                // Don't redraw if less is shown then before which should
+                // only happen on a rotation or a change in candlewidth
+                return
+            }
+            
             updateBounds()
             candlesticsView.drawLayers()
             
@@ -168,19 +151,6 @@ open class StockChartView: UIView {
                 self.hideDetails()
             }
         }
-    }
-    
-    private func createVisibleRange() -> CandlestickRange {
-        let contentOffsetX = scrollView.contentOffset.x
-        
-        let minimumScrollViewOffset = max(0, contentOffsetX)
-        let leftCandleCount = Int(minimumScrollViewOffset / (theme.candleWidth + theme.candleGap))
-        let visibleStartIndex = min(leftCandleCount, dataSource?.numberOfCandlesticks() ?? 0)
-        let numberOfCandles = self.numberOfCandles()
-        let visibleCandles = self.visibleCandles
-        let visibleEndIndex = max(visibleStartIndex, min(visibleStartIndex + visibleCandles, numberOfCandles - 1))
-        let candlestickRange = visibleStartIndex...visibleEndIndex
-        return candlestickRange
     }
     
     public func didInsertData() {
@@ -215,9 +185,7 @@ open class StockChartView: UIView {
         // if the data is reloaded, we need to update the visibleRange
         // and redraw the candlesticks and update the candlesticks frame
         self.candlesticsView.visibleRange = createVisibleRange()
-        updateBounds()
         updateCandlesticksFrame()
-        candlesticsView.drawLayers()
         scrollView.scrollTo(direction: .right, animated: false)
     }
     
@@ -254,23 +222,18 @@ open class StockChartView: UIView {
     }
     
     @objc func handleTapGesture(_ recognizer: UILongPressGestureRecognizer) {
-        guard let dataSource = self.dataSource else { return }
-        
         let point = recognizer.location(in: candlesticsView)
-        let count = dataSource.numberOfCandlesticks()
+        var candleIndex = min(numberOfCandlesticks - 1, Int(point.x / (theme.candleWidth + theme.candleGap)))
         
-        var candleIndex = min(count - 1, Int(point.x / (theme.candleWidth + theme.candleGap)))
         candleIndex = max(candleIndex, 0)
-        guard candleIndex < count else { return }
+        guard candleIndex < numberOfCandlesticks else { return }
         delegate?.performedTap(atIndex: candleIndex)
     }
     
     @objc func handleLongPressGestureAction(_ recognizer: UILongPressGestureRecognizer) {
-        guard let dataSource = self.dataSource else { return }
-        
         if recognizer.state == .began || recognizer.state == .changed {
             let point = recognizer.location(in: candlesticsView)
-            let candleIndex = min(dataSource.numberOfCandlesticks() - 1, max(0, Int(point.x / (theme.candleWidth + theme.candleGap))))
+            let candleIndex = min(numberOfCandlesticks - 1, max(0, Int(point.x / (theme.candleWidth + theme.candleGap))))
             delegate?.performedLongPressGesture(atIndex: candleIndex)
         }
         
@@ -279,7 +242,50 @@ open class StockChartView: UIView {
         }
     }
     
+    private func setupView() {
+        backgroundColor = UIColor.white
+        
+        scrollView = UIScrollView()
+        scrollView.showsHorizontalScrollIndicator = true
+        scrollView.alwaysBounceHorizontal = true
+        scrollView.addObserver(self, forKeyPath: #keyPath(UIScrollView.contentOffset), options: .new, context: nil)
+        addSubview(scrollView)
+        
+        // Setup candlesticks view
+        candlesticsView = CandlesticsView(frame: frame)
+        candlesticsView.dataSource = self
+        candlesticsView.theme = theme
+        scrollView.addSubview(candlesticsView)
+        
+        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPressGestureAction(_:)))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture(_:)))
+        candlesticsView.addGestureRecognizer(longPressGesture)
+        candlesticsView.addGestureRecognizer(tapGesture)
+        
+        axisView = AxisView(frame: bounds, theme: theme)
+        addSubview(axisView)
+    }
+    
+    private func createVisibleRange() -> CandlestickRange {
+        numberOfCandlesticks = dataSource?.numberOfCandlesticks() ?? 0
+        
+        let visibleCandles = self.visibleCandles
+        let contentOffsetX = scrollView.contentOffset.x
+        let minimumScrollViewOffset = max(0, contentOffsetX)
+        let leftCandleCount = Int(minimumScrollViewOffset / (theme.candleWidth + theme.candleGap))
+        let visibleStartIndex = min(leftCandleCount, numberOfCandlesticks)
+        let visibleEndIndex = max(visibleStartIndex, min(visibleStartIndex + visibleCandles, numberOfCandlesticks - 1))
+        let candlestickRange = visibleStartIndex...visibleEndIndex
+        
+        return candlestickRange
+    }
+    
+    private func updateVisibleRange() {
+        self.candlesticsView.visibleRange = createVisibleRange()
+    }
+    
     private func updateCandlesticksFrame() {
+        numberOfCandlesticks = dataSource?.numberOfCandlesticks() ?? 0
         candlesticsView.updateFrame(fromParentFrame: bounds)
         scrollView.contentSize = candlesticsView.frame.size
     }
@@ -347,7 +353,7 @@ open class StockChartView: UIView {
 extension StockChartView: CandlesticksViewDataSource {
     
     func numberOfCandles() -> Int {
-        return dataSource?.numberOfCandlesticks() ?? 0
+        return numberOfCandlesticks
     }
     
     func numberOfLines() -> Int {
@@ -380,5 +386,13 @@ extension StockChartView: CandlesticksViewDataSource {
     
     func color(forLineAtIndex lineIndex: Int) -> CGColor {
         return dataSource?.color(forLineAtIndex: lineIndex) ?? UIColor.white.cgColor
+    }
+}
+
+extension CountableClosedRange where Bound == Int {
+    func isSubset(of range: CandlestickRange) -> Bool {
+        let startsAfter = self.lowerBound >= range.lowerBound
+        let endsBefore = self.upperBound <= range.upperBound
+        return startsAfter && endsBefore
     }
 }

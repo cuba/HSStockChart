@@ -31,11 +31,13 @@ struct VolumeCoordinate {
     var fillColor: CGColor = UIColor.black.cgColor
 }
 
+typealias Coordinates = [CGPoint]
+
 struct LineCoordinates {
-    var points: [CGPoint] = []
+    var points: Coordinates = []
     var color: CGColor
     
-    init(points: [CGPoint], color: CGColor) {
+    init(points: Coordinates, color: CGColor) {
         self.points = points
         self.color = color
     }

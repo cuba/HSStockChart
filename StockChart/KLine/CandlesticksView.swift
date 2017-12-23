@@ -80,7 +80,6 @@ protocol CandlesticksViewDataSource {
 }
 
 class CandlesticsView: UIView, DrawLayer {
-    
     private var kLineViewTotalWidth: CGFloat = 0
     private var showContentWidth: CGFloat = 0
     private var selectedIndex: Int = 0
@@ -144,10 +143,11 @@ class CandlesticsView: UIView, DrawLayer {
     
     private func drawCandleChartLayer() {
         guard let dataSource = self.dataSource else { return }
-        guard dataSource.numberOfCandles() > 0 else { return }
+        let numberOfCandles = dataSource.numberOfCandles()
         candleChartLayer.sublayers?.removeAll()
         
         for index in visibleRange {
+            guard index < numberOfCandles else { break }
             let coordinate = candleCoordinate(atIndex: index, for: dataSource)
             let candleLayer = getCandleLayer(coordinate: coordinate)
             candleChartLayer.addSublayer(candleLayer)
@@ -158,10 +158,11 @@ class CandlesticsView: UIView, DrawLayer {
     
     private func drawVolumeLayer() {
         guard let dataSource = self.dataSource else { return }
-        guard dataSource.numberOfCandles() > 0 else { return }
+        let numberOfCandles = dataSource.numberOfCandles()
         volumeLayer.sublayers?.removeAll()
         
         for index in visibleRange {
+            guard index < numberOfCandles else { break }
             let coordinates = self.volumeCoordinate(atIndex: index, for: dataSource)
             let volLayer = drawLine(lineWidth: theme.candleWidth, startPoint: coordinates.highPoint, endPoint: coordinates.lowPoint, strokeColor: coordinates.fillColor, fillColor: coordinates.fillColor)
             volumeLayer.addSublayer(volLayer)
@@ -179,28 +180,36 @@ class CandlesticsView: UIView, DrawLayer {
         
         for lineIndex in 0..<numberOfLines {
             guard let coordinates = lineCoordinates(forLineIndex: lineIndex, for: dataSource) else { break }
-            let lineLayer = createLineLayer(for: coordinates.points, color: coordinates.color)
+            let lineLayer = makeLineLayer(for: coordinates.points, color: coordinates.color)
             linesLayer.addSublayer(lineLayer)
         }
         
         self.layer.addSublayer(linesLayer)
     }
     
-    private func createLineLayer(for coordinates: [CGPoint], color: CGColor) -> CAShapeLayer {
-        let linePath = UIBezierPath()
-        
-        for index in 1 ..< coordinates.count {
-            let previousPoint = coordinates[index - 1]
-            let point = coordinates[index]
-            linePath.move(to: previousPoint)
-            linePath.addLine(to: point)
-        }
-        
+    private func makeLineLayer(for coordinates: Coordinates, color: CGColor) -> CAShapeLayer {
         let lineLayer = CAShapeLayer()
-        lineLayer.path = linePath.cgPath
+        lineLayer.path = self.makeLinePath(for: coordinates)
         lineLayer.strokeColor = color
         lineLayer.fillColor = UIColor.clear.cgColor
         return lineLayer
+    }
+    
+    private func makeLinePath(for coordinates: Coordinates) -> CGPath {
+        let bezierPath = UIBezierPath()
+        
+        // We need at least 2 points to draw a line
+        guard coordinates.count > 1 else { return bezierPath.cgPath }
+        
+        // Get the line paths
+        for index in 0..<(coordinates.count - 1) {
+            let startPoint = coordinates[index]
+            let endPoint = coordinates[index + 1]
+            bezierPath.move(to: startPoint)
+            bezierPath.addLine(to: endPoint)
+        }
+        
+        return bezierPath.cgPath
     }
     
     private func clearLayer() {
