@@ -184,17 +184,30 @@ open class StockChartView: UIView {
     }
     
     public func didInsertData() {
+        // The only time we don't refresh is if we are displaying
+        // the cross view or if we are not in the end of the scroll view
+        
         guard !axisView.showingCrossView else {
             requiresRefresh = true
             return
         }
         
         let isScrolledToEnd = scrollView.isScrolled(to: .right)
-        updateBounds()
+        let isScrolledToStart = scrollView.isScrolled(to: .left)
         updateCandlesticksFrame()
         
-        if isScrolledToEnd {
+        if isScrolledToStart && isScrolledToEnd {
+            // The current number of candles don't take up the whole screen
+            // There is nothing to scroll but a new entry came in.
+            // Therefore we need to reload the screen to show the new value
+            candlesticsView.visibleRange = createVisibleRange()
+            updateBounds()
+            candlesticsView.drawLayers()
+        } else if isScrolledToEnd {
+            // if we are scrolled to the end, lets keep scrolling.
+            // This will refresh the view.  No point in doing it twice
             scrollView.scrollTo(direction: .right, animated: true)
+            return
         }
     }
     
@@ -244,7 +257,11 @@ open class StockChartView: UIView {
         guard let dataSource = self.dataSource else { return }
         
         let point = recognizer.location(in: candlesticsView)
-        let candleIndex = min(dataSource.numberOfCandlesticks(), max(0, Int(point.x / (theme.candleWidth + theme.candleGap))))
+        let count = dataSource.numberOfCandlesticks()
+        
+        var candleIndex = min(count - 1, Int(point.x / (theme.candleWidth + theme.candleGap)))
+        candleIndex = max(candleIndex, 0)
+        guard candleIndex < count else { return }
         delegate?.performedTap(atIndex: candleIndex)
     }
     

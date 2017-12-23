@@ -36,7 +36,7 @@ open class ChartTheme  {
     public var priceLabel = "Label.Price".localized
     public var volumeLabel = "Label.Volume".localized
     
-    var widthOfCandleWithGap: CGFloat {
+    var widthOfCandlePlusGap: CGFloat {
         return candleWidth + candleGap
     }
     

@@ -127,7 +127,7 @@ class CandlesticsView: UIView, DrawLayer {
     func updateFrame(fromParentFrame frame: CGRect) {
         // Get frame
         let numberOfCandles = dataSource?.numberOfCandles() ?? 0
-        let candlesWidth = self.candleXPosition(forIndex: max(0, numberOfCandles - 1))
+        let candlesWidth = self.candleXPosition(forIndex: max(0, numberOfCandles))
         let origin = frame.origin
         let size = CGSize(width: max(frame.width, candlesWidth), height: frame.height)
         let frame = CGRect(origin: origin, size: size)
@@ -233,12 +233,13 @@ class CandlesticsView: UIView, DrawLayer {
         guard values.count > 0 else { return nil }
         let visibleRange = self.visibleRange
         let startIndex = visibleRange.lowerBound
-        let endIndex = max(startIndex, min((values.count - 1), visibleRange.upperBound))
+        let endIndex = max(startIndex, visibleRange.upperBound)
         var lineCoordinates = LineCoordinates(points: [], color: color)
         let gap = theme.viewMinYGap
         let bounds = self.graphBounds
         
         for index in startIndex...endIndex {
+            guard index < values.count else { break }
             let value = values[index]
             let lineXPosition = self.lineXPosition(forIndex: index)
             let point = CGPoint(x: lineXPosition, y: (bounds.price.max - value) * priceUnit + gap)
@@ -309,7 +310,7 @@ class CandlesticsView: UIView, DrawLayer {
     }
     
     func candleXPosition(forIndex index: Int) -> CGFloat {
-        return CGFloat(index) * theme.widthOfCandleWithGap
+        return CGFloat(index) * theme.widthOfCandlePlusGap
     }
     
     func lineXPosition(forIndex index: Int) -> CGFloat {

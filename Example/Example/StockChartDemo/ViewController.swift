@@ -14,20 +14,23 @@ public enum HSChartType: Int {
     case lineForDay
     case lineForWeek
     case lineForMonth
+    case empty
     
     var title: String {
         switch self {
-        case .lineForDay:          return "Day"
-        case .lineForWeek:         return "Week"
-        case .lineForMonth:        return "Month"
+        case .lineForDay:   return "Day"
+        case .lineForWeek:  return "Week"
+        case .lineForMonth: return "Month"
+        case .empty:        return "Empty"
         }
     }
     
-    var filename: String {
+    var filename: String? {
         switch self {
-        case .lineForDay:          return "lineForDay"
-        case .lineForWeek:         return "lineForWeek"
-        case .lineForMonth:        return "lineForMonth"
+        case .lineForDay:   return "lineForDay"
+        case .lineForWeek:  return "lineForWeek"
+        case .lineForMonth: return "lineForMonth"
+        case .empty:        return nil
         }
     }
 }
@@ -47,7 +50,7 @@ class ViewController: UIViewController {
     var graphData = GraphData()
     var timer: Timer?
     
-    var chartTypes: [HSChartType] = [.lineForDay, .lineForWeek, .lineForMonth]
+    var chartTypes: [HSChartType] = [.lineForDay, .lineForWeek, .lineForMonth, .empty]
     
     var menuTitles: [String] {
         return self.chartTypes.map { $0.title }
@@ -132,9 +135,15 @@ class ViewController: UIViewController {
         let highDelta = arc4random_uniform(5)
         let lowDelta = arc4random_uniform(5)
         let volume = arc4random_uniform(9) * 900000
+
         
         var newEntry = Candlestick()
         newEntry.open = lastEntry.close
+        
+        if newEntry.open == 0 {
+            newEntry.open = CGFloat(arc4random_uniform(100))
+            newEntry.close = CGFloat(arc4random_uniform(100))
+        }
         
         if isIncrease {
             newEntry.close = newEntry.open + CGFloat(delta)
@@ -163,9 +172,14 @@ extension ViewController: SegmentMenuDelegate {
     }
     
     func setChart(at index: Int) {
-        let type = self.chartTypes[index]
-        graphData = Candlestick.getKLineModelArray(getJsonDataFromFile(type.filename))
+        self.graphData = getGraphData(at: index)
         chartView.reloadData()
+    }
+    
+    func getGraphData(at index: Int) -> GraphData {
+        let type = self.chartTypes[index]
+        guard let filename = type.filename else { return GraphData() }
+        return Candlestick.getKLineModelArray(getJsonDataFromFile(filename))
     }
     
     func fadeOut(view: UIView, duration: CGFloat) {
