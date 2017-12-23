@@ -149,7 +149,7 @@ class CandlesticsView: UIView, DrawLayer {
         for index in visibleRange {
             guard index < numberOfCandles else { break }
             let coordinate = candleCoordinate(atIndex: index, for: dataSource)
-            let candleLayer = getCandleLayer(coordinate: coordinate)
+            let candleLayer = makeCandleLayer(coordinate: coordinate)
             candleChartLayer.addSublayer(candleLayer)
         }
         
@@ -221,7 +221,7 @@ class CandlesticsView: UIView, DrawLayer {
         linesLayer.removeFromSuperlayer()
     }
     
-    private func getCandleLayer(coordinate: CandleCoordinate) -> CAShapeLayer {
+    private func makeCandleLayer(coordinate: CandleCoordinate) -> CAShapeLayer {
         let linePath = UIBezierPath(rect: coordinate.frame)
         linePath.move(to: coordinate.lowPoint)
         linePath.addLine(to: coordinate.highPoint)
