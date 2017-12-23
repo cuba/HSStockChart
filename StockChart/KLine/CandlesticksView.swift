@@ -108,7 +108,7 @@ class CandlesticsView: UIView, DrawLayer {
     
     var theme = ChartTheme()
     var dataSource: CandlesticksViewDataSource?
-    var visibleRange: CandlestickRange = 0..<0
+    var visibleRange: CandlestickRange = 0...0
     var graphBounds = GraphBounds()
     
     // MARK: - Initialize
