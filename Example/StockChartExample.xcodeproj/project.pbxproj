@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -16,7 +16,8 @@
 		8C8472A01EDB57A700B64A1D /* DateFormatter+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C84729F1EDB57A700B64A1D /* DateFormatter+Extensions.swift */; };
 		8C8472A21EDB586100B64A1D /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8472A11EDB586100B64A1D /* Date+Extensions.swift */; };
 		8C8472A41EDB589500B64A1D /* CGFloat+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8472A31EDB589500B64A1D /* CGFloat+Extensions.swift */; };
-		8C8472A61EDB5E9000B64A1D /* StockInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8472A51EDB5E9000B64A1D /* StockInfo.swift */; };
+		8CD65993267E442E00D27BC0 /* UIScrollView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CD65992267E442E00D27BC0 /* UIScrollView+Extensions.swift */; };
+		8CD65995267E4AA500D27BC0 /* StockChart in Frameworks */ = {isa = PBXBuildFile; productRef = 8CD65994267E4AA500D27BC0 /* StockChart */; };
 		C00FC4111DDAE57700C03D2C /* SegmentMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00FC4101DDAE57700C03D2C /* SegmentMenu.swift */; };
 		C01FB2A71D7E94E6000C2D6D /* timeLineForFiveday.json in Resources */ = {isa = PBXBuildFile; fileRef = C01FB2A61D7E94E6000C2D6D /* timeLineForFiveday.json */; };
 		C03E9AD21D6ECDB900D93016 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03E9AAA1D6ECDB900D93016 /* AppDelegate.swift */; };
@@ -30,38 +31,10 @@
 		C0A983051D7FB6A2003C3B4C /* FiveTrade.json in Resources */ = {isa = PBXBuildFile; fileRef = C0A983041D7FB6A2003C3B4C /* FiveTrade.json */; };
 		C0FAA64E1D7D68D900F15200 /* timeLineForDay.json in Resources */ = {isa = PBXBuildFile; fileRef = C0FAA64D1D7D68D900F15200 /* timeLineForDay.json */; };
 		C0FAA6521D7D736800F15200 /* SZ300033.json in Resources */ = {isa = PBXBuildFile; fileRef = C0FAA6511D7D736800F15200 /* SZ300033.json */; };
-		DA1F68261EE9DC440088DA6D /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAB0A8091EE9DBF000F8287E /* SwiftyJSON.framework */; };
-		DA1F682A1EE9DC640088DA6D /* StockChart.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAB0A8051EE9DB6800F8287E /* StockChart.framework */; };
-		DA1F682B1EE9DC640088DA6D /* StockChart.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DAB0A8051EE9DB6800F8287E /* StockChart.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		DAE2CBCA1FEB470D00A3AF88 /* lineForDay.json in Resources */ = {isa = PBXBuildFile; fileRef = DAE2CBC71FEB470C00A3AF88 /* lineForDay.json */; };
 		DAE2CBCB1FEB470D00A3AF88 /* lineForMonth.json in Resources */ = {isa = PBXBuildFile; fileRef = DAE2CBC81FEB470D00A3AF88 /* lineForMonth.json */; };
 		DAE2CBCC1FEB470D00A3AF88 /* lineForWeek.json in Resources */ = {isa = PBXBuildFile; fileRef = DAE2CBC91FEB470D00A3AF88 /* lineForWeek.json */; };
-		DAE2CBD21FEB5D8600A3AF88 /* UIScrollView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE2CBD11FEB5D8600A3AF88 /* UIScrollView+Extensions.swift */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		DA1F682C1EE9DC640088DA6D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DAB0A7FF1EE9DB6800F8287E /* StockChart.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 8C077C2B1EDA13E4007BCCFC;
-			remoteInfo = StockChart;
-		};
-		DAB0A8041EE9DB6800F8287E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DAB0A7FF1EE9DB6800F8287E /* StockChart.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 8C077C2C1EDA13E4007BCCFC;
-			remoteInfo = StockChart;
-		};
-		DAB0A8061EE9DB6800F8287E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DAB0A7FF1EE9DB6800F8287E /* StockChart.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 8C077C351EDA13E5007BCCFC;
-			remoteInfo = StockChartTests;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		8C077CB91EDA1545007BCCFC /* Embed Frameworks */ = {
@@ -70,7 +43,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				DA1F682B1EE9DC640088DA6D /* StockChart.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -87,7 +59,8 @@
 		8C84729F1EDB57A700B64A1D /* DateFormatter+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Extensions.swift"; sourceTree = "<group>"; };
 		8C8472A11EDB586100B64A1D /* Date+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		8C8472A31EDB589500B64A1D /* CGFloat+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGFloat+Extensions.swift"; sourceTree = "<group>"; };
-		8C8472A51EDB5E9000B64A1D /* StockInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StockInfo.swift; sourceTree = "<group>"; };
+		8CD65991267E43C700D27BC0 /* StockChart */ = {isa = PBXFileReference; lastKnownFileType = folder; name = StockChart; path = ..; sourceTree = "<group>"; };
+		8CD65992267E442E00D27BC0 /* UIScrollView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Extensions.swift"; sourceTree = "<group>"; };
 		B4D5F8E2FF58BC1092E5C722 /* Pods_HSStockChartDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HSStockChartDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C00FC4101DDAE57700C03D2C /* SegmentMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SegmentMenu.swift; path = StockChartDemo/SegmentMenu.swift; sourceTree = "<group>"; };
 		C01FB2A61D7E94E6000C2D6D /* timeLineForFiveday.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = timeLineForFiveday.json; sourceTree = "<group>"; };
@@ -104,12 +77,10 @@
 		C0D065731D61C17A00AC5AAF /* StockChartExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StockChartExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0FAA64D1D7D68D900F15200 /* timeLineForDay.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = timeLineForDay.json; sourceTree = "<group>"; };
 		C0FAA6511D7D736800F15200 /* SZ300033.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SZ300033.json; sourceTree = "<group>"; };
-		DAB0A7FF1EE9DB6800F8287E /* StockChart.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = StockChart.xcodeproj; path = ../StockChart.xcodeproj; sourceTree = "<group>"; };
 		DAB0A8091EE9DBF000F8287E /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
 		DAE2CBC71FEB470C00A3AF88 /* lineForDay.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = lineForDay.json; sourceTree = "<group>"; };
 		DAE2CBC81FEB470D00A3AF88 /* lineForMonth.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = lineForMonth.json; sourceTree = "<group>"; };
 		DAE2CBC91FEB470D00A3AF88 /* lineForWeek.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = lineForWeek.json; sourceTree = "<group>"; };
-		DAE2CBD11FEB5D8600A3AF88 /* UIScrollView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UIScrollView+Extensions.swift"; path = "../../../../StockChart/Extensions/UIScrollView+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,8 +88,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DA1F682A1EE9DC640088DA6D /* StockChart.framework in Frameworks */,
-				DA1F68261EE9DC440088DA6D /* SwiftyJSON.framework in Frameworks */,
+				8CD65995267E4AA500D27BC0 /* StockChart in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -148,7 +118,6 @@
 		8C84728A1EDB4C6D00B64A1D /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				8C8472A51EDB5E9000B64A1D /* StockInfo.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -198,13 +167,13 @@
 		C03E9AC91D6ECDB900D93016 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				C03E9ACB1D6ECDB900D93016 /* Extension.swift */,
-				8C8472A11EDB586100B64A1D /* Date+Extensions.swift */,
-				8C84729D1EDB570B00B64A1D /* String+Extensions.swift */,
-				8C84729F1EDB57A700B64A1D /* DateFormatter+Extensions.swift */,
-				8C8472991EDB556B00B64A1D /* UIColor+Extensions.swift */,
 				8C8472A31EDB589500B64A1D /* CGFloat+Extensions.swift */,
-				DAE2CBD11FEB5D8600A3AF88 /* UIScrollView+Extensions.swift */,
+				8C8472A11EDB586100B64A1D /* Date+Extensions.swift */,
+				8C84729F1EDB57A700B64A1D /* DateFormatter+Extensions.swift */,
+				C03E9ACB1D6ECDB900D93016 /* Extension.swift */,
+				8C84729D1EDB570B00B64A1D /* String+Extensions.swift */,
+				8C8472991EDB556B00B64A1D /* UIColor+Extensions.swift */,
+				8CD65992267E442E00D27BC0 /* UIScrollView+Extensions.swift */,
 			);
 			name = Extensions;
 			path = StockChartDemo/Common;
@@ -213,7 +182,7 @@
 		C0D0656A1D61C17A00AC5AAF = {
 			isa = PBXGroup;
 			children = (
-				DAB0A7FF1EE9DB6800F8287E /* StockChart.xcodeproj */,
+				8CD65991267E43C700D27BC0 /* StockChart */,
 				C03E9AA91D6ECDB900D93016 /* Example */,
 				C0D065741D61C17A00AC5AAF /* Products */,
 				15E286114257ED8F46EC389B /* Frameworks */,
@@ -224,15 +193,6 @@
 			isa = PBXGroup;
 			children = (
 				C0D065731D61C17A00AC5AAF /* StockChartExample.app */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		DAB0A8001EE9DB6800F8287E /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				DAB0A8051EE9DB6800F8287E /* StockChart.framework */,
-				DAB0A8071EE9DB6800F8287E /* StockChartTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -248,14 +208,15 @@
 				C0D065701D61C17A00AC5AAF /* Frameworks */,
 				C0D065711D61C17A00AC5AAF /* Resources */,
 				8C077CB91EDA1545007BCCFC /* Embed Frameworks */,
-				DAB0A8081EE9DBBB00F8287E /* ShellScript */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				DA1F682D1EE9DC640088DA6D /* PBXTargetDependency */,
 			);
 			name = StockChartExample;
+			packageProductDependencies = (
+				8CD65994267E4AA500D27BC0 /* StockChart */,
+			);
 			productName = MyStockChartDemo;
 			productReference = C0D065731D61C17A00AC5AAF /* StockChartExample.app */;
 			productType = "com.apple.product-type.application";
@@ -283,41 +244,19 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
 			mainGroup = C0D0656A1D61C17A00AC5AAF;
 			productRefGroup = C0D065741D61C17A00AC5AAF /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = DAB0A8001EE9DB6800F8287E /* Products */;
-					ProjectRef = DAB0A7FF1EE9DB6800F8287E /* StockChart.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				C0D065721D61C17A00AC5AAF /* StockChartExample */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		DAB0A8051EE9DB6800F8287E /* StockChart.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = StockChart.framework;
-			remoteRef = DAB0A8041EE9DB6800F8287E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		DAB0A8071EE9DB6800F8287E /* StockChartTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = StockChartTests.xctest;
-			remoteRef = DAB0A8061EE9DB6800F8287E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		C0D065711D61C17A00AC5AAF /* Resources */ = {
@@ -342,29 +281,11 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		DAB0A8081EE9DBBB00F8287E /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/SwiftyJSON.framework",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks";
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		C0D0656F1D61C17A00AC5AAF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8C8472A61EDB5E9000B64A1D /* StockInfo.swift in Sources */,
 				8C84729E1EDB570B00B64A1D /* String+Extensions.swift in Sources */,
 				8C8472A41EDB589500B64A1D /* CGFloat+Extensions.swift in Sources */,
 				8C84729A1EDB556B00B64A1D /* UIColor+Extensions.swift in Sources */,
@@ -377,19 +298,11 @@
 				C03E9AD21D6ECDB900D93016 /* AppDelegate.swift in Sources */,
 				8C8472A01EDB57A700B64A1D /* DateFormatter+Extensions.swift in Sources */,
 				8C077CD21EDA1C39007BCCFC /* HSStockBriefView.swift in Sources */,
-				DAE2CBD21FEB5D8600A3AF88 /* UIScrollView+Extensions.swift in Sources */,
+				8CD65993267E442E00D27BC0 /* UIScrollView+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		DA1F682D1EE9DC640088DA6D /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = StockChart;
-			targetProxy = DA1F682C1EE9DC640088DA6D /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		C03E9AAC1D6ECDB900D93016 /* LaunchScreen.storyboard */ = {
@@ -497,7 +410,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -507,7 +421,6 @@
 		C0D065861D61C17A00AC5AAF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Developer";
@@ -519,7 +432,10 @@
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Example/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jacobsikorski.StockChartExample;
 				PRODUCT_NAME = StockChartExample;
@@ -532,7 +448,6 @@
 		C0D065871D61C17A00AC5AAF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 5P99QDD6WR;
@@ -542,7 +457,10 @@
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Example/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jacobsikorski.StockChartExample;
 				PRODUCT_NAME = StockChartExample;
@@ -574,6 +492,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8CD65994267E4AA500D27BC0 /* StockChart */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = StockChart;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = C0D0656B1D61C17A00AC5AAF /* Project object */;
 }

@@ -9,9 +9,12 @@
 import Foundation
 import UIKit
 import StockChart
-import SwiftyJSON
 
-struct GraphData {
+struct GraphData: Decodable {
+    enum CodingKeys: String, CodingKey {
+        case chartlist
+    }
+    
     var candlesticks: [Candlestick]
     var lines: [(key: String, values: [CGFloat])]
     
@@ -27,10 +30,10 @@ struct GraphData {
     init() {
         self.init(candlesticks: [], lines: [])
     }
-}
-
-extension Candlestick {
-    static func getKLineModelArray(_ json: JSON) -> GraphData {
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let chartlist = try container.decode([ChartlistResponse].self, forKey: .chartlist)
         var candlesticks: [Candlestick] = []
         
         var lines: [String: [CGFloat]] = [
@@ -40,37 +43,64 @@ extension Candlestick {
             // "ma30": []
         ]
         
-        for (_, jsonData): (String, JSON) in json["chartlist"] {
+        for chartlistRow in chartlist {
             var candlestick = Candlestick()
-            candlestick.date = jsonData["time"].stringValue.toDate(withFormat: "EEE MMM d HH:mm:ss z yyyy")!
-            candlestick.open = CGFloat(jsonData["open"].doubleValue)
-            candlestick.close = CGFloat(jsonData["close"].doubleValue)
-            candlestick.high = CGFloat(jsonData["high"].doubleValue)
-            candlestick.low = CGFloat(jsonData["low"].doubleValue)
-            candlestick.volume = CGFloat(jsonData["volume"].doubleValue)
-            
-            lines["ma5"]?.append(CGFloat(jsonData["ma5"].doubleValue))
-            lines["ma10"]?.append(CGFloat(jsonData["ma10"].doubleValue))
-            lines["ma20"]?.append(CGFloat(jsonData["ma20"].doubleValue))
-            // lines["ma30"]?.append(CGFloat(jsonData["ma30"].doubleValue))
+            candlestick.date = chartlistRow.date
+            candlestick.open = chartlistRow.open
+            candlestick.close = chartlistRow.close
+            candlestick.high = chartlistRow.high
+            candlestick.low = chartlistRow.low
+            candlestick.volume = chartlistRow.volume
             
             candlesticks.append(candlestick)
+            lines["ma5"]?.append(chartlistRow.ma5)
+            lines["ma10"]?.append(chartlistRow.ma10)
+            lines["ma20"]?.append(chartlistRow.ma20)
         }
         
-        return GraphData(candlesticks: candlesticks, lines: lines.map({ (key: $0, values: $1) }))
-    }
-    
-    public func getKLineModelArray() {
-        
+        self.init(candlesticks: candlesticks, lines: lines.map({ (key: $0, values: $1) }))
     }
 }
 
-extension StockInfo {
-    static func getStockBasicInfoModel(_ json: JSON) -> StockInfo {
-        var model = StockInfo()
-        model.stockName = json["SZ300033"]["name"].stringValue
-        model.preClosePrice = CGFloat(json["SZ300033"]["last_close"].doubleValue)
+struct ChartlistResponse: Decodable {
+    enum CodingKeys: String, CodingKey {
+        case time
+        case open
+        case close
+        case high
+        case low
+        case volume
+        case ma5
+        case ma10
+        case ma20
+    }
+    
+    let date: Date
+    let open: CGFloat
+    let close: CGFloat
+    let high: CGFloat
+    let low: CGFloat
+    let volume: CGFloat
+    let ma5: CGFloat
+    let ma10: CGFloat
+    let ma20: CGFloat
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let dateString = try container.decode(String.self, forKey: .time)
         
-        return model
+        guard let date = DateFormatter.chartListTime.date(from: dateString) else {
+            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Could not convert `\(dateString)` to `Date`. Expecting it to be in the following format: `\(DateFormatter.chartListTime.dateFormat!)`"))
+        }
+        
+        self.date = date
+        self.open = try container.decode(CGFloat.self, forKey: .open)
+        self.close = try container.decode(CGFloat.self, forKey: .close)
+        self.high = try container.decode(CGFloat.self, forKey: .high)
+        self.low = try container.decode(CGFloat.self, forKey: .low)
+        self.volume = try container.decode(CGFloat.self, forKey: .volume)
+        self.ma5 = try container.decode(CGFloat.self, forKey: .ma5)
+        self.ma10 = try container.decode(CGFloat.self, forKey: .ma10)
+        self.ma20 = try container.decode(CGFloat.self, forKey: .ma20)
     }
 }

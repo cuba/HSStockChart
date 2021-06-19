@@ -8,7 +8,6 @@
 
 import UIKit
 import StockChart
-import SwiftyJSON
 
 public enum HSChartType: Int {
     case lineForDay
@@ -179,7 +178,15 @@ extension ViewController: SegmentMenuDelegate {
     func getGraphData(at index: Int) -> GraphData {
         let type = self.chartTypes[index]
         guard let filename = type.filename else { return GraphData() }
-        return Candlestick.getKLineModelArray(getJsonDataFromFile(filename))
+        let data = getJsonDataFromFile(filename)
+        let jsonDecoder = JSONDecoder()
+        
+        do {
+            return try jsonDecoder.decode(GraphData.self, from: data)
+        } catch {
+            assertionFailure(error.localizedDescription)
+            return GraphData()
+        }
     }
     
     func fadeOut(view: UIView, duration: CGFloat) {
@@ -199,11 +206,10 @@ extension ViewController: SegmentMenuDelegate {
 
 extension ViewController {
     
-    func getJsonDataFromFile(_ fileName: String) -> JSON {
+    func getJsonDataFromFile(_ fileName: String) -> Data {
         let pathForResource = Bundle.main.path(forResource: fileName, ofType: "json")
         let content = try! String(contentsOfFile: pathForResource!, encoding: String.Encoding.utf8)
-        let jsonContent = content.data(using: String.Encoding.utf8)!
-        return JSON(data: jsonContent)
+        return content.data(using: String.Encoding.utf8)!
     }
 }
 
