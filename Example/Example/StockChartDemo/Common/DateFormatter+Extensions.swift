@@ -20,6 +20,20 @@ extension DateFormatter {
         return formatter
     }()
     
+    static let shortDate: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.timeStyle = .none
+        formatter.dateStyle = .short
+        return formatter
+    }()
+    
+    static let shortTime: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.timeStyle = .short
+        formatter.dateStyle = .none
+        return formatter
+    }()
+    
     convenience init(dateFormat: String) {
         self.init()
         self.dateFormat =  dateFormat

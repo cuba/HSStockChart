@@ -10,7 +10,7 @@ import UIKit
 
 public typealias CandlestickRange = CountableClosedRange<Int>
 
-public protocol StockChartViewDelegate {
+public protocol StockChartViewDelegate: AnyObject {
     func performedLongPressGesture(atIndex index: Int)
     func releasedLongPressGesture()
     func performedTap(atIndex index: Int)
@@ -18,7 +18,7 @@ public protocol StockChartViewDelegate {
     func hidDetails()
 }
 
-public protocol StockChartViewDataSource {
+public protocol StockChartViewDataSource: AnyObject {
     func numberOfCandlesticks() -> Int
     func numberOfLines() -> Int
     func candlestick(atIndex index: Int) -> Candlestick
@@ -98,8 +98,8 @@ open class StockChartView: UIView {
         }
     }
     
-    public var dataSource: StockChartViewDataSource?
-    public var delegate: StockChartViewDelegate?
+    public weak var dataSource: StockChartViewDataSource?
+    public weak var delegate: StockChartViewDelegate?
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -243,8 +243,6 @@ open class StockChartView: UIView {
     }
     
     private func setupView() {
-        backgroundColor = UIColor.white
-        
         scrollView = UIScrollView()
         scrollView.showsHorizontalScrollIndicator = true
         scrollView.alwaysBounceHorizontal = true
@@ -314,33 +312,13 @@ open class StockChartView: UIView {
         self.upperFrameLayer?.removeFromSuperlayer()
         self.volumeFrameLayer?.removeFromSuperlayer()
         
-        let upperFramePath = UIBezierPath(rect: CGRect(x: 0, y: 0, width: frame.width, height: upperChartHeight))
-        
-        upperFramePath.move(to: CGPoint(x: 0, y: theme.viewMinYGap))
-        upperFramePath.addLine(to: CGPoint(x: frame.maxX, y: theme.viewMinYGap))
-        
-        upperFramePath.move(to: CGPoint(x: 0, y: upperChartHeight - theme.viewMinYGap))
-        upperFramePath.addLine(to: CGPoint(x: frame.maxX, y: upperChartHeight - theme.viewMinYGap))
-        
-        upperFramePath.move(to: CGPoint(x: 0, y: upperChartHeight / 2.0))
-        upperFramePath.addLine(to: CGPoint(x: frame.maxX, y: upperChartHeight / 2.0))
-        
         let upperFrameLayer = CAShapeLayer()
         upperFrameLayer.lineWidth = theme.frameWidth
-        upperFrameLayer.strokeColor = theme.borderColor.cgColor
         upperFrameLayer.fillColor = UIColor.clear.cgColor
-        upperFrameLayer.path = upperFramePath.cgPath
-        
-        let volFramePath = UIBezierPath(rect: CGRect(x: 0, y: upperChartHeight + theme.xAxisHeight, width: frame.width, height: frame.height - upperChartHeight - theme.xAxisHeight))
-        
-        volFramePath.move(to: CGPoint(x: 0, y: upperChartHeight + theme.xAxisHeight + theme.volumeGap))
-        volFramePath.addLine(to: CGPoint(x: frame.maxX, y: upperChartHeight + theme.xAxisHeight + theme.volumeGap))
         
         let volumeFrameLayer = CAShapeLayer()
         volumeFrameLayer.lineWidth = theme.frameWidth
-        volumeFrameLayer.strokeColor = theme.borderColor.cgColor
         volumeFrameLayer.fillColor = UIColor.clear.cgColor
-        volumeFrameLayer.path = volFramePath.cgPath
         
         self.layer.addSublayer(upperFrameLayer)
         self.layer.addSublayer(volumeFrameLayer)

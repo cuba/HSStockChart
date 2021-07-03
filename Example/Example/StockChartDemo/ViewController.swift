@@ -8,6 +8,7 @@
 
 import UIKit
 import StockChart
+import SnapKit
 
 public enum HSChartType: Int {
     case lineForDay
@@ -35,23 +36,37 @@ public enum HSChartType: Int {
 }
 
 class ViewController: UIViewController {
-    fileprivate var defaultDateFormatter: DateFormatter = {
+    private let defaultDateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .short
         dateFormatter.timeStyle = .short
         return dateFormatter
     }()
     
-    var containerView: UIView!
-    var segmentMenu: SegmentMenu!
-    var lineBriefView: HSKLineBriefView!
-    var chartView: StockChartView!
-    var graphData = GraphData()
-    var timer: Timer?
+    // MARK: - Views
     
-    var chartTypes: [HSChartType] = [.lineForDay, .lineForWeek, .lineForMonth, .empty]
+    private lazy var segmentMenu: SegmentMenu = {
+        return SegmentMenu()
+    }()
     
-    var menuTitles: [String] {
+    private lazy var lineBriefView: HSKLineBriefView = {
+        let view = HSKLineBriefView()
+        view.isHidden = true
+        return view
+    }()
+    
+    private lazy var chartView: StockChartView = {
+        return StockChartView()
+    }()
+    
+    // MARK: - Private data
+    private var graphData = GraphData()
+    private var timer: Timer?
+    private var chartTypes: [HSChartType] = [.lineForDay, .lineForWeek, .lineForMonth, .empty]
+    
+    // MARK: - Computed properties
+    
+    private var menuTitles: [String] {
         return self.chartTypes.map { $0.title }
     }
     
@@ -59,6 +74,14 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupConstraints()
+        
+        segmentMenu.delegate = self
+        chartView.dataSource = self
+        chartView.delegate = self
+        view.backgroundColor = .secondarySystemBackground
+        
+        segmentMenu.setButtons(from: menuTitles)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -70,52 +93,26 @@ class ViewController: UIViewController {
         self.timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(addRandomGraphEntry), userInfo: nil, repeats: true)
     }
     
-    // MARK: -
-    
-    override func loadView() {
-        super.loadView()
-        segmentMenu = SegmentMenu()
-        lineBriefView = HSKLineBriefView()
-        containerView = UIView()
-        segmentMenu.setButtons(from: menuTitles)
+    private func setupConstraints() {
+        view.addSubview(segmentMenu)
+        view.addSubview(chartView)
+        view.addSubview(lineBriefView)
         
-        containerView.backgroundColor = UIColor.white
-        lineBriefView?.isHidden = true
-        segmentMenu.delegate = self
+        segmentMenu.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.leading.trailing.equalTo(view.readableContentGuide)
+            make.height.equalTo(50)
+        }
         
-        self.view.addSubview(segmentMenu)
-        self.view.addSubview(lineBriefView)
-        self.view.addSubview(containerView)
+        lineBriefView.snp.makeConstraints { make in
+            make.edges.equalTo(segmentMenu)
+        }
         
-        segmentMenu.translatesAutoresizingMaskIntoConstraints = false
-        lineBriefView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.translatesAutoresizingMaskIntoConstraints = false
-        
-        segmentMenu.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor, constant: 0).isActive = true
-        segmentMenu.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
-        segmentMenu.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
-        segmentMenu.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        
-        lineBriefView.topAnchor.constraint(equalTo: segmentMenu.topAnchor, constant: 0).isActive = true
-        lineBriefView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
-        lineBriefView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
-        lineBriefView.bottomAnchor.constraint(equalTo: segmentMenu.bottomAnchor, constant: 0).isActive = true
-        
-        containerView.topAnchor.constraint(equalTo: segmentMenu.bottomAnchor, constant: 0).isActive = true
-        containerView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0).isActive = true
-        containerView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0).isActive = true
-        containerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
-        
-        chartView = StockChartView()
-        chartView.dataSource = self
-        chartView.delegate = self
-        self.view.addSubview(chartView)
-        chartView.translatesAutoresizingMaskIntoConstraints = false
-        
-        chartView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 0).isActive = true
-        chartView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 0).isActive = true
-        chartView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: 0).isActive = true
-        chartView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 0).isActive = true
+        chartView.snp.makeConstraints { make in
+            make.top.equalTo(segmentMenu.snp.bottom).offset(8)
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(view.safeAreaLayoutGuide)
+        }
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -126,15 +123,14 @@ class ViewController: UIViewController {
         })
     }
     
-    @objc func addRandomGraphEntry() {
+    @objc
+    private func addRandomGraphEntry() {
         let lastEntry = graphData.candlesticks.last ?? Candlestick()
         let isIncrease = arc4random_uniform(2) > 0
-        
         let delta = arc4random_uniform(5)
         let highDelta = arc4random_uniform(5)
         let lowDelta = arc4random_uniform(5)
         let volume = arc4random_uniform(9) * 900000
-
         
         var newEntry = Candlestick()
         newEntry.open = lastEntry.close
@@ -205,7 +201,6 @@ extension ViewController: SegmentMenuDelegate {
 }
 
 extension ViewController {
-    
     func getJsonDataFromFile(_ fileName: String) -> Data {
         let pathForResource = Bundle.main.path(forResource: fileName, ofType: "json")
         let content = try! String(contentsOfFile: pathForResource!, encoding: String.Encoding.utf8)
@@ -214,7 +209,6 @@ extension ViewController {
 }
 
 extension ViewController: StockChartViewDataSource {
-    
     func numberOfCandlesticks() -> Int {
         return graphData.candlesticks.count
     }
@@ -302,23 +296,22 @@ extension ViewController: StockChartViewDelegate {
     }
     
     func performedTap(atIndex index: Int) {
-        if lineBriefView?.isHidden ?? false {
+        if lineBriefView.isHidden {
             chartView.showDetails(forCandleAtIndex: index)
         } else {
             chartView.hideDetails()
         }
     }
     
-    
     func showedDetails(atIndex index: Int){
         let candlestick = graphData.candlesticks[index]
-        lineBriefView?.configureView(candlestick: candlestick)
-        lineBriefView?.isHidden = false
+        lineBriefView.configureView(candlestick: candlestick)
+        lineBriefView.isHidden = false
+        segmentMenu.isHidden = true
     }
     
     func hidDetails() {
-        lineBriefView?.isHidden = true
+        lineBriefView.isHidden = true
+        segmentMenu.isHidden = false
     }
 }
-
-

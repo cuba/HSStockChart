@@ -175,6 +175,7 @@ open class AxisView: UIView, DrawLayer {
         shapeLayer.lineWidth = theme.lineWidth
         shapeLayer.strokeColor = theme.crossLineColor.cgColor
         shapeLayer.fillColor = theme.crossLineColor.cgColor
+        shapeLayer.lineDashPattern = [2, 2]
         shapeLayer.path = linePath.cgPath
         return shapeLayer
     }
@@ -192,7 +193,7 @@ open class AxisView: UIView, DrawLayer {
         let origin = CGPoint(x: labelX, y: labelY)
         let frame = CGRect(origin: origin, size: priceMarkSize)
         
-        let shapeLayer = drawTextLayer(frame: frame, text: priceString, foregroundColor: UIColor.white.cgColor, backgroundColor: theme.textColor.cgColor)
+        let shapeLayer = drawCrossLineLabelLayer(frame: frame, text: priceString, theme: theme)
         return shapeLayer
     }
     
@@ -208,7 +209,7 @@ open class AxisView: UIView, DrawLayer {
             labelX = frame.maxX - volMarkSize.width
         }
         
-        return drawTextLayer(frame: CGRect(x: labelX, y: labelY, width: volMarkSize.width, height: volMarkSize.height), text: volumeString, foregroundColor: UIColor.white.cgColor, backgroundColor: theme.textColor.cgColor)
+        return drawCrossLineLabelLayer(frame: CGRect(x: labelX, y: labelY, width: volMarkSize.width, height: volMarkSize.height), text: volumeString, theme: theme)
     }
     
     func createDateTextLayer(for frame: CGRect, pricePoint: CGPoint, dateString: String, index: Int) -> CATextLayer {
@@ -225,12 +226,12 @@ open class AxisView: UIView, DrawLayer {
             labelX = frame.minX
         }
         
-        return drawTextLayer(frame: CGRect(x: labelX, y: labelY, width: bottomMarkSize.width, height: bottomMarkSize.height), text: dateString, foregroundColor: UIColor.white.cgColor, backgroundColor: theme.textColor.cgColor)
+        return drawCrossLineLabelLayer(frame: CGRect(x: labelX, y: labelY, width: bottomMarkSize.width, height: bottomMarkSize.height), text: dateString, theme: theme)
     }
     
     private func getYAxisMarkLayer(frame: CGRect, text: String, y: CGFloat, isLeft: Bool) -> CATextLayer {
         let frame = createFrame(for: text, inFrame: frame, y: y, isLeft: isLeft)
-        let yMarkLayer = drawTextLayer(frame: frame, text: text, foregroundColor: theme.textColor.cgColor)
+        let yMarkLayer = drawLabelLayer(frame: frame, text: text, theme: theme)
         
         return yMarkLayer
     }

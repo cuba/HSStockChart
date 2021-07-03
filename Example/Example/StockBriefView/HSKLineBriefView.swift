@@ -10,14 +10,17 @@ import UIKit
 import StockChart
 
 class HSKLineBriefView: UIView {
-    
     @IBOutlet weak var open: UILabel!
     @IBOutlet weak var close: UILabel!
     @IBOutlet weak var high: UILabel!
     @IBOutlet weak var low: UILabel!
     @IBOutlet weak var volume: UILabel!
     @IBOutlet weak var ratio: UILabel!
+    @IBOutlet weak var date: UILabel!
     @IBOutlet weak var time: UILabel!
+    
+    private let riseColor = UIColor(named: "stock.rise")!
+    private let downColor = UIColor(named: "stock.fall")!
     
     weak var view: UIView!
     
@@ -49,15 +52,12 @@ class HSKLineBriefView: UIView {
     }
     
     func configureView(candlestick: Candlestick) {
-        let riseColor = UIColor.red
-        let downColor = UIColor(hexString: "#1DBF60")
-
 //        if kLineModel.rate > 0 {
-//            close.textColor = riseColor
-//            ratio.textColor = riseColor
+//            close.labelColor = riseColor
+//            ratio.labelColor = riseColor
 //        } else {
-//            close.textColor = downColor
-//            ratio.textColor = downColor
+//            close.labelColor = downColor
+//            ratio.labelColor = downColor
 //        }
         
         if candlestick.open > candlestick.close {
@@ -84,7 +84,8 @@ class HSKLineBriefView: UIView {
         low.text = candlestick.low.toString(withFormat: ".8")
         volume.text = candlestick.volume.toString(withFormat: ".2")
         //ratio.text = candlestick.rate.toString(withFormat: ".2") + "%"
-        time.text = candlestick.date.toString(withFormat: "yyyy-MM-dd")
+        date.text = DateFormatter.shortDate.string(from: candlestick.date)
+        time.text = DateFormatter.shortTime.string(from: candlestick.date)
     }
 
 }

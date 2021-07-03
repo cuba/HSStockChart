@@ -13,9 +13,7 @@ public protocol DrawLayer {
     var theme: ChartTheme { get }
     
     func drawLine(lineWidth: CGFloat, startPoint: CGPoint, endPoint: CGPoint, strokeColor: CGColor, fillColor: CGColor, isDash: Bool, isAnimated: Bool) -> CAShapeLayer
-    
     func drawTextLayer(frame: CGRect, text: String, foregroundColor: CGColor, backgroundColor: CGColor, fontSize: CGFloat) -> CATextLayer
-    
     func getFrameSize(for text: String) -> CGSize
 }
 
@@ -53,12 +51,21 @@ extension DrawLayer {
         return lineLayer
     }
     
+    public func drawLabelLayer(frame: CGRect, text: String, theme: ChartTheme) -> CATextLayer {
+        return drawTextLayer(frame: frame, text: text, foregroundColor: theme.labelColor.cgColor, backgroundColor: theme.labelBackgroundColor.cgColor, fontSize: 10)
+    }
+    
+    public func drawCrossLineLabelLayer(frame: CGRect, text: String, theme: ChartTheme) -> CATextLayer {
+        return drawTextLayer(frame: frame, text: text, foregroundColor: theme.labelColor.cgColor, backgroundColor: theme.crossLinelabelBackgroundColor.cgColor, fontSize: 10)
+    }
+    
     public func drawTextLayer(frame: CGRect, text: String, foregroundColor: CGColor, backgroundColor: CGColor = UIColor.clear.cgColor, fontSize: CGFloat = 10) -> CATextLayer {
         
         let textLayer = CATextLayer()
         textLayer.frame = frame
         textLayer.string = text
         textLayer.fontSize = fontSize
+        textLayer.cornerRadius = frame.size.height / 2
         textLayer.foregroundColor = foregroundColor
         textLayer.backgroundColor = backgroundColor
         textLayer.alignmentMode = CATextLayerAlignmentMode.center
@@ -70,6 +77,7 @@ extension DrawLayer {
     public func getFrameSize(for text: String) -> CGSize {
         let font = theme.baseFont
         let attributes = [NSAttributedString.Key.font: font]
-        return text.size(withAttributes: attributes)
+        let size = text.size(withAttributes: attributes)
+        return CGSize(width: size.width + 8, height: size.height)
     }
 }

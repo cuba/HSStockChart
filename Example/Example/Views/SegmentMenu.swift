@@ -8,11 +8,14 @@
 
 import UIKit
 
-@objc protocol SegmentMenuDelegate {
+protocol SegmentMenuDelegate: AnyObject {
     func menuButtonDidClick(index: Int)
 }
 
 class SegmentMenu: UIView {
+    private let selectedButtonColor = UIColor(named: "Tint")
+    private let unselectedButtonColor = UIColor.label
+    
     private var stackView: UIStackView!
     private var bottomIndicator: UIView!
     private var bottomLine: UIView!
@@ -33,16 +36,12 @@ class SegmentMenu: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        self.backgroundColor = UIColor.white
-        
         stackView = UIStackView()
         stackView.distribution = .fillEqually
         bottomIndicator = UIView()
-        bottomIndicator.backgroundColor = UIColor(hexString: "#1782d0")
+        bottomIndicator.backgroundColor = selectedButtonColor
         
         bottomLine = UIView()
-        bottomLine.backgroundColor = UIColor.groupTableViewBackground
         
         self.addSubview(stackView)
         self.addSubview(bottomIndicator)
@@ -73,10 +72,10 @@ class SegmentMenu: UIView {
         // Create buttons
         buttons = titles.map {
             let button = UIButton()
-            button.backgroundColor = UIColor.white
             button.setTitle($0, for: .normal)
             button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
-            button.setTitleColor(UIColor.black, for: .normal)
+            button.setTitleColor(selectedButtonColor, for: .selected)
+            button.setTitleColor(unselectedButtonColor, for: .normal)
             button.addTarget(self, action: #selector(menuButtonDidClick(_:)), for: .touchUpInside)
             return button
         }
@@ -98,12 +97,12 @@ class SegmentMenu: UIView {
         let button = self.buttons[index]
         
         if button != selectedButton {
-            selectedButton?.setTitleColor(UIColor.black, for: .normal)
+            selectedButton?.isSelected = false
         }
         
         self.selectedButton = button
+        self.selectedButton?.isSelected = true
         delegate?.menuButtonDidClick(index: index)
-        self.selectedButton?.setTitleColor(UIColor(hexString: "#1782d0"), for: .normal)
         
         if animated {
             UIView.animate(withDuration: 0.3) {

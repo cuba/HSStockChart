@@ -10,7 +10,6 @@ import UIKit
 import StockChart
 
 class HSStockBriefView: UIView {
-    
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var priceLabel: UILabel!
     @IBOutlet weak var ratioLabel: UILabel!
@@ -55,8 +54,8 @@ class HSStockBriefView: UIView {
 //        } else {
 //            labelColor = UIColor.gray
 //        }
-//        priceLabel.textColor = labelColor
-//        ratioLabel.textColor = labelColor
+//        priceLabel.labelColor = labelColor
+//        ratioLabel.labelColor = labelColor
 //        
 //        priceLabel.text = timeLineEntity.price.toString(withFormat: ".8")
 //        ratioLabel.text = (timeLineEntity.rate * 100).toPercentString(withFormat: ".2")
