@@ -175,7 +175,6 @@ open class AxisView: UIView, DrawLayer {
         shapeLayer.lineWidth = theme.lineWidth
         shapeLayer.strokeColor = theme.crossLineColor.cgColor
         shapeLayer.fillColor = theme.crossLineColor.cgColor
-        shapeLayer.lineDashPattern = [2, 2]
         shapeLayer.path = linePath.cgPath
         return shapeLayer
     }

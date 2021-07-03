@@ -33,7 +33,7 @@ class HSStockBriefView: UIView {
     
     func setupSubviews() {
         view = instanceViewFromNib()
-        view.autoresizingMask = [UIViewAutoresizing.flexibleWidth, UIViewAutoresizing.flexibleHeight]
+        view.autoresizingMask = [UIView.AutoresizingMask.flexibleWidth, UIView.AutoresizingMask.flexibleHeight]
         addSubview(view)
     }
     

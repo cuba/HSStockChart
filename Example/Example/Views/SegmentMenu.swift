@@ -26,7 +26,7 @@ class SegmentMenu: UIView {
     
     var currentIndex: Int {
         if let button = selectedButton {
-            return buttons.index(of: button) ?? 0
+            return buttons.firstIndex(of: button) ?? 0
         } else {
             return 0
         }
@@ -88,7 +88,7 @@ class SegmentMenu: UIView {
     }
     
     @objc func menuButtonDidClick(_ button: UIButton) {
-        guard let index = buttons.index(of: button) else { return }
+        guard let index = buttons.firstIndex(of: button) else { return }
         selectButton(at: index)
     }
     
